@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respawn Gaming Hub - Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles - Cyberpunk/Terminal */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Consolas', 'Monaco', 'monospace'; /* Monospace font for terminal feel */
+        }
+
+        body { 
+            background: #0a0e17; /* Dark background */
+            color: #00f0ff; /* Cyan glow text color */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+
+        /* Accent Color */
+        :root { 
+            --accent: #00f0ff; 
+            --bg-dark: #0a0e17;
+            --panel-dark: #101828; /* Dark panel background */
+            --accent-dark: #008899; /* Darker cyan for borders/accents */
+        }
+
+        .logo { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            margin-bottom: 30px; 
+            color: #fff;
+            text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); /* Glow effect */
+        }
+        .logo span { 
+            color: var(--accent); 
+        }
+
+        .signup-card { 
+            background: var(--panel-dark); 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); /* Stronger glow */
+            width: 100%; 
+            max-width: 450px; /* Slightly wider for more fields */
+            border: 1px solid var(--accent-dark); /* Subtle border */
+        }
+        h2 { 
+            margin-bottom: 25px; 
+            text-align: center; 
+            border-bottom: 2px solid var(--accent); 
+            padding-bottom: 10px; 
+            text-shadow: 0 0 5px var(--accent); /* Glow */
+        }
+
+        .form-group { 
+            margin-bottom: 15px; /* Reduced margin for tighter form */
+            position: relative; /* For icon positioning */
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            color: #ccc; 
+        }
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 12px 15px 12px 40px; /* Space for icon */
+            background: #2d2d2d; /* Dark input background */
+            border: 1px solid var(--accent-dark); /* Border */
+            border-radius: 4px; 
+            color: #fff; 
+            font-size: 1rem; 
+            font-family: inherit; /* Use monospace font */
+        }
+        .form-group input:focus, .form-group select:focus { 
+            outline: none; 
+            border-color: var(--accent); 
+            box-shadow: 0 0 8px var(--accent); /* Glow on focus */
+        }
+        .form-group .icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-dark);
+            font-size: 1.1rem;
+            pointer-events: none; /* Icon shouldn't interfere with input */
+        }
+        .form-group select {
+            padding: 12px 40px 12px 40px; /* Adjust padding for select */
+            appearance: none; /* Remove default dropdown arrow */
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="%23008899" d="M207.029 381.741 16 275.741c-10.925-10.925-10.925-28.735 0-40.971L207.029 130.259c10.925-10.925 28.735-10.925 40.971 0l110.303 110.303c10.925 10.925 10.925 28.735 0 40.971L248.001 381.741c-10.925 10.925-28.735 10.925-40.971 0z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 16px;
+        }
+
+        .btn { 
+            width: 100%; 
+            padding: 12px; 
+            background: transparent; /* Transparent background */
+            color: var(--accent); /* Accent color text */
+            border: 1px solid var(--accent); /* Accent border */
+            border-radius: 4px; 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-family: inherit; /* Monospace font */
+        }
+        .btn:hover { 
+            background: var(--accent); 
+            color: var(--bg-dark); /* Dark text on hover */
+            box-shadow: 0 0 10px var(--accent); /* Glow on hover */
+        }
+        .btn.loading { 
+            background: var(--accent-dark); /* Darker accent when loading */
+            border-color: var(--accent-dark);
+            cursor: not-allowed; 
+        }
+        .btn.loading::after { 
+            content: ''; 
+            display: inline-block; 
+            width: 16px; 
+            height: 16px; 
+            margin-left: 8px; 
+            border: 2px solid var(--bg-dark); /* Dark border for spinner */
+            border-top: 2px solid transparent; 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .links { 
+            margin-top: 20px; 
+            text-align: center; 
+        }
+        a { 
+            color: var(--accent); 
+            text-decoration: none; 
+            margin: 0 8px; 
+            transition: 0.3s;
+            text-shadow: 0 0 5px var(--accent); /* Glow */
+        }
+        a:hover { 
+            text-decoration: underline; 
+        }
+        
+        .divider { 
+            margin: 25px 0; /* Increased margin */
+            text-align: center; 
+            color: #666; 
+            position: relative; 
+        }
+        .divider::before, .divider::after { 
+            content: ''; 
+            width: 40%; 
+            height: 1px; 
+            background: var(--accent-dark); /* Darker accent for dividers */
+            position: absolute; 
+            top: 50%; 
+        }
+        .divider::before { 
+            left: 0; 
+        }
+        .divider::after { 
+            right: 0; 
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .signup-card {
+                padding: 30px;
+            }
+            .form-group input {
+                padding: 10px 15px 10px 40px;
+            }
+            .form-group select {
+                padding: 10px 40px 10px 40px;
+            }
+            .btn {
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">RESPAWN <span>GAMING HUB</span></div>
+    
+    <div class="signup-card">
+        <h2>CREATE YOUR ACCOUNT</h2>
+        
+        <form id="signup-form">
+            <div class="form-group">
+                <i class="fas fa-user icon"></i>
+                <label for="gamerTag">Gamer Tag</label>
+                <input type="text" id="gamerTag" required placeholder="Choose a unique gamer tag">
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-envelope icon"></i>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-lock icon"></i>
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Create a strong password">
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock icon"></i>
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required placeholder="Confirm your password">
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-calendar-alt icon"></i>
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-flag icon"></i>
+                <label for="country">Country</label>
+                <select id="country" required>
+                    <option value="" disabled selected>Select your country</option>
+                    <option value="ph">Philippines</option>
+                    <option value="us">United States</option>
+                    <option value="ca">Canada</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="au">Australia</option>
+                    <option value="sg">Singapore</option>
+                    <option value="my">Malaysia</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn" id="signup-btn">CREATE ACCOUNT</button>
+        </form>
+        
+        <div class="divider">ALREADY HAVE AN ACCOUNT?</div>
+        
+        <div class="links">
+            <a href="login.html">LOGIN</a>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('signup-form');
+        const signupBtn = document.getElementById('signup-btn');
+
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const gamerTag = document.getElementById('gamerTag').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const dob = document.getElementById('dob').value;
+            const country = document.getElementById('country').value;
+
+            // Basic validation
+            if (!gamerTag || !email || !password || !confirmPassword || !dob || !country) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+
+            // Simulate account creation
+            signupBtn.textContent = 'CREATING ACCOUNT...';
+            signupBtn.classList.add('loading');
+
+            setTimeout(function() {
+                // Redirect to login page or home page after successful creation
+                alert('Account created successfully! You will now be redirected to the login page.');
+                window.location.href = 'login.html'; // Redirect to login page
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
