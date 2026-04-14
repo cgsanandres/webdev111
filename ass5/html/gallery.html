@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronCore Fitness | Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+    <style>
+        :root {
+            --primary: #f5c518;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR (Locked Consistency) */
+        .sidebar {
+            width: 240px;
+            background: #000;
+            height: 100vh;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            border-right: 1px solid #222;
+        }
+
+        .sidebar h2 { color: var(--primary); text-align: center; letter-spacing: 2px; margin-bottom: 30px; }
+
+        .sidebar a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar a:hover, .sidebar a.active { background: var(--glass); color: var(--primary); padding-left: 20px; }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            margin-left: 240px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        /* GALLERY FILTER */
+        .gallery-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: var(--card-bg);
+            border: 1px solid #333;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* GALLERY GRID */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .photo-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .photo-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: 0.5s;
+        }
+
+        .photo-card:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        .photo-info { padding: 20px; }
+        .photo-info h3 { margin: 0; color: var(--primary); font-size: 18px; }
+        .photo-info p { font-size: 14px; margin-top: 8px; color: #aaa; line-height: 1.4; }
+
+        /* FEATURED SECTION */
+        .featured-header {
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+            margin: 40px 0 20px;
+        }
+
+        /* VIRTUAL TOUR BANNER */
+        .tour-banner {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>IRONCORE</h2>
+     <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="classes.html"><i class="fas fa-dumbbell"></i> Classes</a>
+    <a href="trainers.html"><i class="fas fa-user-tie"></i> Trainers</a>
+    <a href="membership.html"><i class="fas fa-credit-card"></i> Membership</a>
+    <a href="gallery.html"><i class="fas fa-camera"></i> Gallery</a>
+    <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+	 <a href="account.html"><i class="fas fa-phone"></i> Account</a>
+    
+   <a onclick="logout.html" style="margin-top: auto; border-top: 1px solid #222;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main">
+    <div class="featured-header">
+        <h1 style="margin:0;">Gym Gallery</h1>
+        <p style="color: var(--text-muted);">Visualize your progress in our world-class facilities.</p>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="gallery-filter">
+        <div class="filter-btn active">All Photos</div>
+        <div class="filter-btn">Strength Zone</div>
+        <div class="filter-btn">Cardio Deck</div>
+        <div class="filter-btn">Group Classes</div>
+        <div class="filter-btn">Community</div>
+    </div>
+
+    <div class="gallery-grid">
+        <div class="photo-card">
+            <img src="images/weights.jpeg" alt="Weights">
+            <div class="photo-info">
+                <h3>The Power Rack</h3>
+                <p>Olympic-grade racks and platforms for heavy lifting sessions.</p>
+            </div>
+        </div>
+
+        <div class="photo-card">
+            <img src="images/cardio_zone.jpeg" alt="Cardio">
+            <div class="photo-info">
+                <h3>Endurance Hub</h3>
+                <p>High-tech treadmills with interactive mountain-trail simulations.</p>
+            </div>
+        </div>
+
+        <div class="photo-card">
+            <img src="images/yoga.jpeg" alt="Yoga">
+            <div class="photo-info">
+                <h3>Zen Studio</h3>
+                <p>A quiet, climate-controlled space for yoga and mobility flow.</p>
+            </div>
+        </div>
+
+        <div class="photo-card">
+            <img src="images/coach.jpeg" alt="Trainer">
+            <div class="photo-info">
+                <h3>Elite Coaching</h3>
+                <p>Dedicated 1-on-1 spaces for personalized instruction.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: VIRTUAL TOUR -->
+    <div class="featured-header">
+        <h2>Experience the Vibe</h2>
+    </div>
+    <div class="tour-banner">
+        <h2 style="font-size: 32px; color: var(--primary);">360° Virtual Tour</h2>
+        <p style="margin-bottom: 20px;">Can't make it in person? Explore the floor from your phone.</p>
+        <button onclick="alert('Virtual Tour Loading...')" style="padding: 12px 30px; background: var(--primary); border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Launch Tour</button>
+    </div>
+
+    <!-- NEW SECTION: INSTAGRAM FEED PREVIEW -->
+    <div class="featured-header" style="margin-top: 60px;">
+        <h2>#IronCoreCommunity</h2>
+        <p style="color: var(--text-muted);">Tagged by our members on Instagram</p>
+    </div>
+    <div class="gallery-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="photo-card"><img src="https://unsplash.com" style="height: 180px;"></div>
+        <div class="photo-card"><img src="https://unsplash.com" style="height: 180px;"></div>
+        <div class="photo-card"><img src="https://unsplash.com" style="height: 180px;"></div>
+        <div class="photo-card"><img src="https://unsplash.com" style="height: 180px;"></div>
+    </div>
+</div>
+
+<script>
+    if(localStorage.getItem("fitnessLoggedIn") !== "true") window.location.href="login.html";
+
+    function logout(){
+        localStorage.removeItem("fitnessLoggedIn");
+        window.location.href="login.html";
+    }
+</script>
+
+</body>
+</html>

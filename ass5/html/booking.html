@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronCore Fitness | Book a Session</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+    <style>
+        :root {
+            --primary: #f5c518;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR (Consistent with Index & Plan) */
+        .sidebar {
+            width: 240px;
+            background: #000;
+            height: 100vh;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            border-right: 1px solid #222;
+        }
+
+        .sidebar h2 { color: var(--primary); text-align: center; letter-spacing: 2px; margin-bottom: 30px; }
+
+        .sidebar a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar a:hover { background: var(--glass); color: var(--primary); padding-left: 20px; }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            margin-left: 240px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        /* BOOKING GRID */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            margin-bottom: 20px;
+        }
+
+        /* TRAINER SELECT */
+        .trainer-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .trainer-card:hover, .trainer-card.selected {
+            border-color: var(--primary);
+            background: rgba(245, 197, 24, 0.05);
+        }
+
+        .trainer-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #333;
+            object-fit: cover;
+        }
+
+        /* TIME SLOTS */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            background: #222;
+            padding: 10px;
+            text-align: center;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .time-slot:hover { border-color: var(--primary); color: var(--primary); }
+        .time-slot.booked { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+
+        h2 { font-size: 22px; margin-bottom: 20px; border-left: 4px solid var(--primary); padding-left: 15px; }
+
+        button.confirm-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            border: none;
+            color: black;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        button.confirm-btn:hover { box-shadow: 0 0 20px rgba(245, 197, 24, 0.3); }
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>IRONCORE</h2>
+     <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="classes.html"><i class="fas fa-dumbbell"></i> Classes</a>
+    <a href="trainers.html"><i class="fas fa-user-tie"></i> Trainers</a>
+    <a href="membership.html"><i class="fas fa-credit-card"></i> Membership</a>
+    <a href="gallery.html"><i class="fas fa-camera"></i> Gallery</a>
+    <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+	 <a href="account.html"><i class="fas fa-phone"></i> Account</a>
+    <a onclick="logout.html" style="margin-top: auto; border-top: 1px solid #222;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main">
+    <h1 style="color: var(--primary);">Book Private Session</h1>
+    <p style="color: var(--text-muted);">Select your trainer and preferred time to start your 1-on-1 transformation.</p>
+
+    <div class="grid-2">
+        <!-- LEFT: TRAINER SELECTION -->
+        <div>
+            <h2>1. Select Trainer</h2>
+            <div class="card">
+                <div class="trainer-card selected">
+                    <img src="images/sarah_jenkins.jpeg" class="trainer-img">
+                    <div>
+                        <h4 style="margin:0;">Sarah Jenkins</h4>
+                        <small style="color: var(--primary);">HIIT & Fat Loss Specialist</small>
+                    </div>
+                </div>
+
+                <div class="trainer-card">
+                    <img src="images/mike_ross.jpeg" class="trainer-img">
+                    <div>
+                        <h4 style="margin:0;">Mike Ross</h4>
+                        <small style="color: var(--primary);">Powerlifting & Strength</small>
+                    </div>
+                </div>
+
+                <div class="trainer-card">
+                    <img src="images/elenaa_rodriguez.jpeg" class="trainer-img">
+                    <div>
+                        <h4 style="margin:0;">Elena Rodriguez</h4>
+                        <small style="color: var(--primary);">Yoga & Mobility</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: TIME SELECTION -->
+        <div>
+            <h2>2. Choose Time</h2>
+            <div class="card">
+                <p style="font-weight: bold; margin-bottom: 15px;">Available Today:</p>
+                <div class="time-grid">
+                    <div class="time-slot">08:00 AM</div>
+                    <div class="time-slot booked">09:30 AM</div>
+                    <div class="time-slot">11:00 AM</div>
+                    <div class="time-slot">01:30 PM</div>
+                    <div class="time-slot">03:00 PM</div>
+                    <div class="time-slot">04:30 PM</div>
+                    <div class="time-slot">06:00 PM</div>
+                    <div class="time-slot booked">07:30 PM</div>
+                    <div class="time-slot">09:00 PM</div>
+                </div>
+                
+                <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                    <p style="font-size: 14px; color: var(--text-muted);">Session Duration: 60 Minutes</p>
+                    <p style="font-size: 14px; color: var(--text-muted);">Location: Elite Zone 1</p>
+                    <button class="confirm-btn" onclick="confirmBooking()">Confirm Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* PROTECTION */
+    if(localStorage.getItem("fitnessLoggedIn") !== "true"){
+        window.location.href="login.html";
+    }
+
+    /* LOGOUT */
+    function logout(){
+        localStorage.removeItem("fitnessLoggedIn");
+        window.location.href="login.html";
+    }
+
+    function confirmBooking() {
+        alert("Booking request sent! You will receive a confirmation email shortly.");
+        window.location.href="index.html";
+    }
+
+    // Toggle logic for time slots
+    const slots = document.querySelectorAll('.time-slot:not(.booked)');
+    slots.forEach(slot => {
+        slot.addEventListener('click', () => {
+            slots.forEach(s => s.style.backgroundColor = '#222');
+            slot.style.backgroundColor = 'var(--primary)';
+            slot.style.color = 'black';
+        });
+    });
+</script>
+
+</body>
+</html>

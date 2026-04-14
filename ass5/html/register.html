@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronCore Fitness | Join Now</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
+    <style>
+        :root {
+            --primary: #f5c518;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --glass: rgba(255, 255, 255, 0.03);
+            --error: #ff4d4d;
+            --success: #4BB543;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-dark);
+            color: white;
+            transition: 0.3s;
+            background-image: radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        body.light {
+            background: #f4f4f4;
+            color: #111;
+            background-image: radial-gradient(circle at 2px 2px, #ddd 1px, transparent 0);
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 15px;
+            border: 1px solid #222;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transition: 0.3s;
+            text-align: center;
+            margin: 20px;
+        }
+
+        body.light .container {
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: none;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        h3 {
+            font-weight: 400;
+            color: #888;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        body.light input {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            color: #111;
+        }
+
+        input:focus { border-color: var(--primary); background: #2a2a2a; }
+
+        /* Password Strength Meter */
+        .strength-meter {
+            height: 4px;
+            width: 100%;
+            background: #333;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            border-radius: 2px;
+            overflow: hidden;
+            display: none;
+        }
+        .strength-bar { height: 100%; width: 0; transition: 0.5s; }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            border: none;
+            color: black;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(245, 197, 24, 0.3); }
+
+        .msg-box { height: 20px; font-size: 13px; margin-top: 10px; }
+        .error { color: var(--error); }
+        .success { color: var(--success); }
+
+        .footer-links {
+            margin-top: 25px;
+            border-top: 1px solid #222;
+            padding-top: 20px;
+        }
+
+        body.light .footer-links { border-top: 1px solid #eee; }
+
+        .link a { color: var(--primary); text-decoration: none; font-weight: bold; }
+
+        .theme-btn {
+            background: var(--glass);
+            border: 1px solid #333;
+            color: inherit;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="logo">IronCore</div>
+    <h3>START YOUR TRANSFORMATION</h3>
+
+    <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" placeholder="Email Address">
+    </div>
+
+    <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" placeholder="Create Password" oninput="checkStrength(this.value)">
+    </div>
+    
+    <div class="strength-meter" id="meterContainer">
+        <div class="strength-bar" id="strengthBar"></div>
+    </div>
+
+    <div class="input-group">
+        <i class="fas fa-shield-alt"></i>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+    </div>
+
+    <button onclick="createAccount()">CREATE ACCOUNT</button>
+
+    <div class="msg-box">
+        <div id="errorMsg" class="error"></div>
+        <div id="successMsg" class="success"></div>
+    </div>
+
+    <div class="footer-links">
+        <div class="link">
+            Already a member? <a href="login.html">Sign In</a>
+        </div>
+        
+        <button class="theme-btn" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i> Toggle Theme
+        </button>
+    </div>
+</div>
+
+<script>
+    // Theme logic
+    if(localStorage.getItem("theme") === "light"){
+        document.body.classList.add("light");
+    }
+
+    function toggleTheme(){
+        document.body.classList.toggle("light");
+        localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+    }
+
+    // Password Strength UI
+    function checkStrength(pass) {
+        const bar = document.getElementById('strengthBar');
+        const container = document.getElementById('meterContainer');
+        container.style.display = pass ? 'block' : 'none';
+        
+        let strength = 0;
+        if (pass.length > 5) strength += 33;
+        if (pass.match(/[A-Z]/)) strength += 33;
+        if (pass.match(/[0-9]/)) strength += 34;
+
+        bar.style.width = strength + '%';
+        bar.style.background = strength < 40 ? '#ff4d4d' : strength < 80 ? '#f5c518' : '#4BB543';
+    }
+
+    // Registration logic
+    function createAccount(){
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const confirm = document.getElementById("confirmPassword").value;
+        const errorMsg = document.getElementById("errorMsg");
+        const successMsg = document.getElementById("successMsg");
+
+        // Reset messages
+        errorMsg.innerText = "";
+        successMsg.innerText = "";
+
+        if(!email || !password || !confirm){
+            errorMsg.innerText = "All fields are required.";
+            return;
+        }
+
+        if(password !== confirm){
+            errorMsg.innerText = "Passwords do not match.";
+            return;
+        }
+
+        if(password.length < 6){
+            errorMsg.innerText = "Password must be at least 6 characters.";
+            return;
+        }
+
+        // Save to LocalStorage
+        localStorage.setItem("fitnessEmail", email);
+        localStorage.setItem("fitnessPassword", password);
+
+        successMsg.innerText = "Account secured! Redirecting...";
+        
+        setTimeout(() => {
+            window.location.href = "login.html";
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
