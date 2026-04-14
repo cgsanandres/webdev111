@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respawn Gaming Hub - About Us</title>
+    <style>
+       /* Base Styles - Cyberpunk/Terminal Aesthetic */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    /* Monospace font for terminal feel */
+    font-family: 'Consolas', 'Monaco', 'monospace'; 
+}
+
+body { 
+    background: #0a0e17; /* Dark background */
+    color: #00f0ff; /* Bright cyan text */
+    overflow-y: auto; /* Allow scrolling */
+}
+
+/* CSS Variables for consistent styling */
+:root { 
+    --accent: #00f0ff; /* Main cyan glow */
+    --accent-dark: #008899; /* Darker cyan for borders/accents */
+    --bg-dark: #0a0e17; /* Main dark background */
+    --panel-dark: #101828; /* Darker panel/card background */
+    --text-light: #ccc; /* Lighter text for secondary info */
+}
+
+/* Navigation Bar - Cyberpunk Style */
+nav { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 15px 20px; 
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); /* Soft glow */
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    border-bottom: 1px solid var(--accent-dark); /* Subtle dark cyan border */
+}
+.nav-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: var(--accent); /* Logo in accent color */
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); /* Glow effect */
+}
+.logo span { 
+    color: #fff; /* Hub text in white */
+    opacity: 0.7;
+    font-size: 0.8rem; /* Smaller size for 'HUB' */
+    margin-left: 5px;
+}
+        
+.nav-links { 
+    display: flex; 
+    gap: 15px; /* Slightly reduced gap */
+    list-style: none; 
+    flex-wrap: wrap; /* Allow links to wrap */
+    justify-content: center; /* Center links when wrapped */
+}
+.nav-links a { 
+    color: var(--text-light); /* Lighter text color */
+    text-decoration: none; 
+    font-weight: 500; 
+    transition: 0.3s; 
+    padding: 5px 0; 
+    border-bottom: 1px solid transparent; /* Placeholder for hover effect */
+}
+.nav-links a:hover, .nav-links a.active { 
+    color: var(--accent); 
+    border-bottom: 1px solid var(--accent); /* Subtle underline */
+    text-shadow: 0 0 5px var(--accent); /* Glow on hover/active */
+}
+.mobile-menu { 
+    display: none; 
+    font-size: 1.8rem; 
+    cursor: pointer; 
+    color: var(--accent); /* Hamburger icon in accent color */
+}
+
+/* About Hero Section - Cyberpunk Style */
+.about-hero { 
+    max-width: 1200px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+    text-align: center; 
+    border: 1px solid var(--accent-dark); /* Border */
+    padding: 20px 30px;
+    background: var(--panel-dark); /* Panel background */
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1); /* Inner glow */
+}
+.about-hero h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    border-bottom: 2px solid var(--accent); /* Accent underline */
+    display: inline-block; 
+    padding-bottom: 10px; 
+    text-shadow: 0 0 8px var(--accent); /* Glow on heading */
+}
+.about-hero p { 
+    color: var(--text-light); /* Lighter text */
+    font-size: 1.1rem; 
+    max-width: 800px; 
+    margin: 0 auto 30px; 
+    line-height: 1.6;
+}
+.hero-banner { 
+    width: 100%; 
+    border-radius: 8px; 
+    height: 350px; 
+    background: var(--panel-dark); /* Dark background for image placeholder */
+    overflow: hidden; 
+    border: 1px solid var(--accent-dark); /* Border */
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1); /* Inner glow */
+}
+.hero-banner img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; /* Remove extra space below image */
+    border-radius: 4px; /* Slightly rounded corners */
+}
+
+/* Story Section - Cyberpunk Layout */
+.story-section { 
+    max-width: 1200px; 
+    margin: 60px auto; 
+    padding: 0 20px; 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 40px; 
+    align-items: center; 
+}
+.story-text h2 { 
+    color: var(--accent); 
+    margin-bottom: 20px; 
+    font-size: 1.8rem; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on heading */
+}
+.story-text p { 
+    color: var(--text-light); /* Lighter text */
+    margin-bottom: 15px; 
+    line-height: 1.6;
+}
+.story-img { 
+    background: var(--panel-dark); /* Dark panel background */
+    border-radius: 8px; 
+    padding: 10px; 
+    border: 1px solid var(--accent-dark); /* Border */
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1); /* Inner glow */
+}
+.story-img img { 
+    width: 100%; 
+    border-radius: 4px; 
+    display: block;
+}
+
+/* Highlights Section - Cyberpunk Cards */
+.highlights { 
+    max-width: 1200px; 
+    margin: 60px auto; 
+    padding: 0 20px; 
+}
+.highlights h2 { 
+    color: var(--accent); 
+    margin-bottom: 30px; 
+    font-size: 1.8rem; 
+    text-align: center; 
+    text-shadow: 0 0 8px var(--accent); /* Glow on heading */
+}
+.highlights-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 25px; 
+}
+.highlight-card { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 25px; 
+    border-radius: 8px; 
+    text-align: center; 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.highlight-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); /* Stronger glow */
+}
+.highlight-card img { 
+    width: 80px; 
+    height: 80px; 
+    margin-bottom: 20px; 
+    background: #2d2d2d; /* Dark placeholder background */
+    border-radius: 50%; 
+    padding: 10px; 
+    border: 1px solid var(--accent-dark); /* Border on icon */
+}
+.highlight-card h3 { 
+    margin-bottom: 15px; 
+    color: var(--accent); /* Accent color for titles */
+    text-shadow: 0 0 5px var(--accent); /* Glow on titles */
+}
+.highlight-card p { 
+    color: var(--text-light); /* Lighter text */
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Team Section - Cyberpunk Cards */
+.team-section { 
+    max-width: 1200px; 
+    margin: 60px auto; 
+    padding: 0 20px; 
+}
+.team-section h2 { 
+    color: var(--accent); 
+    margin-bottom: 30px; 
+    font-size: 1.8rem; 
+    text-align: center; 
+    text-shadow: 0 0 8px var(--accent); /* Glow on heading */
+}
+.team-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+}
+.team-card { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 20px; 
+    border-radius: 8px; 
+    text-align: center; 
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.team-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); /* Stronger glow */
+}
+.team-card img { 
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+    margin-bottom: 15px; 
+    border: 3px solid var(--accent); /* Thicker accent border */
+    background: #2d2d2d; /* Dark placeholder background */
+    padding: 5px; /* Padding for image inside border */
+}
+.team-name { 
+    font-weight: 600; 
+    margin-bottom: 5px; 
+    color: #fff; /* White text */
+}
+.team-role { 
+    color: var(--accent); 
+    font-size: 0.9rem; 
+    margin-bottom: 10px; 
+    text-shadow: 0 0 3px var(--accent); /* Subtle glow */
+}
+.team-bio { 
+    color: var(--text-light); /* Lighter text */
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Footer - Cyberpunk Style */
+footer { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 20px; 
+    text-align: center; 
+    color: var(--text-light); /* Lighter text */
+    margin-top: 60px; 
+    border-top: 1px solid var(--accent-dark); /* Subtle border */
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+}
+footer a {
+    color: var(--accent); /* Accent color for links */
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--accent); /* Glow on link */
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsiveness - Adjusted for Cyberpunk */
+@media (max-width: 900px) {
+    .nav-links { 
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        text-align: center;
+        padding-top: 15px;
+        background: var(--panel-dark); /* Dark background for dropdown */
+        position: absolute; 
+        top: 60px; /* Below the nav bar */
+        left: 0;
+        border-bottom: 1px solid var(--accent-dark);
+    }
+    .nav-links.active {
+        display: flex; /* Show when active */
+    }
+    .nav-links li {
+        margin: 10px 0;
+    }
+    .mobile-menu { 
+        display: block; /* Show hamburger icon */
+    }
+    .about-hero {
+        padding: 15px 20px;
+    }
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+    .hero-banner {
+        height: 250px; /* Reduced height on mobile */
+    }
+    .story-section { 
+        grid-template-columns: 1fr; /* Single column */
+        text-align: center; 
+    }
+    .story-img {
+        margin-top: 30px; /* Space between text and image */
+    }
+    .highlights-grid { 
+        grid-template-columns: repeat(2, 1fr); /* Two columns for highlights */
+    }
+    .team-grid { 
+        grid-template-columns: repeat(2, 1fr); /* Two columns for team */
+    }
+}
+
+@media (max-width: 500px) {
+    .highlights-grid { 
+        grid-template-columns: 1fr; /* Single column for highlights */
+    }
+    .team-grid { 
+        grid-template-columns: 1fr; /* Single column for team */
+    }
+    .logo {
+        font-size: 1.3rem;
+    }
+    .logo span {
+        font-size: 0.7rem;
+    }
+    .mobile-menu {
+        font-size: 1.6rem;
+    }
+    .about-hero h1 {
+        font-size: 1.8rem;
+    }
+    .story-text h2, .highlights h2, .team-section h2 {
+        font-size: 1.5rem;
+    }
+    .highlight-card img, .team-card img {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Added for mobile menu toggle */
+.nav-links.active {
+    display: flex;
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">RESPAWN <span>GAMING HUB</span></div>
+            
+            <ul class="nav-links">
+                  <li><a href="index.html">Home</a></li>
+                <li><a href="about.html"class="active">About</a></li>
+                <li><a href="games.html">Games/Services</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="admin.html">Admin</a></li
+            </ul>
+            
+            <div class="mobile-menu">&#9776;</div>
+        </div>
+    </nav>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <h1>OUR STORY</h1>
+        <p>Born from a passion for esports and community, Respawn Gaming Hub was built to give Filipino gamers a world-class space to play, compete, and grow together.</p>
+        <div class="hero-banner">
+            <img src="images/main-space.jpeg" alt="Respawn Gaming Hub Main Space">
+        </div>
+    </section>
+
+    <!-- Story & History Section -->
+    <section class="story-section">
+        <div class="story-text">
+            <h2>FROM A DREAM TO A REALITY</h2>
+            <p>Founded in 2023 by a group of competitive gamers who struggled to find proper facilities for training and tournaments, Respawn started as a small 10-station setup in a Quezon City garage.</p>
+            <p>Within just two years, we expanded to a 50+ station hub with console corners, VR booths, and a dedicated tournament stage – all designed to deliver peak performance and an unforgettable gaming experience.</p>
+            <p>Our mission is simple: to elevate Philippine esports by providing top-tier equipment, fostering a supportive community, and hosting events that give local talent a chance to shine on the big stage.</p>
+        </div>
+        <div class="story-img">
+            <img src="images/first-setup.jpeg" alt="Respawn's First Gaming Setup">
+        </div>
+    </section>
+
+    <!-- Key Highlights Section -->
+    <section class="highlights">
+        <h2>WHAT MAKES US STAND OUT</h2>
+        <div class="highlights-grid">
+            <div class="highlight-card">
+                <img src="images/highend.jpeg" alt="High-End Gear Icon">
+                <h3>TOP-TIER EQUIPMENT</h3>
+                <p>Every rig is built with latest-gen components to ensure zero lag and maximum performance for competitive play.</p>
+            </div>
+            <div class="highlight-card">
+                <img src="images/communitygaming.jpeg" alt="Community Icon">
+                <h3>SUPPORTIVE COMMUNITY</h3>
+                <p>From casual players to pro teams, we foster a welcoming space where everyone can learn, collaborate, and level up.</p>
+            </div>
+            <div class="highlight-card">
+                <img src="images/eventsicon.jpeg" alt="Events Icon">
+                <h3>REGULAR EVENTS</h3>
+                <p>Monthly tournaments, LAN parties, and cosplay nights keep the energy high and give gamers a chance to compete for prizes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2>MEET OUR TEAM</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <img src="images/marcus_mako.jpeg" alt="Team Member">
+                <div class="team-name">Marcus "Mako" Reyes</div>
+                <div class="team-role">Founder & CEO</div>
+                <div class="team-bio">Former pro DOTA 2 player who turned his passion into a hub for all gamers.</div>
+            </div>
+            <div class="team-card">
+                <img src="images/janine.jpeg" alt="Team Member">
+                <div class="team-name">Janine "Jinx" Cruz</div>
+                <div class="team-role">Tech & Facilities Manager</div>
+                <div class="team-bio">Ensures every setup runs at peak performance – our go-to for all gear issues.</div>
+            </div>
+            <div class="team-card">
+                <img src="images/luis.jpeg" alt="Team Member">
+                <div class="team-name">Luis "Flash" Santos</div>
+                <div class="team-role">Events Coordinator</div>
+                <div class="team-bio">Plans all our tournaments and parties – the mastermind behind our epic LAN nights.</div>
+            </div>
+            <div class="team-card">
+                <img src="images/mendoza.jpeg" alt="Team Member">
+                <div class="team-name">Ana "Aura" Mendoza</div>
+                <div class="team-role">Community Lead</div>
+                <div class="team-bio">Keeps our community strong and welcoming – always ready to help new gamers settle in.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Respawn Gaming Hub | Quezon City, Metro Manila | <a href="#" style="color: var(--accent); text-decoration: none;">Follow Us</a></p>
+    </footer>
+</body>
+</html>
+
