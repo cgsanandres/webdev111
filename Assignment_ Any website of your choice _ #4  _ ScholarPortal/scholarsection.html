@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Section Offering</title>
+<style>
+*{box-sizing:border-box; font-family:'Segoe UI',sans-serif;}
+body{margin:0; display:flex; background:#0f172a; color:#fff;}
+
+.sidebar{
+width:250px;
+background:#020617;
+height:100vh;
+padding:20px;
+position:fixed;
+}
+
+.sidebar h2{color:#38bdf8; text-align:center;}
+.sidebar a{
+display:block;
+color:#cbd5f5;
+text-decoration:none;
+margin:12px 0;
+padding:10px;
+border-radius:8px;
+}
+.sidebar a:hover{background:#1e293b;}
+
+.main{
+margin-left:250px;
+padding:25px;
+width:100%;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+margin-bottom:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+th,td{
+padding:12px;
+border-bottom:1px solid #334155;
+}
+th{color:#38bdf8;}
+
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>ScholarPortal</h2>
+<a href="scholardashboard.html">Dashboard</a>
+<a href="scholarregistration.html">Registration</a>
+<a href="scholargrades.html">Grades</a>
+<a href="scholarprofile.html">Profile</a>
+<a href="scholaraccount.html">Account</a>
+<a href="scholarsection.html">Section Offering</a>
+<a href="scholarcalendar.html">Academic Calendar</a>
+<a href="scholarpassword.html">Password</a>
+<a href="scholarlibrary.html">Library</a>
+<a href="scholarmessaging.html">Messaging</a>
+</div>
+
+
+</div>
+
+<div class="main">
+
+<div class="card">
+<h2>📖 Available Sections</h2>
+
+<table>
+<tr>
+<th>Section</th>
+<th>Course</th>
+<th>Instructor</th>
+<th>Slots</th>
+</tr>
+
+<tr>
+<td>BSIT-1A</td>
+<td>Programming 1</td>
+<td>Mr. Cruz</td>
+<td>25/30</td>
+</tr>
+
+<tr>
+<td>BSIT-1B</td>
+<td>Web Development</td>
+<td>Ms. Santos</td>
+<td>30/30</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+</body>
+</html>
