@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate | Paws Haven</title>
+    <!-- Matching Homepage Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #588157;
+            --primary-dark: #3a5a40;
+            --secondary: #a3b18a;
+            --accent: #dad7cd;
+            --light: #f8f9fa;
+            --dark: #344e41;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * {
+            font-family: 'Open Sans', sans-serif;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR - IDENTICAL TO HOMEPAGE */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navlinks {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .navlinks a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .navlinks a:hover { color: var(--primary); }
+
+        .btn-logout {
+            background: #e63946;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* HERO - MINI STYLE */
+        .hero-donate {
+            height: 40vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), 
+                        url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .container { max-width: 1100px; margin: auto; padding: 40px 20px; }
+
+        /* DONATION FREQUENCY TOGGLE */
+        .freq-toggle {
+            display: flex; justify-content: center; margin: -50px 0 40px;
+            position: relative; z-index: 10;
+        }
+        .toggle-box {
+            background: var(--white); padding: 6px; border-radius: 50px; 
+            box-shadow: var(--shadow); display: flex;
+        }
+        .toggle-btn {
+            padding: 12px 30px; border: none; background: none; 
+            cursor: pointer; border-radius: 50px; font-weight: 700; font-size: 14px;
+        }
+        .toggle-btn.active { background: var(--primary); color: white; }
+
+        /* DONATION GRID */
+        .donation-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px; margin-bottom: 50px;
+        }
+        .donation-card {
+            background: var(--white); padding: 35px; border-radius: 20px;
+            box-shadow: var(--shadow); text-align: center; border: 2px solid transparent;
+        }
+        .donation-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .donation-card h2 { color: var(--primary); font-size: 2.8rem; margin: 10px 0; }
+        .donation-card p { font-size: 14px; color: #666; margin-bottom: 20px; min-height: 45px; }
+
+        /* PAYMENT WRAPPER */
+        .payment-wrapper {
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px;
+            background: var(--white); padding: 45px; border-radius: 25px; box-shadow: var(--shadow);
+        }
+        .secure-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #f0f7f0; color: #2F6B2F; padding: 6px 15px;
+            border-radius: 8px; font-size: 12px; font-weight: 700; margin-bottom: 20px;
+        }
+
+        input, select {
+            width: 100%; padding: 14px; margin: 10px 0;
+            border-radius: 10px; border: 1px solid #ddd; background: #fdfdfd;
+        }
+
+        .btn-donate {
+            width: 100%; padding: 16px; border: none; background: var(--primary);
+            color: white; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 16px; margin-top: 15px;
+        }
+        .btn-donate:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        /* SUCCESS SCREEN */
+        .success-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.98); z-index: 2000;
+            align-items: center; justify-content: center; text-align: center;
+        }
+
+        @media(max-width: 768px) {
+            .payment-wrapper { grid-template-columns: 1fr; padding: 25px; }
+            .hero-donate h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🐾 Paws Haven</div>
+    <div class="navlinks">
+         <a href="index.html">Home</a>
+        <a href="animals.html">Animals</a>
+        <a href="adopt.html">Adopt</a>
+        <a href="donate.html">Donate</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="volunteer.html">Volunteer</a>
+        <a href="contact.html">Contact</a>
+		 <a href="about.html">About</a>
+        <a href="account.html">Account</a>
+        <a onclick="login.html" class="btn-logout">Logout</a>
+    </div>
+</nav>
+
+<header class="hero-donate">
+    <div>
+        <h1>Every Gift Saves Lives</h1>
+        <p>Your support provides food, medicine, and second chances.</p>
+    </div>
+</header>
+
+<main class="container">
+    <div class="freq-toggle">
+        <div class="toggle-box">
+            <button class="toggle-btn active" onclick="setFreq('one-time', this)">One-time</button>
+            <button class="toggle-btn" onclick="setFreq('monthly', this)">Monthly</button>
+        </div>
+    </div>
+
+    <div class="donation-grid">
+        <div class="donation-card">
+            <h2>$15</h2>
+            <p>Feeds a rescued pet for one full week.</p>
+            <button class="btn-donate" onclick="selectAmt(15)">Select</button>
+        </div>
+        <div class="donation-card">
+            <h2>$50</h2>
+            <p>Covers essential vaccines and medical intake.</p>
+            <button class="btn-donate" onclick="selectAmt(50)">Select</button>
+        </div>
+        <div class="donation-card">
+            <h2>$150</h2>
+            <p>Funds a complete rescue, care, and rehoming journey.</p>
+            <button class="btn-donate" onclick="selectAmt(150)">Select</button>
+        </div>
+    </div>
+
+    <div class="payment-wrapper">
+        <div class="payment-info">
+            <div class="secure-tag">🔒 SECURE 256-BIT SSL ENCRYPTION</div>
+            <h2>Donation Details</h2>
+            <p>Help us continue our mission. Paws Haven is a registered non-profit organization.</p>
+            
+            <div style="margin-top: 25px;">
+                <label style="font-weight: 700; font-size: 14px;">Gift Amount ($)</label>
+                <input type="number" id="customAmt" placeholder="Enter custom amount">
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <input type="text" placeholder="First Name" required>
+                <input type="text" placeholder="Last Name" required>
+            </div>
+            <input type="email" placeholder="Email Address" required>
+        </div>
+
+        <div style="background: #f9f9f9; padding: 30px; border-radius: 15px;">
+            <h3 style="margin-bottom: 20px;">Payment Method</h3>
+            <select id="payMethod">
+                <option>Credit / Debit Card</option>
+                <option>PayPal</option>
+                <option>Digital Wallet</option>
+            </select>
+            
+            <input type="text" placeholder="Card Number" maxlength="16">
+            <div style="display: flex; gap: 15px;">
+                <input type="text" placeholder="MM/YY" maxlength="5">
+                <input type="text" placeholder="CVC" maxlength="3">
+            </div>
+
+            <button class="btn-donate" style="margin-top: 20px;" onclick="processPayment()">Donate Now</button>
+            <p style="font-size: 11px; text-align: center; color: #888; margin-top: 15px;">
+                Thank you for your kindness! A receipt will be sent to your email.
+            </p>
+        </div>
+    </div>
+</main>
+
+<!-- Success Screen -->
+<div class="success-overlay" id="successOverlay">
+    <div>
+        <h1 style="font-size: 60px;">🐾</h1>
+        <h2 style="color: var(--primary);">Thank You for Your Generosity!</h2>
+        <p id="successText"></p>
+        <button class="btn-donate" style="width: auto; padding: 12px 50px;" onclick="location.href='index.html'">Back to Home</button>
+    </div>
+</div>
+
+<script>
+    if(localStorage.getItem("pawsLoggedIn") !== "true"){
+        window.location.href = "login.html";
+    }
+
+    let frequency = "one-time";
+
+    function setFreq(type, btn) {
+        frequency = type;
+        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    function selectAmt(amt) {
+        document.getElementById('customAmt').value = amt;
+        document.getElementById('customAmt').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function processPayment() {
+        const amt = document.getElementById('customAmt').value;
+        if(!amt || amt <= 0) return alert("Please enter a valid donation amount.");
+
+        const overlay = document.getElementById('successOverlay');
+        const text = document.getElementById('successText');
+        
+        text.innerHTML = `Your ${frequency} gift of <b>$${amt}</b> will go directly to helping our animals.<br>Expect an email receipt shortly.`;
+        overlay.style.display = "flex";
+    }
+
+    function logout(){
+        localStorage.removeItem("pawsLoggedIn");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>

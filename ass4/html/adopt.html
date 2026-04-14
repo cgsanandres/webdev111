@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt | Paws Haven</title>
+    <!-- Matching Homepage Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #588157;
+            --primary-dark: #3a5a40;
+            --secondary: #a3b18a;
+            --accent: #dad7cd;
+            --light: #f8f9fa;
+            --dark: #344e41;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * {
+            font-family: 'Open Sans', sans-serif;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR - IDENTICAL TO HOMEPAGE */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navlinks {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .navlinks a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .navlinks a:hover {
+            color: var(--primary);
+        }
+
+        .btn-logout {
+            background: #e63946;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        /* HERO - MINI STYLE */
+        .hero-mini {
+            height: 40vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), 
+                        url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .container { max-width: 900px; margin: auto; padding: 40px 20px; }
+
+        /* STEPS GUIDE */
+        .steps-container {
+            display: flex; justify-content: space-between; 
+            margin: -60px auto 40px;
+            background: var(--white); padding: 30px; border-radius: 15px; 
+            box-shadow: var(--shadow);
+            position: relative; z-index: 10;
+        }
+        .step { text-align: center; flex: 1; font-size: 12px; font-weight: 700; color: #aaa; text-transform: uppercase; }
+        .step.active { color: var(--primary); }
+        .step-num { 
+            width: 35px; height: 35px; background: #eee; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            margin: 0 auto 8px; color: white;
+        }
+        .step.active .step-num { background: var(--primary); }
+
+        /* FORM CARD */
+        .form-card {
+            background: var(--white); padding: 45px; border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+        .form-card h2 { color: var(--primary-dark); margin-bottom: 10px; }
+        .form-section-title { 
+            font-size: 12px; font-weight: 700; text-transform: uppercase; 
+            color: var(--secondary); margin-top: 30px; margin-bottom: 15px;
+            letter-spacing: 1px; border-bottom: 2px solid var(--accent); padding-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%; padding: 14px; margin: 10px 0;
+            border-radius: 10px; border: 1px solid #ddd; background: #fdfdfd;
+            font-size: 14px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary); outline: none;
+            box-shadow: 0 0 0 3px rgba(88, 129, 87, 0.1);
+        }
+        
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin: 20px 0; font-size: 13px; }
+        .checkbox-group input { width: auto; margin-top: 4px; }
+
+        .btn-submit {
+            width: 100%; padding: 16px; border: none; background: var(--primary);
+            color: white; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 16px; margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(88, 129, 87, 0.3);
+        }
+        .btn-submit:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        .success-box {
+            display: none; text-align: center; padding: 60px 40px;
+            background: var(--white); border-radius: 20px; box-shadow: var(--shadow);
+        }
+        .success-box h2 { color: var(--primary); }
+
+        @media(max-width: 768px) {
+            .hero-mini h1 { font-size: 2rem; }
+            .form-card { padding: 25px; }
+            .steps-container { padding: 15px; margin-top: -30px; }
+            .step-text { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🐾 Paws Haven</div>
+    <div class="navlinks">
+          <a href="index.html">Home</a>
+        <a href="animals.html">Animals</a>
+        <a href="adopt.html">Adopt</a>
+        <a href="donate.html">Donate</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="volunteer.html">Volunteer</a>
+        <a href="contact.html">Contact</a>
+		 <a href="about.html">About</a>
+        <a href="account.html">Account</a>
+        <a onclick="login.html" class="btn-logout">Logout</a>
+    </div>
+</nav>
+
+<header class="hero-mini">
+    <div>
+        <h1>Start the Journey</h1>
+        <p>Your forever friend is just a few steps away.</p>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Visual Progress Guide -->
+    <div class="steps-container">
+        <div class="step active"><div class="step-num">1</div><span class="step-text">Apply</span></div>
+        <div class="step"><div class="step-num">2</div><span class="step-text">Interview</span></div>
+        <div class="step"><div class="step-num">3</div><span class="step-text">Visit</span></div>
+        <div class="step"><div class="step-num">4</div><span class="step-text">Welcome Home</span></div>
+    </div>
+
+    <div class="form-card" id="formWrapper">
+        <h2>Adoption Application</h2>
+        <p>Tell us a bit about yourself and your home so we can find your perfect match.</p>
+
+        <form onsubmit="handleAdoption(event)">
+            
+            <div class="form-section-title">Personal Information</div>
+            <div style="display: flex; gap: 15px;">
+                <input type="text" placeholder="Full Name" required>
+                <input type="tel" placeholder="Phone Number" required>
+            </div>
+            <input type="email" placeholder="Email Address" required>
+            <input type="text" placeholder="Home Address" required>
+
+            <div class="form-section-title">Your New Companion</div>
+            <select required>
+                <option value="">Choose a Pet (Optional)</option>
+                <option>Bella (Labrador Mix)</option>
+                <option>Max (Golden Retriever)</option>
+                <option>Luna (Siamese Mix)</option>
+                <option>Charlie (Beagle)</option>
+                <option>General Interest / Not Sure Yet</option>
+            </select>
+
+            <div class="form-section-title">Living Environment</div>
+            <div style="display: flex; gap: 15px;">
+                <select required>
+                    <option value="">Home Type</option>
+                    <option>House with Yard</option>
+                    <option>House (No Yard)</option>
+                    <option>Apartment / Condo</option>
+                </select>
+                <select required>
+                    <option value="">Status</option>
+                    <option>Own</option>
+                    <option>Rent (Landlord Approved)</option>
+                </select>
+            </div>
+            
+            <select required>
+                <option value="">Other Pets at Home?</option>
+                <option>No other pets</option>
+                <option>Yes, dog(s)</option>
+                <option>Yes, cat(s)</option>
+                <option>Yes, both</option>
+            </select>
+
+            <textarea rows="4" placeholder="Briefly describe your daily routine and lifestyle..."></textarea>
+
+            <div class="checkbox-group">
+                <input type="checkbox" required>
+                <span>I agree to a home visit and understand that adoption involves an application fee.</span>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">Submit Application</button>
+        </form>
+    </div>
+
+    <!-- Success Feedback -->
+    <div class="success-box" id="successMsg">
+        <h2 style="font-size: 50px;">🐾</h2>
+        <h2>Application Submitted!</h2>
+        <p>Thank you for choosing to rescue. Our team will review your application and reach out to you within 3-5 business days.</p>
+        <button onclick="location.href='animals.html'" class="btn-submit" style="width: auto; padding: 12px 40px;">Browse More Animals</button>
+    </div>
+</div>
+
+<script>
+    if(localStorage.getItem("pawsLoggedIn") !== "true"){
+        window.location.href = "login.html";
+    }
+
+    function handleAdoption(event) {
+        event.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "Sending Application...";
+        btn.style.opacity = "0.7";
+        btn.disabled = true;
+
+        setTimeout(() => {
+            document.getElementById('formWrapper').style.display = "none";
+            document.querySelector('.steps-container').style.display = "none";
+            document.getElementById('successMsg').style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 1500);
+    }
+
+    function logout(){
+        localStorage.removeItem("pawsLoggedIn");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>
