@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematical Sciences | LibryConnect</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #1b263b;
+            --parchment: #fdfaf0;
+            --grid-line: rgba(42, 111, 151, 0.1);
+            --math-teal: #006d77;
+            --calc-gray: #4a4e69;
+            --white: #ffffff;
+            --shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; transition: 0.3s; }
+        body { 
+            margin: 0; 
+            background: var(--parchment); 
+            color: var(--ink-blue); 
+            font-family: 'Montserrat', sans-serif;
+            /* Graph Paper Background Effect */
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* NAVBAR - TECHNICAL THEME */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: var(--white); border-bottom: 3px solid var(--math-teal);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-family: 'Libre Baskerville', serif; font-size: 24px; font-weight: bold; text-decoration: none; color: var(--ink-blue); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        /* PORTAL HEADER */
+        .dept-header {
+            border: 2px solid var(--ink-blue);
+            background: var(--white);
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .dept-header h1 { font-family: 'Libre Baskerville', serif; font-size: 2.5rem; margin: 0; color: var(--math-teal); }
+        .dept-header::before {
+            content: "Σ (x + y)²"; position: absolute; top: 10px; right: 20px;
+            font-size: 3rem; color: rgba(0,0,0,0.03); font-weight: bold;
+        }
+
+        /* BRANCH FILTERS */
+        .math-filters {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px; margin-bottom: 30px;
+        }
+        .math-btn {
+            background: var(--white); border: 1px solid var(--ink-blue);
+            padding: 10px; font-size: 11px; font-weight: 800; text-align: center;
+            cursor: pointer; text-transform: uppercase;
+        }
+        .math-btn:hover, .math-btn.active { background: var(--math-teal); color: white; border-color: var(--math-teal); }
+
+        /* EQUATION LEDGER */
+        .ledger-box { background: var(--white); border: 1px solid #ccc; box-shadow: var(--shadow); }
+        .ledger-row {
+            display: grid; grid-template-columns: 1fr 180px 140px;
+            padding: 25px 30px; border-bottom: 1px solid #eee; align-items: center;
+        }
+        .book-title { font-weight: 800; font-size: 16px; color: var(--calc-gray); }
+        .book-formula { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 13px; color: #888; margin-top: 5px; display: block;}
+
+        .accuracy-stamp {
+            font-size: 10px; font-weight: 800; text-transform: uppercase;
+            color: var(--math-teal); border-left: 3px solid var(--math-teal);
+            padding-left: 10px;
+        }
+
+        .btn-solve {
+            background: var(--ink-blue); color: white; border: none;
+            padding: 12px; font-weight: 800; font-size: 11px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-solve:hover { background: var(--calc-gray); transform: scale(1.05); }
+
+        @media(max-width: 768px) {
+            .ledger-row { grid-template-columns: 1fr; gap: 15px; }
+            .dept-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo">✒️ LibryConnect</a>
+    <div style="font-size: 11px; font-weight: 800; color: var(--math-teal);">REFERENCE: 510-519</div>
+</nav>
+
+<main class="container">
+    <header class="dept-header">
+        <p>Archive Reference: Mathematics</p>
+        <h1>Pure & Applied Math</h1>
+        <p style="margin-top: 10px;">Theorems, algebraic structures, and statistical computations.</p>
+    </header>
+
+    <div class="math-filters">
+        <div class="math-btn active">All Theories</div>
+        <div class="math-btn">Calculus</div>
+        <div class="math-btn">Algebra</div>
+        <div class="math-btn">Statistics</div>
+        <div class="math-btn">Geometry</div>
+    </div>
+
+    <div class="ledger-box">
+        <!-- Math Entry 1 -->
+        <div class="ledger-row">
+            <div>
+                <span class="book-title">Advanced Macroeconomics</span>
+                <span class="book-formula">∫ f(x)dx — Prof. Elena Rossi</span>
+            </div>
+            <div class="accuracy-stamp">Calculated Available</div>
+            <button class="btn-solve" onclick="calculateLoan(this)">Request Loan</button>
+        </div>
+
+        <!-- Math Entry 2 -->
+        <div class="ledger-row">
+            <div>
+                <span class="book-title">Euclidean Geometry Fundamentals</span>
+                <span class="book-formula">a² + b² = c² — Classical Div.</span>
+            </div>
+            <div class="accuracy-stamp">Calculated Available</div>
+            <button class="btn-solve" onclick="calculateLoan(this)">Request Loan</button>
+        </div>
+
+        <!-- Math Entry 3 -->
+        <div class="ledger-row">
+            <div>
+                <span class="book-title">Probabilistic Models in Research</span>
+                <span class="book-formula">P(A|B) — Statistics Archive</span>
+            </div>
+            <div class="accuracy-stamp" style="color: #d32f2f; border-color: #d32f2f;">Currently Loaned</div>
+            <button class="btn-solve" style="background: #ccc; cursor: not-allowed;">Place Hold</button>
+        </div>
+    </div>
+</main>
+
+<script>
+    function calculateLoan(btn) {
+        btn.innerText = "COMPUTING...";
+        setTimeout(() => {
+            const stamp = btn.previousElementSibling;
+            stamp.innerText = "LOAN VERIFIED";
+            stamp.style.color = "#4a4e69";
+            btn.innerText = "SECURED";
+            btn.style.background = "#4a4e69";
+            alert("Mathematical resource verified. Added to your research ledger.");
+        }, 800);
+    }
+</script>
+
+</body>
+</html>

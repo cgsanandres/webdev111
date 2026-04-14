@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Charter | LibryConnect</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #1b263b;
+            --parchment: #fdfaf0;
+            --card-stock: #f4ebd0;
+            --brass: #b8860b;
+            --white: #ffffff;
+            --shadow: 12px 12px 0px rgba(27, 38, 59, 0.05);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { margin: 0; background: var(--parchment); color: var(--ink-blue); font-family: 'Montserrat', sans-serif; line-height: 1.7; }
+
+        /* NAVBAR - CONSISTENT */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: var(--white); border-bottom: 2px solid var(--ink-blue);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-family: 'Libre Baskerville', serif; font-size: 24px; font-weight: bold; text-decoration: none; color: var(--ink-blue); }
+        .nav-links a { text-decoration: none; color: var(--ink-blue); font-weight: 800; font-size: 13px; margin-left: 25px; text-transform: uppercase; }
+
+        .container { max-width: 1000px; margin: 60px auto; padding: 0 20px; }
+
+        /* CHARTER SECTION */
+        .charter-card {
+            background: var(--white); padding: 60px; border-radius: 4px;
+            box-shadow: var(--shadow); border: 1px solid #ddd;
+            position: relative; overflow: hidden;
+        }
+        .charter-card::before {
+            content: "LIBRY"; position: absolute; top: -50px; right: -20px;
+            font-size: 15rem; font-weight: 800; color: rgba(27, 38, 59, 0.03); z-index: 0;
+        }
+
+        .charter-card h1 { font-family: 'Libre Baskerville', serif; font-size: 3rem; margin-top: 0; position: relative; z-index: 1; }
+        .charter-card h2 { color: var(--brass); font-family: 'Libre Baskerville', serif; margin-top: 40px; }
+        
+        .mission-statement {
+            font-size: 1.2rem; font-style: italic; border-left: 4px solid var(--brass);
+            padding-left: 25px; margin: 30px 0; color: #444;
+        }
+
+        /* CHRONICLE (Timeline) */
+        .chronicle { margin-top: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+        .era { background: var(--card-stock); padding: 20px; border-radius: 4px; border-top: 4px solid var(--ink-blue); }
+        .era b { display: block; font-family: 'Libre Baskerville', serif; font-size: 1.5rem; margin-bottom: 5px; }
+        .era p { font-size: 12px; margin: 0; font-weight: 600; }
+
+        /* CURATORS SECTION */
+        .curators { margin-top: 80px; text-align: center; }
+        .curators-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 40px; }
+        .curator-card { text-align: center; }
+        .curator-img { 
+            width: 150px; height: 150px; background: var(--card-stock); border-radius: 50%; 
+            margin: 0 auto 20px; border: 5px solid var(--white); box-shadow: var(--shadow);
+            display: flex; align-items: center; justify-content: center; font-size: 3rem;
+        }
+        .curator-card h4 { font-family: 'Libre Baskerville', serif; margin: 5px 0; font-size: 1.2rem; }
+        .curator-card span { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--brass); }
+
+        /* CTA */
+        .charter-footer {
+            margin-top: 60px; padding: 40px; background: var(--ink-blue); color: var(--white);
+            border-radius: 4px; text-align: center;
+        }
+        .btn-join {
+            background: var(--brass); color: white; border: none; padding: 15px 40px;
+            font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .charter-card { padding: 30px; }
+            .charter-card h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo">✒️ LibryConnect</a>
+    <div class="nav-links">
+        <a href="index.html">Search</a>
+        <a href="members.html">Members</a>
+        <a href="loans.html">Loans</a>
+		<a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="account.html">Account</a>
+        <a onclick="logout()" style="cursor:pointer; color: var(--overdue-red);">Logout</a>
+    </div>
+</nav>
+
+<main class="container">
+    <article class="charter-card">
+        <h1>The Foundation</h1>
+        <p class="mission-statement">
+            "To connect the seeker with the source, ensuring the preservation of knowledge through modern accessibility and vintage discipline."
+        </p>
+        
+        <h2>Our History</h2>
+        <p>LibryConnect was established not merely as a repository for books, but as a bridge between educational eras. In a world of fleeting digital noise, we provide a structured sanctuary for deep research and intellectual growth.</p>
+        
+        <div class="chronicle">
+            <div class="era"><b>1982</b><p>The Original Archive established in Greenfield.</p></div>
+            <div class="era"><b>2004</b><p>Digitization of over 10,000 rare educational manuscripts.</p></div>
+            <div class="era"><b>2024</b><p>LibryConnect platform launches to unify student loans.</p></div>
+        </div>
+
+        <h2>Core Principles</h2>
+        <ul>
+            <li><b>Accessibility:</b> Knowledge should never be behind a locked door.</li>
+            <li><b>Accountability:</b> We respect the physical book and its lifecycle.</li>
+            <li><b>Community:</b> A library is only as strong as its active members.</li>
+        </ul>
+    </article>
+
+    <section class="curators">
+        <h2 style="font-family: 'Libre Baskerville', serif; font-size: 2rem;">The Curators</h2>
+        <div class="curators-grid">
+            <div class="curator-card">
+                <div class="curator-img">🖋️</div>
+                <h4>Dr. Alistair Vance</h4>
+                <span>Chief Archivist</span>
+            </div>
+            <div class="curator-card">
+                <div class="curator-img">📜</div>
+                <h4>Helena Rossi</h4>
+                <span>Collections Manager</span>
+            </div>
+            <div class="curator-card">
+                <div class="curator-img">📐</div>
+                <h4>Marcus Vane</h4>
+                <span>Technological Director</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="charter-footer">
+        <h3>Ready to begin your research?</h3>
+        <p>Join the thousands of members currently exploring our collection.</p>
+        <button class="btn-join" onclick="location.href='register.html'">Become a Member</button>
+    </footer>
+</main>
+
+</body>
+</html>
+
+

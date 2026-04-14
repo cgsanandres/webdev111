@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geography & Atlas | LibryConnect</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #1b263b;
+            --parchment: #fdfaf0;
+            --ocean-blue: #0d47a1;
+            --land-green: #2e7d32;
+            --compass-gold: #c5a059;
+            --white: #ffffff;
+            --shadow: 10px 10px 0px rgba(13, 71, 161, 0.05);
+        }
+
+        * { box-sizing: border-box; transition: 0.3s; }
+        body { 
+            margin: 0; 
+            background: var(--parchment); 
+            color: var(--ink-blue); 
+            font-family: 'Montserrat', sans-serif;
+            /* Topographic Map Background Effect */
+            background-image: url('https://transparenttextures.com');
+        }
+
+        /* NAVBAR - EXPLORER THEME */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: var(--white); border-bottom: 3px solid var(--ocean-blue);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-family: 'Libre Baskerville', serif; font-size: 24px; font-weight: bold; text-decoration: none; color: var(--ink-blue); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        /* PORTAL HEADER */
+        .dept-header {
+            border: 2px solid var(--compass-gold);
+            background: var(--white);
+            padding: 45px;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .dept-header h1 { font-family: 'Libre Baskerville', serif; font-size: 2.5rem; margin: 0; color: var(--ocean-blue); position: relative; z-index: 2; }
+        .dept-header::after {
+            content: "N"; position: absolute; bottom: -20px; right: 20px;
+            font-size: 8rem; color: rgba(197, 160, 89, 0.1); font-weight: 800; font-family: 'Libre Baskerville';
+        }
+
+        /* REGIONAL FILTERS */
+        .geo-filters {
+            display: flex; gap: 12px; margin-bottom: 35px; overflow-x: auto; padding-bottom: 10px;
+        }
+        .geo-tab {
+            background: var(--white); border: 2px solid var(--ocean-blue);
+            padding: 10px 22px; font-size: 11px; font-weight: 800;
+            cursor: pointer; text-transform: uppercase; white-space: nowrap;
+        }
+        .geo-tab:hover, .geo-tab.active { background: var(--ocean-blue); color: white; }
+
+        /* ATLAS LEDGER */
+        .ledger-box { background: var(--white); border: 1px solid #cfd8dc; border-radius: 4px; box-shadow: var(--shadow); }
+        .ledger-row {
+            display: grid; grid-template-columns: 1fr 160px 140px;
+            padding: 25px 30px; border-bottom: 1px solid #eceff1; align-items: center;
+        }
+        .book-title { font-weight: 800; font-size: 16px; color: var(--ink-blue); }
+        .book-coords { font-family: 'Libre Baskerville', serif; font-size: 12px; color: var(--compass-gold); margin-top: 4px; display: block; }
+
+        .discovery-stamp {
+            font-size: 11px; font-weight: bold; text-transform: uppercase;
+            color: var(--land-green); border: 1px solid var(--land-green);
+            padding: 4px 10px; border-radius: 2px; width: fit-content;
+        }
+
+        .btn-expedition {
+            background: var(--ocean-blue); color: white; border: none;
+            padding: 12px; font-weight: 800; font-size: 11px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-expedition:hover { background: var(--ink-blue); transform: scale(1.02); }
+
+        @media(max-width: 768px) {
+            .ledger-row { grid-template-columns: 1fr; gap: 15px; }
+            .dept-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo">✒️ LibryConnect</a>
+    <div style="font-size: 11px; font-weight: 800; color: var(--ocean-blue);">REGION: 910-919</div>
+</nav>
+
+<main class="container">
+    <header class="dept-header">
+        <p style="font-size: 11px; font-weight: 800; color: var(--compass-gold); margin-bottom: 10px;">CARTOGRAPHIC REFERENCE</p>
+        <h1>Geography & Atlas</h1>
+        <p style="margin-top: 10px; color: #555;">Topography, human migration patterns, and global climate records.</p>
+    </header>
+
+    <div class="geo-filters">
+        <div class="geo-tab active">Global Archive</div>
+        <div class="geo-tab">Cartography</div>
+        <div class="geo-tab">Geology</div>
+        <div class="geo-tab">Climate Studies</div>
+    </div>
+
+    <div class="ledger-box">
+        <!-- Geography Entry 1 -->
+        <div class="ledger-row">
+            <div>
+                <span class="book-title">World Atlas: 2026 Edition</span>
+                <span class="book-coords">Coords: 0°0′0″N 0°0′0″E — Physical Div.</span>
+            </div>
+            <div class="discovery-stamp">Verified Available</div>
+            <button class="btn-expedition" onclick="beginLoan(this)">Secure Volume</button>
+        </div>
+
+        <!-- Geography Entry 2 -->
+        <div class="ledger-row">
+            <div>
+                <span class="book-title">The Tectonic Shifts of Pangea</span>
+                <span class="book-coords">Geology Dept • Ref: GEO-112</span>
+            </div>
+            <div class="discovery-stamp">Verified Available</div>
+            <button class="btn-expedition" onclick="beginLoan(this)">Secure Volume</button>
+        </div>
+
+        <!-- Geography Entry 3 -->
+        <div class="ledger-row">
+            <div>
+                <span class="book-title">Meteorological Records Vol. II</span>
+                <span class="book-coords">Climate Station A • Ref: CLM-882</span>
+            </div>
+            <div class="discovery-stamp" style="color: #c62828; border-color: #c62828;">Off Map (Loaned)</div>
+            <button class="btn-expedition" style="background: #cfd8dc; cursor: not-allowed;">On Waitlist</button>
+        </div>
+    </div>
+</main>
+
+<script>
+    function beginLoan(btn) {
+        btn.innerText = "NAVIGATING...";
+        setTimeout(() => {
+            const stamp = btn.previousElementSibling;
+            stamp.innerText = "LOCATION SECURED";
+            stamp.style.color = "#0d47a1";
+            stamp.style.borderColor = "#0d47a1";
+            btn.innerText = "LOANED";
+            btn.style.background = "#1b263b";
+            alert("Atlas resource secured for research. Entry added to your expedition ledger.");
+        }, 800);
+    }
+</script>
+
+</body>
+</html>

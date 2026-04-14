@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Registration | LibryConnect</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #1b263b;
+            --parchment: #fdfaf0;
+            --card-stock: #f4ebd0;
+            --margin-red: rgba(158, 42, 43, 0.4);
+            --rule-blue: rgba(173, 216, 230, 0.5);
+            --modern-sans: 'Montserrat', sans-serif;
+            --vintage-serif: 'Libre Baskerville', serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--parchment);
+            color: var(--ink-blue);
+            font-family: var(--modern-sans);
+            padding: 20px;
+        }
+
+        /* LEDGER PAPER STYLE */
+        .register-card {
+            background: #fff;
+            width: 100%;
+            max-width: 500px;
+            padding: 60px 40px;
+            border-radius: 2px;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.05);
+            border: 1px solid #ddd;
+            position: relative;
+            /* Creating the ruled paper effect */
+            background-image: 
+                linear-gradient(var(--rule-blue) 1px, transparent 1px), /* Horizontal lines */
+                linear-gradient(90deg, transparent 79px, var(--margin-red) 1px, var(--margin-red) 2px, transparent 2px); /* Red margin */
+            background-size: 100% 30px, 100% 100%;
+            background-attachment: local;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            padding-left: 60px; /* Aligned to the right of the red margin */
+        }
+
+        .header h1 {
+            font-family: var(--vintage-serif);
+            font-size: 24px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .form-row {
+            margin-bottom: 30px;
+            padding-left: 60px;
+            position: relative;
+            height: 30px; /* Aligning input to the ruled lines */
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .form-row label {
+            font-family: var(--vintage-serif);
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: absolute;
+            top: -5px;
+            left: 60px;
+            color: #888;
+        }
+
+        input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-family: var(--modern-sans);
+            color: var(--ink-blue);
+            outline: none;
+            padding-bottom: 2px;
+        }
+
+        /* VINTAGE SIGNATURE BUTTON */
+        .actions {
+            margin-top: 50px;
+            padding-left: 60px;
+        }
+
+        .lib-card-btn {
+            background: var(--card-stock);
+            border: 1px solid #d4c7a1;
+            padding: 15px 30px;
+            font-family: var(--modern-sans);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 5px 5px 0px var(--ink-blue);
+            transition: 0.2s;
+        }
+
+        .lib-card-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px var(--ink-blue);
+        }
+
+        .lib-card-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0px var(--ink-blue);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 12px;
+            text-decoration: none;
+            color: var(--ink-blue);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-card">
+    <div class="header">
+        <h1>New Member Entry</h1>
+        <p style="font-size: 12px; margin: 5px 0 0;">OFFICIAL LEDGER | LIBRYCONNECT</p>
+    </div>
+
+    <form action="login.html">
+        <div class="form-row">
+            <label>Full Legal Name</label>
+            <input type="text" required>
+        </div>
+
+        <div class="form-row">
+            <label>Email Address</label>
+            <input type="email" required>
+        </div>
+
+        <div class="form-row">
+            <label>Department / Grade</label>
+            <input type="text" required>
+        </div>
+
+        <div class="form-row">
+            <label>Assign Security Key</label>
+            <input type="password" required>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="lib-card-btn">Confirm Entry</button>
+            <a href="login.html" class="back-link">← RETURN TO LOG IN</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+
