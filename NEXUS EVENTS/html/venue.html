@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - Venue</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop') repeat;
+            background-color: #e6e6fa;
+            background-blend-mode: overlay;
+            padding: 0 2rem;
+        }
+
+        /* Top Banner */
+        .top-banner {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 1rem 0;
+            border: 2px solid #ff7f50;
+            border-left-width: 8px;
+            text-align: right;
+        }
+
+        /* Header */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            position: relative;
+        }
+
+        .logo::before {
+            content: "EST. 2024";
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background: #ff7f50;
+            color: #2d2d2d;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border: 2px solid #2d2d2d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-weight: 900;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: #9370db;
+            color: #fff;
+        }
+
+        .nav-btn:hover {
+            background: #ff7f50;
+            color: #fff;
+            transform: translate(-1px, -1px);
+        }
+
+        /* Party Mode Toggle */
+        .party-toggle {
+            background: #fff;
+            padding: 0.6rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-radius: 20px;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            background: #2d2d2d;
+            width: 30px;
+            height: 18px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .toggle-dot {
+            background: #ff7f50;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .party-toggle.on .toggle-dot {
+            transform: translateX(12px);
+            background: #008080;
+        }
+
+        /* Main Content */
+        main {
+            margin-bottom: 5rem;
+        }
+
+        .section-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: #2d2d2d;
+            text-shadow: 2px 2px 0 #ff7f50;
+            margin-bottom: 1rem;
+        }
+
+        .section-subheading {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        /* Venue Hero Section */
+        .venue-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+            margin-bottom: 3rem;
+        }
+
+        /* Interactive Map Container */
+        .venue-map {
+            background: #cbf3f0;
+            border: 4px solid #2d2d2d;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .venue-map:hover {
+            box-shadow: 4px 4px 0 #ff7f50;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 280px;
+            background: #2d2d2d;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .map-placeholder h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-placeholder p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Venue Details */
+        .venue-details h2 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .venue-info-list {
+            list-style-type: square;
+            margin-left: 1.5rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 2rem;
+        }
+
+        .venue-info-list li span {
+            font-weight: 900;
+            color: #2d2d2d;
+        }
+
+        /* Buttons */
+        .btn {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            display: inline-block;
+            text-align: center;
+            font-weight: 900;
+            transition: all 0.2s ease;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn.directions {
+            background: #ff7f50;
+        }
+
+        .btn:hover {
+            transform: translate(-1px, -1px);
+            background: #9370db;
+        }
+
+        /* Venue Sections Grid */
+        .venue-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-card {
+            background: #fff;
+            border: 4px solid #2d2d2d;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 4px 4px 0 #ff7f50;
+            background: #e6e6fa;
+        }
+
+        .section-icon {
+            background: #008080;
+            width: 70px;
+            height: 70px;
+            border: 3px solid #2d2d2d;
+            border-radius: 50%;
+            margin: 0 auto 1rem auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .section-icon.hall { background: #ff7f50; }
+        .section-icon.market { background: #ffd700; color: #2d2d2d; }
+        .section-icon.lounge { background: #9370db; }
+
+        .section-card h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-card p {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* Accessibility & Policies Section */
+        .venue-policies {
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+        }
+
+        .policies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .policy-column h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: #2d2d2d;
+        }
+
+        .policy-list {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* Footer */
+        .footer-teaser {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 1rem;
+            border-top: 4px solid #ff7f50;
+            border-bottom: 4px solid #008080;
+            text-align: center;
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">Venue Update · Valet Parking Now Available For All Events!</div>
+
+    <!-- Header -->
+    <header class="header-container">
+        <div class="logo">Nexus Events</div>
+        
+        <nav class="nav-links">
+                       <a href="index.html" class="nav-btn">Home</a>
+            <a href="events.html" class="nav-btn">Events</a>
+            <a href="tickets.html" class="nav-btn">Tickets</a>
+            <a href="venue.html" class="nav-btn active">Venue</a>
+            <a href="contact.html" class="nav-btn">Contact</a>
+			<a href="about.html" class="nav-btn">About</a>
+			<a href="account.html" class="nav-btn">Account</a>
+			<a href="logout.html" class="nav-btn">Logout</a>
+            <a href="admin.html" class="nav-btn">Admin</a>
+        </nav>
+        
+        <div class="party-toggle" id="partyToggle">
+            <span>Party Mode</span>
+            <div class="toggle-switch">
+                <div class="toggle-dot"></div>
+            </div>
+            <span>OFF</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h1 class="section-heading">Nexus Hall</h1>
+        <p class="section-subheading">Your Ultimate Event Destination in the Heart of Quezon City, Metro Manila</p>
+
+        <!-- Venue Hero & Map Section -->
+        <div class="venue-hero">
+            <div class="venue-map">
+                <div class="map-placeholder">
+                    <h3>📍 INTERACTIVE VENUE MAP</h3>
+                    <p>123 Main Avenue, Cubao<br>Quezon City, Metro Manila</p>
+                    <p>Nearest MRT: Cubao Station (1.2 km)</p>
+                </div>
+                <a href="#" class="btn">View Full Map</a>
+                <a href="#" class="btn directions">Get Live Directions</a>
+            </div>
+
+            <div class="venue-details">
+                <h2>Venue Overview</h2>
+                <ul class="venue-info-list">
+                    <li><span>Total Floor Area:</span> 2,500 sq. meters</li>
+                    <li><span>Max Capacity:</span> 1,500 guests (standing) / 800 guests (seated)</li>
+                    <li><span>Parking:</span> 200 regular slots + 20 valet slots</li>
+                    <li><span>Operating Hours:</span> 8:00 AM – 2:00 AM (event days)</li>
+                    <li><span>Power Capacity:</span> 500 kVA dedicated supply</li>
+                    <li><span>Catering:</span> In-house or approved external vendors</li>
+                </ul>
+                <a href="#" class="btn">Download Floor Plan</a>
+                <a href="#" class="btn">Inquire About Rentals</a>
+            </div>
+        </div>
+
+        <!-- Venue Sections Grid -->
+        <div class="venue-sections">
+            <!-- Main Hall -->
+            <div class="section-card">
+                <div class="section-icon hall">🎭</div>
+                <h3>Main Performance Hall</h3>
+                <p>Spacious open floor with adjustable modular stage, professional sound system, and customizable LED wall displays. Perfect for concerts, talks, and large-scale gatherings.</p>
+            </div>
+
+            <!-- Foyer & Market Space -->
+            <div class="section-card">
+                <div class="section-icon market">🛍️</div>
+                <h3>Foyer & Market Zone</h3>
+                <p>Covered area with high ceilings and natural light – ideal for pop-up stalls, registration desks, and pre-event mingling. Includes dedicated power outlets for vendors.</p>
+            </div>
+
+            <!-- VIP Lounge -->
+            <div class="section-card">
+                <div class="section-icon lounge">✨</div>
+                <h3>VIP Exclusive Lounge</h3>
+                <p>Private area with plush seating, premium bar service, and direct access to the stage viewing platform. Includes a small meeting room for artist prep or private gatherings.</p>
+            </div>
+        </div>
+
+        <!-- Accessibility & Policies Section -->
+        <div class="venue-policies">
+            <h2 class="tier-heading">Accessibility & House Rules</h2>
+            <div class="policies-grid">
+                <div class="policy-column">
+                    <h3>Accessibility Features</h3>
+                    <ul class="policy-list">
+                        <li>Slip-resistant ramp access to all floors</li>
+                        <li>Wheelchair-friendly restrooms (2 per floor)</li>
+                        <li>Designated priority seating areas</li>
+                        <li>On-site assistance staff available</li>
+                        <li>Braille signage in key corridors</li>
+                        <li>Hearing loop system in main hall</li>
+                    </ul>
+                </div>
+                <div class="policy-column">
+                    <h3>House Rules & Guidelines</h3>
+                    <ul class="policy-list">
+                        <li>No outside food/drinks except sealed water bottles</li>
+                                                <li>Professional cameras allowed (no detachable lenses over 50mm without permit)</li>
+                        <li>Smoking permitted only in designated outdoor patio areas</li>
+                        <li>No weapons, illegal substances, or hazardous items on premises</li>
+                        <li>Re-entry allowed with valid wristband or stamped ticket</li>
+                        <li>Pets not permitted except certified service animals</li>
+                        <li>Audio/video recording prohibited unless authorized by event organizers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Teaser -->
+    <div class="footer-teaser">
+        Venue Tours Every Wednesday @ 2 PM – Book Your Slot At venue@nexusevents.ph · Follow @NexusHallPH For Behind-The-Scenes!
+    </div>
+
+    <!-- JavaScript for Functionality -->
+    <script>
+        // Party Mode Toggle
+        const partyToggle = document.getElementById('partyToggle');
+        const body = document.body;
+
+        partyToggle.addEventListener('click', () => {
+            partyToggle.classList.toggle('on');
+            const modeText = partyToggle.querySelector('span:last-child');
+            
+            if (partyToggle.classList.contains('on')) {
+                modeText.textContent = 'ON';
+                body.style.background = 'url("https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'screen';
+            } else {
+                modeText.textContent = 'OFF';
+                body.style.background = 'url("https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'overlay';
+            }
+        });
+
+        // Interactive Map & Button Actions
+        const mapBtn = document.querySelector('.venue-map .btn:first-child');
+        const directionsBtn = document.querySelector('.directions');
+        const floorPlanBtn = document.querySelector('.venue-details .btn:first-child');
+        const rentalBtn = document.querySelector('.venue-details .btn:last-child');
+
+        mapBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Opening full interactive venue map in new window – explore hall layouts and amenities!');
+        });
+
+        directionsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Redirecting to Google Maps for real-time directions to Nexus Hall – Cubao, Quezon City!');
+        });
+
+        floorPlanBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Downloading high-resolution venue floor plan – check your downloads folder!');
+        });
+
+        rentalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Opening venue rental inquiry form – perfect for private events, corporate parties, and more!');
+        });
+
+        // Section Card Hover Highlight
+        const sectionCards = document.querySelectorAll('.section-card');
+        sectionCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.querySelector('h3').style.color = '#ff7f50';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.querySelector('h3').style.color = '#2d2d2d';
+            });
+        });
+    </script>
+</body>
+</html>
+
+

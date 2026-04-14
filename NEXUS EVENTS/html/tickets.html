@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - Tickets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop') repeat;
+            background-color: #e6e6fa;
+            background-blend-mode: overlay;
+            padding: 0 2rem;
+        }
+
+        /* Top Banner */
+        .top-banner {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 1rem 0;
+            border: 2px solid #ff7f50;
+            border-left-width: 8px;
+            text-align: right;
+        }
+
+        /* Header */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            position: relative;
+        }
+
+        .logo::before {
+            content: "EST. 2024";
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background: #ff7f50;
+            color: #2d2d2d;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border: 2px solid #2d2d2d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-weight: 900;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: #9370db;
+            color: #fff;
+        }
+
+        .nav-btn:hover {
+            background: #ff7f50;
+            color: #fff;
+            transform: translate(-1px, -1px);
+        }
+
+        /* Party Mode Toggle */
+        .party-toggle {
+            background: #fff;
+            padding: 0.6rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-radius: 20px;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            background: #2d2d2d;
+            width: 30px;
+            height: 18px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .toggle-dot {
+            background: #ff7f50;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .party-toggle.on .toggle-dot {
+            transform: translateX(12px);
+            background: #008080;
+        }
+
+        /* Main Content */
+        main {
+            margin-bottom: 5rem;
+        }
+
+        .section-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: #2d2d2d;
+            text-shadow: 2px 2px 0 #ff7f50;
+            margin-bottom: 1rem;
+        }
+
+        .section-subheading {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        /* Tickets Container */
+        .tickets-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Ticket Tiers Section */
+        .ticket-tiers {
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+        }
+
+        .tier-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Ticket Tier Cards - Interactive */
+        .tier-card {
+            background: #fff;
+            border: 4px solid #2d2d2d;
+            padding: 1.5rem;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tier-card.selected {
+            background: #ff7f50;
+            color: #fff;
+            box-shadow: 4px 4px 0 #2d2d2d;
+        }
+
+        .tier-badge {
+            background: #008080;
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            border: 2px solid #2d2d2d;
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+
+        .tier-badge.premium { background: #ffd700; color: #2d2d2d; }
+        .tier-badge.vip { background: #9370db; color: #fff; }
+
+        .tier-name {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .tier-price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .tier-benefits {
+            list-style-type: square;
+            margin-left: 1.5rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .tier-card.selected .tier-benefits {
+            color: #fff;
+        }
+
+        /* Order Form Section */
+        .order-form {
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+        }
+
+        .form-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            font-size: 1rem;
+        }
+
+        .form-note {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        /* Buttons */
+        .btn {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            display: block;
+            text-align: center;
+            font-weight: 900;
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+        }
+
+        .btn.calculate {
+            background: #9370db;
+        }
+
+        .btn:hover {
+            background: #ff7f50;
+            transform: translate(-1px, -1px);
+        }
+
+        /* Order Summary Box */
+        .order-summary {
+            background: #e6e6fa;
+            border: 2px solid #2d2d2d;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .order-summary.active {
+            display: block;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .summary-total {
+            font-size: 1.2rem;
+            font-weight: 900;
+            border-top: 2px solid #2d2d2d;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Order Tracker Section */
+        .order-tracker {
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        .footer-teaser {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 1rem;
+            border-top: 4px solid #ff7f50;
+            border-bottom: 4px solid #008080;
+            text-align: center;
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">Ticket Alert · Early Bird Slots For Pixel Parade Selling Fast!</div>
+
+    <!-- Header -->
+    <header class="header-container">
+        <div class="logo">Nexus Events</div>
+        
+        <nav class="nav-links">
+              <a href="index.html" class="nav-btn">Home</a>
+            <a href="events.html" class="nav-btn">Events</a>
+            <a href="tickets.html" class="nav-btn active">Tickets</a>
+            <a href="venue.html" class="nav-btn">Venue</a>
+            <a href="contact.html" class="nav-btn">Contact</a>
+			<a href="about.html" class="nav-btn">About</a>
+			<a href="account.html" class="nav-btn">Account</a>
+			<a href="logout.html" class="nav-btn">Logout</a>
+            <a href="admin.html" class="nav-btn">Admin</a>
+        </nav>
+        
+        <div class="party-toggle" id="partyToggle">
+            <span>Party Mode</span>
+            <div class="toggle-switch">
+                <div class="toggle-dot"></div>
+            </div>
+            <span>OFF</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h1 class="section-heading">Get Your Tickets</h1>
+        <p class="section-subheading">Choose your tier, customize your order, and lock in your spot for unforgettable nights!</p>
+
+        <!-- Tickets & Order Form Wrapper -->
+        <div class="tickets-wrapper">
+            <!-- Ticket Tiers Section -->
+            <div class="ticket-tiers">
+                <h2 class="tier-heading">Select Your Ticket Tier</h2>
+                <div class="tier-grid">
+                    <!-- General Admission -->
+                    <div class="tier-card" data-tier="general" data-price="1200">
+                        <div class="tier-badge">General</div>
+                        <h3 class="tier-name">Entry Pass</h3>
+                        <p class="tier-price">₱1,200</p>
+                        <ul class="tier-benefits">
+                            <li>Full event entry access</li>
+                            <li>Standard food stall access</li>
+                            <li>Main stage viewing areas</li>
+                            <li>Basic event merch access</li>
+                        </ul>
+                    </div>
+
+                    <!-- Premium Tier -->
+                    <div class="tier-card selected" data-tier="premium" data-price="2500">
+                        <div class="tier-badge premium">Premium</div>
+                        <h3 class="tier-name">Plus Pack</h3>
+                        <p class="tier-price">₱2,500</p>
+                        <ul class="tier-benefits">
+                            <li>All General Admission perks</li>
+                            <li>Priority food stall access</li>
+                            <li>VIP viewing platform access</li>
+                            <li>Limited-edition merch item</li>
+                            <li>Complimentary drink token</li>
+                        </ul>
+                    </div>
+
+                    <!-- VIP Tier -->
+                    <div class="tier-card" data-tier="vip" data-price="4800">
+                        <div class="tier-badge vip">VIP</div>
+                        <h3 class="tier-name">All Access</h3>
+                        <p class="tier-price">₱4,800</p>
+                        <ul class="tier-benefits">
+                            <li>All Premium tier perks</li>
+                            <li>Exclusive backstage tour</li>
+                            <li>Artist meet-and-greet session</li>
+                            <li>Custom merch bundle</li>
+                            <li>Unlimited non-alcoholic drinks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Form Section -->
+            <div class="order-form">
+                <h2 class="form-heading">Complete Your Order</h2>
+                <form id="ticketOrderForm">
+                    <div class="form-group">
+                        <label for="eventSelect">Select Event</label>
+                        <select id="eventSelect" required>
+                            <option value="">-- Choose An Event --</option>
+                            <option value="pixel-parade">Pixel Parade (Apr 12)</option>
+                            <option value="metro-market">Metro Market Nights (Apr 18)</option>
+                            <option value="synth-wave">Synth Wave Riot (Apr 22)</option>
+                            <option value="creator-mixer">Creator Connect Mixer (Apr 30)</option>
+                            <option value="neon-art">Neon Art Lab (May 5)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ticketQty">Number of Tickets</label>
+                        <input type="number" id="ticketQty" min="1" max="10" value="1" required>
+                        <p class="form-note">Max                        <p class="form-note">Max 10 tickets per order</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Juan Dela Cruz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact" placeholder="+63 9XX XXX XXXX" required>
+                        <p class="form-note">For order confirmations & updates</p>
+                    </div>
+
+                    <!-- Order Summary Box -->
+                    <div class="order-summary" id="orderSummary">
+                        <h4>Order Summary</h4>
+                        <div class="summary-line">
+                            <span>Ticket Tier:</span>
+                            <span id="summaryTier">Premium</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Event:</span>
+                            <span id="summaryEvent">-- Not Selected --</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Quantity:</span>
+                            <span id="summaryQty">1</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Unit Price:</span>
+                            <span id="summaryUnit">₱2,500</span>
+                        </div>
+                        <div class="summary-line summary-total">
+                            <span>TOTAL:</span>
+                            <span id="summaryTotal">₱2,500</span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn calculate" id="calculateBtn">Calculate Total</button>
+                    <button type="submit" class="btn checkout">Proceed to Checkout</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Tracker Section -->
+        <div class="order-tracker">
+            <h2 class="tier-heading">Track Your Existing Order</h2>
+            <p class="section-subheading">Enter your order ID and email to view status & download tickets</p>
+            <div class="tracker-grid">
+                <input type="text" id="orderId" placeholder="Enter Order ID (e.g., NEX-2024-001)">
+                <input type="email" id="trackerEmail" placeholder="Enter Your Email">
+                <button type="button" class="btn">Track Order</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Teaser -->
+    <div class="footer-teaser">
+        Need Group Rates? Email groups@nexusevents.ph · All Sales Final – See Terms For Refund Policies!
+    </div>
+
+    <!-- JavaScript for Functionality -->
+    <script>
+        // Party Mode Toggle
+        const partyToggle = document.getElementById('partyToggle');
+        const body = document.body;
+
+        partyToggle.addEventListener('click', () => {
+            partyToggle.classList.toggle('on');
+            const modeText = partyToggle.querySelector('span:last-child');
+            
+            if (partyToggle.classList.contains('on')) {
+                modeText.textContent = 'ON';
+                body.style.background = 'url("https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'screen';
+            } else {
+                modeText.textContent = 'OFF';
+                body.style.background = 'url("https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'overlay';
+            }
+        });
+
+        // Ticket Tier Selection
+        const tierCards = document.querySelectorAll('.tier-card');
+        let selectedTier = { name: 'Premium', price: 2500 };
+
+        tierCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove selected class from all tiers
+                tierCards.forEach(t => t.classList.remove('selected'));
+                // Add selected class to clicked tier
+                card.classList.add('selected');
+                
+                // Update selected tier data
+                selectedTier.name = card.querySelector('.tier-name').textContent;
+                selectedTier.price = parseInt(card.dataset.price);
+                
+                // Update summary if visible
+                document.getElementById('summaryTier').textContent = selectedTier.name;
+                document.getElementById('summaryUnit').textContent = `₱${selectedTier.price.toLocaleString('en-PH')}`;
+                updateTotal();
+            });
+        });
+
+        // Order Summary & Calculations
+        const calculateBtn = document.getElementById('calculateBtn');
+        const orderSummary = document.getElementById('orderSummary');
+        const eventSelect = document.getElementById('eventSelect');
+        const ticketQty = document.getElementById('ticketQty');
+        const summaryEvent = document.getElementById('summaryEvent');
+        const summaryQty = document.getElementById('summaryQty');
+        const summaryTotal = document.getElementById('summaryTotal');
+
+        function updateTotal() {
+            if (eventSelect.value) {
+                const qty = parseInt(ticketQty.value);
+                const total = selectedTier.price * qty;
+                summaryTotal.textContent = `₱${total.toLocaleString('en-PH')}`;
+            }
+        }
+
+        calculateBtn.addEventListener('click', () => {
+            if (!eventSelect.value) {
+                alert('Please select an event first!');
+                return;
+            }
+
+            // Show summary and update values
+            orderSummary.classList.add('active');
+            summaryEvent.textContent = eventSelect.options[eventSelect.selectedIndex].text;
+            summaryQty.textContent = ticketQty.value;
+            updateTotal();
+        });
+
+        // Update total when quantity changes
+        ticketQty.addEventListener('input', () => {
+            if (orderSummary.classList.contains('active')) {
+                summaryQty.textContent = ticketQty.value;
+                updateTotal();
+            }
+        });
+
+        // Form submission handling
+        document.getElementById('ticketOrderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!orderSummary.classList.contains('active')) {
+                alert('Please calculate your total first!');
+                return;
+            }
+            alert('Order submitted successfully! Check your email for confirmation & ticket details.');
+            this.reset();
+            orderSummary.classList.remove('active');
+            tierCards.forEach(t => t.classList.remove('selected'));
+            document.querySelector('.tier-card[data-tier="premium"]').classList.add('selected');
+            selectedTier = { name: 'Premium', price: 2500 };
+        });
+
+        // Order tracker button action
+        document.querySelector('.order-tracker .btn').addEventListener('click', () => {
+            const orderId = document.getElementById('orderId').value;
+            const trackerEmail = document.getElementById('trackerEmail').value;
+            
+            if (!orderId || !trackerEmail) {
+                alert('Please enter both Order ID and Email!');
+                return;
+            }
+            alert(`Tracking order ${orderId}... Details sent to ${trackerEmail}`);
+        });
+    </script>
+</body>
+</html>
+

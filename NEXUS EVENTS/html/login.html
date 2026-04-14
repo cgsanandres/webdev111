@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - Login</title>
+    <!-- Import Unique Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Link to the Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Custom Textured Background */
+            background: url('https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop') repeat;
+            background-color: #e6e6fa; /* Lavender Base */
+            background-blend-mode: overlay;
+            padding: 0 2rem;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes full viewport height */
+        }
+
+        /* Login Container - Centered and styled */
+        .login-container {
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            padding: 3rem;
+            border: 5px solid #2d2d2d;
+            box-shadow: 8px 8px 0 #ff7f50, inset 0 0 10px rgba(0,0,0,0.2); /* Double border effect with inset shadow */
+            border-radius: 5px; /* Slightly rounded corners */
+            width: 100%;
+            max-width: 450px; /* Max width for the login box */
+            text-align: center;
+        }
+
+        .login-logo {
+            background: #008080; /* Teal */
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2rem; /* Slightly smaller than main logo */
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            margin-bottom: 2rem;
+            display: inline-block; /* Allows margin to apply */
+        }
+
+        .login-title {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5rem;
+            color: #2d2d2d;
+            text-shadow: 2px 2px 0 #ff7f50;
+            margin-bottom: 2rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left; /* Align labels and inputs to the left */
+        }
+
+        .login-form .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: #2d2d2d;
+        }
+
+        .login-form .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .login-form .form-input:focus {
+            outline: none;
+            border-color: #9370db; /* Lavender accent on focus */
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.5); /* Subtle focus glow */
+        }
+
+        .login-form .form-input::placeholder {
+            color: #888; /* Lighter color for placeholder text */
+        }
+
+        /* Login Button - Using CTA style */
+        .login-btn {
+            background: linear-gradient(to bottom, #ff7f50, #008080);
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.1rem;
+            border: 4px solid #2d2d2d;
+            border-left-width: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+            display: inline-block;
+            width: 100%; /* Full width button */
+            margin-top: 1rem; /* Space above button */
+        }
+
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 95%;
+            height: 95%;
+            border: 2px solid #2d2d2d;
+            z-index: -1;
+        }
+
+        .login-btn:hover {
+            transform: translate(-2px, -2px);
+            background: linear-gradient(to bottom, #008080, #ff7f50);
+        }
+
+        .login-options {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .login-options a {
+            color: #2d2d2d;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .login-options a:hover {
+            color: #ff7f50;
+        }
+
+        /* Font Awesome Icons for Login */
+        .login-form .form-group i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        /* Adjusting for icons within input groups */
+        .login-form .form-group {
+            position: relative; /* Needed for absolute positioning of icons */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 0; /* Remove body padding on smaller screens */
+            }
+            .login-container {
+                margin: 2rem; /* Add margin instead of padding */
+                padding: 2rem;
+            }
+            .login-logo {
+                font-size: 1.8rem;
+            }
+            .login-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-logo">Nexus Events</div>
+        <h1 class="login-title">Log In</h1>
+        
+        <form class="login-form">
+            <div class="form-group">
+                <label for="username" class="form-label">Username or Email</label>
+                <input type="text" id="username" class="form-input" placeholder="Enter your username or email">
+                <i class="fas fa-user"></i> <!-- User icon -->
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter your password">
+                <i class="fas fa-lock"></i> <!-- Lock icon -->
+            </div>
+            
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        
+        <div class="login-options">
+            <div class="form-check">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Remember Me</label>
+            </div>
+			
+            <a href="register.html">Create Account</a>
+        </div>
+    </div>
+
+    <script>
+   document.querySelector('.login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const userInput = document.getElementById('username').value; // Can be email or username
+    const userPass = document.getElementById('password').value;
+
+    if (!userInput || !userPass) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    // Check if user exists AND if input matches either email OR username
+    if (storedUser && 
+        (storedUser.email === userInput || storedUser.username === userInput) && 
+        storedUser.password === userPass) {
+        
+        alert("Login successful! Welcome to Nexus Events.");
+        window.location.href = 'index.html'; 
+    } else {
+        alert("Invalid credentials. Don't have an account? Please register.");
+        window.location.href = 'register.html';
+    }
+});
+        const partyToggle = document.getElementById('partyToggle'); // This ID doesn't exist on login page, so it would need adjustment or removal.
+        const body = document.body;
+
+        
+        if (partyToggle) {
+            partyToggle.addEventListener('click', () => {
+                partyToggle.classList.toggle('on');
+                const modeText = partyToggle.querySelector('span:last-child');
+                
+                if (partyToggle.classList.contains('on')) {
+                    modeText.textContent = 'ON';
+                    body.style.background = 'url("https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=1000&auto=format&fit=crop") repeat';
+                    body.style.backgroundBlendMode = 'screen';
+                } else {
+                    modeText.textContent = 'OFF';
+                    body.style.background = 'url("https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop") repeat';
+                    body.style.backgroundBlendMode = 'overlay';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

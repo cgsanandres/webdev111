@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - Create Account</title>
+    <!-- Import Unique Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Link to the Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Custom Textured Background */
+            background: url('https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop') repeat;
+            background-color: #e6e6fa; /* Lavender Base */
+            background-blend-mode: overlay;
+            padding: 0 2rem;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes full viewport height */
+        }
+
+        /* Account Creation Container - Centered and styled */
+        .create-account-container {
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            padding: 3rem;
+            border: 5px solid #2d2d2d;
+            box-shadow: 8px 8px 0 #ff7f50, inset 0 0 10px rgba(0,0,0,0.2); /* Double border effect with inset shadow */
+            border-radius: 5px; /* Slightly rounded corners */
+            width: 100%;
+            max-width: 450px; /* Max width for the form box */
+            text-align: center;
+        }
+
+        .create-account-logo {
+            background: #008080; /* Teal */
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2rem; /* Slightly smaller than main logo */
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            margin-bottom: 2rem;
+            display: inline-block; /* Allows margin to apply */
+        }
+
+        .create-account-title {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5rem;
+            color: #2d2d2d;
+            text-shadow: 2px 2px 0 #ff7f50;
+            margin-bottom: 2rem;
+        }
+
+        .create-account-form .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left; /* Align labels and inputs to the left */
+        }
+
+        .create-account-form .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: #2d2d2d;
+        }
+
+        .create-account-form .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .create-account-form .form-input:focus {
+            outline: none;
+            border-color: #9370db; /* Lavender accent on focus */
+            box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.5); /* Subtle focus glow */
+        }
+
+        .create-account-form .form-input::placeholder {
+            color: #888; /* Lighter color for placeholder text */
+        }
+
+        /* Create Account Button - Using CTA style */
+        .create-account-btn {
+            background: linear-gradient(to bottom, #ff7f50, #008080);
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.1rem;
+            border: 4px solid #2d2d2d;
+            border-left-width: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+            display: inline-block;
+            width: 100%; /* Full width button */
+            margin-top: 1rem; /* Space above button */
+        }
+
+        .create-account-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 95%;
+            height: 95%;
+            border: 2px solid #2d2d2d;
+            z-index: -1;
+        }
+
+        .create-account-btn:hover {
+            transform: translate(-2px, -2px);
+            background: linear-gradient(to bottom, #008080, #ff7f50);
+        }
+
+        .login-redirect {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        .login-redirect a {
+            color: #2d2d2d;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .login-redirect a:hover {
+            color: #ff7f50;
+        }
+
+        /* Font Awesome Icons for Create Account Form */
+        .create-account-form .form-group i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        /* Adjusting for icons within input groups */
+        .create-account-form .form-group {
+            position: relative; /* Needed for absolute positioning of icons */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 0; /* Remove body padding on smaller screens */
+            }
+            .create-account-container {
+                margin: 2rem; /* Add margin instead of padding */
+                padding: 2rem;
+            }
+            .create-account-logo {
+                font-size: 1.8rem;
+            }
+            .create-account-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="create-account-container">
+        <div class="create-account-logo">Nexus Events</div>
+        <h1 class="create-account-title">Create Account</h1>
+        
+        <form class="create-account-form">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Choose a unique username">
+                <i class="fas fa-user"></i> <!-- User icon -->
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" class="form-input" placeholder="Enter your email">
+                <i class="fas fa-envelope"></i> <!-- Envelope icon -->
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Create a strong password">
+                <i class="fas fa-lock"></i> <!-- Lock icon -->
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password" class="form-label">Confirm Password</label>
+                <input type="password" id="confirm-password" class="form-input" placeholder="Confirm your password">
+                <i class="fas fa-lock"></i> <!-- Lock icon -->
+            </div>
+            
+            <button type="submit" class="create-account-btn">Create Account</button>
+        </form>
+        
+        <div class="login-redirect">
+            Already have an account? <a href="login.html">Log In</a>
+        </div>
+    </div>
+<script>
+   const registrationForm = document.querySelector('.create-account-form');
+
+registrationForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // Stop page from refreshing
+
+    // Get input values
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    // 1. Basic validation
+    if (!username || !email || !password) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    // 2. Check if passwords match
+    if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    // 3. Create a user object
+    const newUser = {
+        username: username,
+        email: email,
+        password: password
+    };
+
+    // 4. Save to localStorage
+    // In a real app, you'd send this to a database via an API
+    localStorage.setItem('user', JSON.stringify(newUser));
+
+    alert("Account created successfully! Redirecting to login...");
+    
+    // 5. Redirect to login page
+    window.location.href = 'login.html';
+});
+        const partyToggle = document.getElementById('partyToggle'); 
+        const body = document.body;
+
+        if (partyToggle) {
+            partyToggle.addEventListener('click', () => {
+                partyToggle.classList.toggle('on');
+                const modeText = partyToggle.querySelector('span:last-child');
+                
+                if (partyToggle.classList.contains('on')) {
+                    modeText.textContent = 'ON';
+                    body.style.background = 'url("https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=1000&auto=format&fit=crop") repeat';
+                    body.style.backgroundBlendMode = 'screen';
+                } else {
+                    modeText.textContent = 'OFF';
+                    body.style.background = 'url("https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop") repeat';
+                    body.style.backgroundBlendMode = 'overlay';
+                }
+            });
+        }
+    </script>
+    
+</body>
+</html>

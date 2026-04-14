@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(90deg, #ffd6e0, #cbf3f0);
+            padding: 0 2rem;
+        }
+
+        /* Top Banner */
+        .top-banner {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 1rem 0;
+            border: 2px solid #ff7f50;
+            border-left-width: 8px;
+            text-align: right;
+        }
+
+        /* Header */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            position: relative;
+        }
+
+        .logo::before {
+            content: "EST. 2024";
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background: #ff7f50;
+            color: #2d2d2d;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border: 2px solid #2d2d2d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-weight: 900;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: #2d2d2d;
+            color: #fff;
+            border-color: #ff7f50;
+        }
+
+        .nav-btn:hover {
+            background: #ff7f50;
+            color: #fff;
+            transform: translate(-1px, -1px);
+        }
+
+        /* Party Mode Toggle */
+        .party-toggle {
+            background: #fff;
+            padding: 0.6rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-radius: 20px;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            background: #2d2d2d;
+            width: 30px;
+            height: 18px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .toggle-dot {
+            background: #ff7f50;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .party-toggle.on .toggle-dot {
+            transform: translateX(12px);
+            background: #008080;
+        }
+
+        /* Main Content */
+        main {
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .admin-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            color: #2d2d2d;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-subtext {
+            font-size: 1.1rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 450px;
+        }
+
+        /* Quick Action Buttons */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem 1.2rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            font-weight: 900;
+            transition: all 0.2s ease;
+            opacity: 0.5; /* Disabled until login */
+            cursor: not-allowed;
+        }
+
+        .action-btn.active {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background: #ff7f50;
+            transform: translate(-1px, -1px);
+        }
+
+        .action-btn.tickets { background: #ffd700; color: #2d2d2d; }
+        .action-btn.venue { background: #9370db; }
+        .action-btn.inbox { background: #ff7f50; }
+
+        /* Login Card */
+        .login-card {
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+            position: relative;
+        }
+
+        .login-card h2 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .demo-note {
+            background: #00a2ed;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: 2px solid #2d2d2d;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            color: #2d2d2d;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            background: #ff5e8f;
+            color: #fff;
+            padding: 0.9rem;
+            width: 100%;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .login-btn:hover {
+            background: #ff7f50;
+            transform: translate(-1px, -1px);
+        }
+
+/* Sidebar */
+.sidebar {
+    background: #2d2d2d;
+    border: 4px solid #ff7f50;
+    padding: 1rem;
+    min-width: 200px;
+}
+
+.sidebar-link {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border: 3px solid transparent;
+    font-weight: 900;
+    transition: all 0.2s;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+    background: #ff7f50;
+    border-color: #2d2d2d;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    background: #fff;
+    border: 4px solid #2d2d2d;
+    padding: 2rem;
+    width: 100%;
+}
+
+/* Stats Row */
+.stats-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-box {
+    background: #f0f0f0;
+    border: 3px solid #2d2d2d;
+    padding: 1rem;
+    flex: 1;
+    text-align: center;
+}
+
+.stat-box.active {
+    background: #008080;
+    color: #fff;
+}
+
+/* Table Styles */
+.table-container {
+    border: 3px solid #2d2d2d;
+    margin-top: 2rem;
+}
+
+.table-header {
+    background: #f0f0f0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #2d2d2d;
+}
+
+.view-all-btn {
+    background: #008080;
+    color: #fff;
+    border: 3px solid #2d2d2d;
+    padding: 0.5rem 1rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+th {
+    background: #f0f0f0;
+    font-weight: 900;
+}
+
+/* Status Colors */
+.status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 900;
+}
+
+.status.delivered { background: #4CAF50; color: white; }
+.status.pending { background: #FFC107; color: #2d2d2d; }
+.status.returned { background: #f44336; color: white; }
+.status.progress { background: #2196F3; color: white; }
+
+    </style>
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">Admin Only · Unauthorized Access Prohibited</div>
+
+    <!-- Header -->
+    <header class="header-container">
+        <div class="logo">Nexus Events</div>
+        
+        
+        
+        <div class="party-toggle" id="partyToggle">
+            <span>Party Mode</span>
+            <div class="toggle-switch">
+                <div class="toggle-dot"></div>
+            </div>
+            <span>OFF</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Admin Info Section -->
+        <div class="admin-info">
+            <h1 class="admin-heading">Admin Control<br>Room</h1>
+            <p class="admin-subtext">Authorized team only. Log in to manage events, ticket tiers, venue schedules, and guest communications.</p>
+            
+            <div class="quick-actions" id="quickActions">
+                <a href="#" class="action-btn events">Events</a>
+                <a href="#" class="action-btn tickets">Tickets</a>
+                <a href="#" class="action-btn venue">Venue Ops</a>
+                <a href="#" class="action-btn inbox">Inbox</a>
+            </div>
+        </div>
+
+        <!-- Login Card -->
+	<div class="login-card" id="loginCard">
+            <h2>Admin Login</h2>
+            <div class="demo-note">Team Login: admin / nexus2026</div>
+            
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminId">Admin ID</label>
+                    <input type="text" id="adminId" placeholder="Enter Admin ID" value="admin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminPass">Password</label>
+                    <input type="password" id="adminPass" placeholder="Enter Password" value="" required>
+                </div>
+
+                <button type="submit" class="login-btn">Enter Dashboard</button>
+            </form>
+        </div>
+
+          <!-- Main Content -->
+<main style="display: flex; gap: 2rem;">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar" style="display:none;">
+        <a href="#" class="sidebar-link active" data-section="dashboard">Dashboard</a>
+        <a href="#" class="sidebar-link" data-section="events">Events</a>
+        <a href="#" class="sidebar-link" data-section="tickets">Tickets</a>
+        <a href="#" class="sidebar-link" data-section="venue">Venue Ops</a>
+        <a href="#" class="sidebar-link" data-section="inbox">Inbox</a>
+        <a href="#" class="sidebar-link" data-section="customers">Customers</a>
+        <a href="#" class="sidebar-link" data-section="settings">Settings</a>
+        <a href="#" class="sidebar-link" data-section="logout">Logout</a>
+    </div>
+
+    <!-- Right Content Area -->
+    <div class="content-area" id="contentArea">
+        <!-- Login Card -->
+        <div class="login-card" id="loginCard">
+            <h2>Admin Login</h2>
+            <div class="demo-note">Team Login: admin / nexus2026</div>
+            
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminId">Admin ID</label>
+                    <input type="text" id="adminId" placeholder="Enter Admin ID" value="admin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminPass">Password</label>
+                    <input type="password" id="adminPass" placeholder="Enter Password" value="" required>
+                </div>
+
+                <button type="submit" class="login-btn">Enter Dashboard</button>
+            </form>
+        </div>
+
+        <!-- Dashboard Container (Hidden until login) -->
+        <div class="dashboard-container" id="dashboardContainer" style="display:none;">
+            <!-- Stats Boxes -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h3>Upcoming Events</h3>
+                    <p>12</p>
+                </div>
+                <div class="stat-box active">
+                    <h3>Tickets Sold</h3>
+                    <p>1,245</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Recent Orders</h3>
+                    <p>89</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Inquiries</h3>
+                    <p>15</p>
+                </div>
+            </div>
+
+            <!-- Recent Orders Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Recent Orders</h3>
+                    <button class="view-all-btn">View All</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Summer Music Fest</td>
+                            <td>$150</td>
+                            <td>Paid</td>
+                            <td><span class="status delivered">Delivered</span></td>
+                        </tr>
+                        <tr>
+                            <td>Art Exhibition</td>
+                            <td>$80</td>
+                            <td>Due</td>
+                            <td><span class="status pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>Food Festival</td>
+                            <td>$50</td>
+                            <td>Paid</td>
+                            <td><span class="status returned">Returned</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tech Conference</td>
+                            <td>$250</td>
+                            <td>Due</td>
+                            <td><span class="status progress">In Progress</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+    <!-- JavaScript for Functionality -->
+    <script>
+        // Party Mode Toggle
+        const partyToggle = document.getElementById('partyToggle');
+        const body = document.body;
+
+        partyToggle.addEventListener('click', () => {
+            partyToggle.classList.toggle('on');
+            const modeText = partyToggle.querySelector('span:last-child');
+            
+            if (partyToggle.classList.contains('on')) {
+                modeText.textContent = 'ON';
+                body.style.background = 'url("https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'screen';
+            } else {
+                modeText.textContent = 'OFF';
+                body.style.background = 'linear-gradient(90deg, #ffd6e0, #cbf3f0)';
+                body.style.backgroundBlendMode = 'overlay';
+            }
+        });
+
+                   // Elements
+const loginForm = document.getElementById('adminLoginForm');
+const sidebar = document.getElementById('sidebar');
+const loginCard = document.getElementById('loginCard');
+const dashboardContainer = document.getElementById('dashboardContainer');
+const contentArea = document.getElementById('contentArea');
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+// Login
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const adminId = document.getElementById('adminId').value;
+    const adminPass = document.getElementById('adminPass').value;
+
+    if (adminId === 'admin' && adminPass === 'nexus2026') {
+        alert('Login successful!');
+        loginCard.style.display = 'none';
+        sidebar.style.display = 'block';
+        dashboardContainer.style.display = 'block';
+    } else {
+        alert('Invalid credentials! Use demo access: admin / nexus2026');
+    }
+});
+
+// Sidebar Navigation
+sidebarLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Remove active class from all links
+        sidebarLinks.forEach(l => l.classList.remove('active'));
+        // Add active class to clicked link
+        link.classList.add('active');
+
+        const section = link.getAttribute('data-section');
+
+        // Load different content based on section
+        if (section === 'dashboard') {
+            dashboardContainer.style.display = 'block';
+        } else {
+            dashboardContainer.style.display = 'none';
+            contentArea.innerHTML = `<h2>${link.textContent}</h2><p>Content for ${link.textContent} will load here...</p>`;
+        }
+    });
+});
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - Events Calendar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop') repeat;
+            background-color: #e6e6fa;
+            background-blend-mode: overlay;
+            padding: 0 2rem;
+        }
+
+        /* Top Banner */
+        .top-banner {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 1rem 0;
+            border: 2px solid #ff7f50;
+            border-left-width: 8px;
+            text-align: right;
+        }
+
+        /* Header */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            position: relative;
+        }
+
+        .logo::before {
+            content: "EST. 2024";
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background: #ff7f50;
+            color: #2d2d2d;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border: 2px solid #2d2d2d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-weight: 900;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: #9370db;
+            color: #fff;
+        }
+
+        .nav-btn:hover {
+            background: #ff7f50;
+            color: #fff;
+            transform: translate(-1px, -1px);
+        }
+
+        /* Party Mode Toggle */
+        .party-toggle {
+            background: #fff;
+            padding: 0.6rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-radius: 20px;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            background: #2d2d2d;
+            width: 30px;
+            height: 18px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .toggle-dot {
+            background: #ff7f50;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .party-toggle.on .toggle-dot {
+            transform: translateX(12px);
+            background: #008080;
+        }
+
+        /* Main Content */
+        main {
+            margin-bottom: 5rem;
+        }
+
+        .section-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: #2d2d2d;
+            text-shadow: 2px 2px 0 #ff7f50;
+            margin-bottom: 1rem;
+        }
+
+        .section-subheading {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        /* Events Container */
+        .events-container {
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+            margin-bottom: 3rem;
+        }
+
+        /* Search & Filter Bar */
+        .search-filter {
+            margin-bottom: 2.5rem;
+        }
+
+        #event-search {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #event-search::placeholder {
+            color: #888;
+        }
+
+        /* Filter Buttons - Interactive & Styled */
+        .filter-buttons {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 0.7rem 1.4rem;
+            border: 3px solid #2d2d2d;
+            border-radius: 2px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn.active {
+            background: #ff7f50;
+            color: #fff;
+            border-left-width: 8px;
+        }
+
+        .filter-btn:hover {
+            background: #008080;
+            color: #fff;
+            transform: translate(-1px, -1px);
+        }
+
+        /* Event Grid */
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Event Cards - Unique Styling */
+        .event-card {
+            background: #fff;
+            border: 4px solid #2d2d2d;
+            padding: 1.5rem;
+            position: relative;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            /* Hide by default until filtered */
+            display: none;
+        }
+
+        /* Show all cards when "All" is active */
+        .event-card.active {
+            display: block;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 0 #ff7f50;
+        }
+
+        .date-tag {
+            background: #9370db;
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            border: 2px solid #2d2d2d;
+            position: absolute;
+            top: -15px;
+            right: 15px;
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+
+        .date-tag.live { background: #ff7f50; }
+        .date-tag.market { background: #008080; }
+        .date-tag.meetup { background: #ffd700; }
+        .date-tag.workshop { background: #9370db; }
+
+        .event-name {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .event-desc {
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 1rem;
+        }
+
+        .event-tags {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-tag {
+            background: #e6e6fa;
+            color: #2d2d2d;
+            padding: 0.2rem 0.7rem;
+            border: 1px solid #2d2d2d;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .ticket-btn {
+            background: #008080;
+            color: #fff;
+            padding: 0.7rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            display: block;
+            text-align: center;
+            font-weight: 900;
+            transition: all 0.2s ease;
+        }
+
+        .ticket-btn:hover {
+            background: #ff7f50;
+        }
+
+        /* Footer */
+        .footer-teaser {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 1rem;
+            border-top: 4px solid #ff7f50;
+            border-bottom: 4px solid #008080;
+            text-align: center;
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">Event Radar · 8 New Experiences Added This Week!</div>
+
+    <!-- Header -->
+    <header class="header-container">
+        <div class="logo">Nexus Events</div>
+        
+        <nav class="nav-links">
+            <a href="index.html" class="nav-btn active">Home</a>
+            <a href="events.html" class="nav-btn">Events</a>
+            <a href="tickets.html" class="nav-btn">Tickets</a>
+            <a href="venue.html" class="nav-btn">Venue</a>
+            <a href="contact.html" class="nav-btn">Contact</a>
+			<a href="about.html" class="nav-btn">About</a>
+			<a href="account.html" class="nav-btn">Account</a>
+			<a href="logout.html" class="nav-btn">Logout</a>
+            <a href="admin.html" class="nav-btn">Admin</a>
+        </nav>
+        
+        <div class="party-toggle" id="partyToggle">
+            <span>Party Mode</span>
+            <div class="toggle-switch">
+                <div class="toggle-dot"></div>
+            </div>
+            <span>OFF</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h1 class="section-heading">Events Calendar</h1>
+        <p class="section-subheading">Browse all upcoming experiences – filter by vibe to find your perfect match!</p>
+
+        <div class="events-container">
+            <!-- Search & Filter Bar -->
+            <div class="search-filter">
+                <input type="text" id="event-search" placeholder="Search by name or vibe...">
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="live">Live</button>
+                    <button class="filter-btn" data-filter="market">Market</button>
+                    <button class="filter-btn" data-filter="meetup">Meetup</button>
+                    <button class="filter-btn" data-filter="workshop">Workshop</button>
+                </div>
+            </div>
+
+            <!-- Event Grid -->
+            <div class="event-grid">
+                <!-- All Events (Categorized with Data Attributes) -->
+                <!-- Live Events -->
+                <div class="event-card active" data-category="live">
+                    <div class="date-tag live">Apr 22</div>
+                    <h2 class="event-name">Synth Wave Riot</h2>
+                    <p class="event-desc">Headlining electronic acts with immersive LED wall displays and bass-heavy sound systems.</p>
+                    <div class="event-tags">
+                        <span class="event-tag">Live</span>
+                        <span class="event-tag">Visuals</span>
+                        <span class="event-tag">Music</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Get Tickets</a>
+                </div>
+
+                <div class="event-card active" data-category="live">
+                    <div class="date-tag live">May 18</div>
+                    <h2 class="event-name">Indie Rock Throwdown</h2>
+                    <p class="event-desc">Underground bands bring raw energy to the stage with acoustic openers and mosh pit zones.</p>
+                    <div class="event-tags">
+                        <span class="event-tag">Live</span>
+                        <span class="event-tag">Music</span>
+                        <span class="event-tag">Local</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Get Tickets</a>
+                </div>
+
+                <!-- Market Events -->
+                <div class="event-card active" data-category="market">
+                    <div class="date-tag market">Apr 18</div>
+                    <h2 class="event-name">Metro Market Nights</h2>
+                    <p class="event-desc">Street eats, pop-up brands, and a rotating DJ line spinning funk and soul tracks.</p>
+                    <div class="event-tags">
+                        <span class="event-tag">Market</span>
+                        <span class="event-tag">Food</span>
+                        <span class="event-tag">Shopping</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Get Tickets</a>
+                </div>
+
+                <div class="event-card active" data-category="market">
+                    <div class="date-tag market">May 10</div>
+                    <h2 class="event-name">Pop-Up Style Arcade</h2>
+                    <p class="event-desc">Local fashion drops, style swaps, and live remix booths with vintage arcade games.</p>
+                    <div class="event-tags">
+                        <span class="event-tag">Market</span>
+                        <span class="event-tag">Fashion</span>
+                        <span class="event-tag">Games</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Get Tickets</a>
+                </div>
+
+                <!-- Meetup Events -->
+                <div class="event-card active" data-category="meetup">
+                    <div class="date-tag meetup">Apr 30</div>
+                    <h2 class="event-name">Creator Connect Mixer</h2>
+                    <p class="event-desc">Network with artists, designers, and digital creators over craft cocktails and small bites.</p>
+                    <div class="event-tags">
+                        <span class="event-tag">Meetup</span>
+                        <span class="event-tag">Network</span>
+                        <span class="event-tag">Creators</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Register Now</a>
+                </div>
+
+                <div class="event-card active" data-category="meetup">
+                    <div class="date-tag meetup">May 25</div>
+                    <h2 class="event-name">Tech & Culture Summit</h2>
+                    <p class="event-desc">Discuss how digital trends shape modern creative communities with industry leaders.</p>
+                    <div class="event-tags">
+                                                <span class="event-tag">Meetup</span>
+                        <span class="event-tag">Tech</span>
+                        <span class="event-tag">Talks</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Register Now</a>
+                </div>
+
+                <!-- Workshop Events -->
+                <div class="event-card active" data-category="workshop">
+                    <div class="date-tag workshop">May 5</div>
+                    <h2 class="event-name">Neon Art Lab</h2>
+                    <p class="event-desc">Hands-on session for creating glow-in-the-dark murals with professional artists.</p>
+                    <div class="event-tags">
+                        <span class="event-tag">Workshop</span>
+                        <span class="event-tag">Art</span>
+                        <span class="event-tag">Hands-On</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Book Spot</a>
+                </div>
+
+                <div class="event-card active" data-category="workshop">
+                    <div class="date-tag workshop">May 12</div>
+                    <h2 class="event-name">DJ Production Basics</h2>
+                    <p class="event-desc">Learn beat matching, sampling, and set building for beginners with industry pros.</p>
+                    <div class="event-tags">
+                        <span class="event-tag">Workshop</span>
+                        <span class="event-tag">Music</span>
+                        <span class="event-tag">Learning</span>
+                    </div>
+                    <a href="nexus_tickets.html" class="ticket-btn">Book Spot</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Teaser -->
+    <div class="footer-teaser">
+        Got Questions? Hit Us Up At events@nexusevents.ph · Follow @NexusEventsPH For Sneak Peeks!
+    </div>
+
+    <!-- JavaScript for Filter & Search Functionality -->
+    <script>
+        // Party Mode Toggle
+        const partyToggle = document.getElementById('partyToggle');
+        const body = document.body;
+
+        partyToggle.addEventListener('click', () => {
+            partyToggle.classList.toggle('on');
+            const modeText = partyToggle.querySelector('span:last-child');
+            
+            if (partyToggle.classList.contains('on')) {
+                modeText.textContent = 'ON';
+                body.style.background = 'url("https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'screen';
+            } else {
+                modeText.textContent = 'OFF';
+                body.style.background = 'url("https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'overlay';
+            }
+        });
+
+        // Filter Buttons Functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const eventCards = document.querySelectorAll('.event-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const selectedFilter = button.dataset.filter;
+
+                // Show/hide cards based on filter
+                eventCards.forEach(card => {
+                    if (selectedFilter === 'all' || card.dataset.category === selectedFilter) {
+                        card.classList.add('active');
+                        // Smooth fade-in effect
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                        }, 50);
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('event-search');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+
+            eventCards.forEach(card => {
+                const cardName = card.querySelector('.event-name').textContent.toLowerCase();
+                const cardDesc = card.querySelector('.event-desc').textContent.toLowerCase();
+                const cardTags = card.querySelector('.event-tags').textContent.toLowerCase();
+
+                const isMatch = cardName.includes(searchTerm) || cardDesc.includes(searchTerm) || cardTags.includes(searchTerm);
+                const isActive = card.classList.contains('active');
+
+                if (isMatch && isActive) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

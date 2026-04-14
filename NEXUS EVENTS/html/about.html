@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - About Us</title>
+    <!-- Import Unique Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop') repeat;
+            background-color: #e6e6fa;
+            background-blend-mode: overlay;
+            padding: 0 2rem;
+            font-family: 'Roboto', sans-serif;
+            color: #2d2d2d;
+        }
+
+        /* Header - Custom Accents */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            background: #008080;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            position: relative;
+        }
+
+        .logo::before {
+            content: "EST. 2024";
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background: #ff7f50;
+            color: #2d2d2d;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border: 2px solid #2d2d2d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-weight: 900;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: #9370db;
+            color: #fff;
+        }
+
+        .nav-btn:hover {
+            background: #ff7f50;
+            color: #fff;
+            transform: translate(-1px, -1px);
+        }
+
+        /* About Container */
+        .about-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border: 5px solid #2d2d2d;
+            box-shadow: 8px 8px 0 #ff7f50, inset 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            width: 100%;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+
+        .about-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: #2d2d2d;
+            text-shadow: 3px 3px 0 #ff7f50;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .about-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 3rem;
+            font-weight: 500;
+        }
+
+        /* Section Styles */
+        .about-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-heading {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: #008080;
+            text-shadow: 1px 1px 0 #2d2d2d;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-bottom: 3px solid #2d2d2d;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-heading i {
+            color: #ff7f50;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: #f9f9f9;
+            padding: 2rem;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translate(-4px, -4px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #9370db;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin-bottom: 0.8rem;
+            color: #2d2d2d;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #008080;
+            margin-bottom: 1rem;
+            box-shadow: 4px 4px 0 #ff7f50;
+        }
+
+        .team-name {
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+
+        .team-role {
+            color: #008080;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Contact CTA */
+        .cta-box {
+            background: linear-gradient(135deg, #ff7f50, #9370db);
+            padding: 2.5rem;
+            border: 4px solid #2d2d2d;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .cta-text {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 0 #2d2d2d;
+        }
+
+        .cta-button {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            font-weight: 900;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translate(-3px, -3px);
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            .about-title {
+                font-size: 2.2rem;
+            }
+            .header-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-container">
+        <div class="logo">Nexus Events</div>
+        <nav class="nav-links">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="events.html" class="nav-btn">Events</a>
+            <a href="tickets.html" class="nav-btn">Tickets</a>
+            <a href="venue.html" class="nav-btn">Venue</a>
+            <a href="contact.html" class="nav-btn">Contact</a>
+			<a href="about.html" class="nav-btn active">About</a>
+			<a href="account.html" class="nav-btn">Account</a>
+			<a href="logout.html" class="nav-btn">Logout</a>
+            <a href="admin.html" class="nav-btn">Admin</a>
+        </nav>
+    </header>
+
+    <main class="about-container">
+        <h1 class="about-title">About Nexus Events</h1>
+        <p class="about-subtitle">Where live energy, bold art, and magnetic people collide.</p>
+
+        <!-- Our Story Section -->
+        <div class="about-section">
+            <h2 class="section-heading">
+                <i class="fas fa-book-open"></i> Our Story
+            </h2>
+            <p class="about-text">
+                Founded in 2024, Nexus Events was born out of a simple idea: to create spaces where culture, music, and creativity meet without boundaries. We saw a gap for events that weren't just "things to attend," but experiences that stay with you.
+            </p>
+            <p class="about-text">
+                From neon-lit synth-wave nights to bustling creator markets and immersive art installations, Nexus is the hub for the new generation. We believe in heavy bass, sharper memories, and zero boring moments. Every event is crafted with passion, designed to look like a neon postcard, and built to connect people.
+            </p>
+        </div>
+
+        <!-- What We Do Section -->
+        <div class="about-section">
+            <h2 class="section-heading">
+                <i class="fas fa-bolt"></i> What We Do
+            </h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="feature-title">Live Experiences</h3>
+                    <p class="feature-desc">Curated concerts, DJ sets, and live performances featuring the best local and international talent.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="feature-title">Art & Visuals</h3>
+                    <p class="feature-desc">Immersive light shows, oversized LED canvases, and interactive art installations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3 class="feature-title">Pop-Up Markets</h3>
+                    <p class="feature-desc">Discover unique merch, vintage finds, and custom designs from independent creators.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Community</h3>
+                    <p class="feature-desc">Workshops, meetups, and spaces designed to bring creative minds together.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Values Section -->
+        <div class="about-section">
+            <h2 class="section-heading">
+                <i class="fas fa-heart"></i> Our Values
+            </h2>
+            <p class="about-text">
+                <strong>🎨 Creativity First:</strong> We never settle for standard. If it looks boring, we don't do it.<br>
+                <strong>🤝 Inclusivity:</strong> Nexus is a safe space for everyone, regardless of background, style, or taste.<br>
+                <strong>⚡ Energy:</strong> We bring the hype. High energy, positive vibes, and unforgettable nights.<br>
+                <strong>🔒 Quality:</strong> Top-tier sound systems, professional lighting, and seamless organization.
+            </p>
+        </div>
+
+        <!-- Meet The Team -->
+        <div class="about-section">
+            <h2 class="section-heading">
+                <i class="fas fa-user-friends"></i> Meet The Crew
+            </h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Marcus Lee" class="team-avatar">
+                    <div class="team-name">Marcus Lee</div>
+                    <div class="team-role">Founder & Creative Director</div>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Chen" class="team-avatar">
+                    <div class="team-name">Sarah Chen</div>
+                    <div class="team-role">Event Manager</div>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="David Park" class="team-avatar">
+                    <div class="team-name">David Park</div>
+                    <div class="team-role">Tech & Visuals</div>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Elena Rodriguez" class="team-avatar">
+                    <div class="team-name">Elena R.</div>
+                    <div class="team-role">Community Lead</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call To Action -->
+        <div class="cta-box">
+            <p class="cta-text">Ready to join the movement?</p>
+            <a href="events.html" class="cta-button">EXPLORE UPCOMING EVENTS</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events - Home</title>
+    <!-- Import Unique Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Custom Textured Background */
+            background: url('https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop') repeat;
+            background-color: #e6e6fa; /* Lavender Base */
+            background-blend-mode: overlay;
+            padding: 0 2rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Top Utility Banner - Redesigned */
+        .top-banner {
+            background: #2d2d2d; /* Charcoal */
+            color: #fff;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 1rem 0;
+            border: 2px solid #ff7f50; /* Coral Accent */
+            border-left-width: 8px;
+            text-align: right;
+        }
+
+        /* Header - Custom Accents */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            background: #008080; /* Teal */
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            letter-spacing: 1.5px;
+            border: 4px solid #2d2d2d;
+            /* Corner Tab Detail */
+            position: relative;
+        }
+
+        .logo::before {
+            content: "EST. 2024";
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background: #ff7f50;
+            color: #2d2d2d;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border: 2px solid #2d2d2d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #fff;
+            color: #2d2d2d;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border: 3px solid #2d2d2d;
+            border-right-width: 6px;
+            border-bottom-width: 6px;
+            border-radius: 2px;
+            font-weight: 900;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: #9370db; /* Lavender Accent */
+            color: #fff;
+        }
+
+        .nav-btn:hover {
+            background: #ff7f50;
+            color: #fff;
+            transform: translate(-1px, -1px);
+        }
+
+        /* Redesigned Party Mode Toggle */
+        .party-toggle {
+            background: #fff;
+            padding: 0.6rem 1rem;
+            border: 3px solid #2d2d2d;
+            border-radius: 20px;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            background: #2d2d2d;
+            width: 30px;
+            height: 18px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .toggle-dot {
+            background: #ff7f50;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .party-toggle.on .toggle-dot {
+            transform: translateX(12px);
+            background: #008080;
+        }
+
+        /* Hero Section - Flipped Layout + Custom Typography */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+
+        /* Featured Event Card - Unique Shape & Styling */
+        .featured-event {
+            background: #fff;
+            border: 5px solid #2d2d2d;
+            padding: 2rem;
+            /* Double Border Effect */
+            box-shadow: 0 0 0 4px #e6e6fa, 8px 8px 0 #2d2d2d;
+            position: relative;
+        }
+
+        .all-access-tag {
+            background: #9370db;
+            color: #2d2d2d;
+            padding: 0.5rem 1rem;
+            border: 3px solid #2d2d2d;
+            /* Custom Polygon Shape */
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+            position: absolute;
+            top: -20px;
+            right: 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .event-title {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .event-details {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #444;
+        }
+
+        .event-tags {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: #008080;
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border: 2px solid #2d2d2d;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .tag.visuals {
+            background: #ff7f50;
+        }
+
+        .tag.market {
+            background: #9370db;
+        }
+
+        /* Asymmetrical Buttons */
+        .cta-btn {
+            background: linear-gradient(to bottom, #ff7f50, #008080);
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.1rem;
+            border: 4px solid #2d2d2d;
+            border-left-width: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .cta-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 95%;
+            height: 95%;
+            border: 2px solid #2d2d2d;
+            z-index: -1;
+        }
+
+        .cta-btn:hover {
+            transform: translate(-2px, -2px);
+            background: linear-gradient(to bottom, #008080, #ff7f50);
+        }
+
+        .cta-btn.yellow {
+            background: linear-gradient(to bottom, #ffd700, #ff7f50);
+        }
+
+        /* Hero Headline - Custom Styling */
+        .hero-headline {
+            font-family: 'Bangers', cursive;
+            font-size: 4.2rem;
+            line-height: 1.1;
+            color: #2d2d2d;
+            text-shadow: 3px 3px 0 #ff7f50;
+            /* Word-Specific Emphasis */
+        }
+
+        .hero-headline span {
+            color: #008080;
+            text-shadow: 3px 3px 0 #2d2d2d;
+        }
+
+        .hero-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin: 1.5rem 0 2.5rem 0;
+            max-width: 500px;
+            color: #444;
+            /* Custom Bullet Points */
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .hero-text::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #ff7f50;
+            font-weight: 900;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 2rem;
+        }
+
+        /* Footer Teaser - Unique Touch */
+        .footer-teaser {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 1rem;
+            border-top: 4px solid #ff7f50;
+            border-bottom: 4px solid #008080;
+            text-align: center;
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Redesigned Top Banner -->
+    <div class="top-banner">Fresh Drop · Pop-Up Merch Lab Now Open!</div>
+
+    <!-- Header -->
+    <header class="header-container">
+        <div class="logo">Nexus Events</div>
+        
+        <nav class="nav-links">
+            <a href="index.html" class="nav-btn active">Home</a>
+            <a href="events.html" class="nav-btn">Events</a>
+            <a href="tickets.html" class="nav-btn">Tickets</a>
+            <a href="venue.html" class="nav-btn">Venue</a>
+            <a href="contact.html" class="nav-btn">Contact</a>
+			<a href="about.html" class="nav-btn">About</a>
+			<a href="account.html" class="nav-btn">Account</a>
+			<a href="logout.html" class="nav-btn">Logout</a>
+            <a href="admin.html" class="nav-btn">Admin</a>
+        </nav>
+        
+        <div class="party-toggle" id="partyToggle">
+            <span>Party Mode</span>
+            <div class="toggle-switch">
+                <div class="toggle-dot"></div>
+            </div>
+            <span>OFF</span>
+        </div>
+    </header>
+
+    <!-- Hero Section - Flipped Layout -->
+    <main class="hero-section">
+        <!-- Featured Event Card (Left Side Now) -->
+        <div class="featured-event">
+            <div class="all-access-tag">All Access</div>
+            <h2 class="event-title">Pixel Parade</h2>
+            <p class="event-details">Saturday, April 12 · 7:00 PM - Nexus Hall</p>
+            <div class="event-tags">
+                <span class="tag">Live Set</span>
+                <span class="tag visuals">Visuals</span>
+                <span class="tag market">Pop-Up Market</span>
+            </div>
+            <p class="event-details">
+                Expect oversized LED canvases, synth-pop headliners, and a merch lab that prints custom designs in real time.
+            </p>
+            <a href="nexus_tickets.html" class="cta-btn">Reserve Seats</a>
+        </div>
+
+        <!-- Hero Content (Right Side Now) -->
+        <div class="hero-content">
+            <h1 class="hero-headline">
+                Where <span>live energy</span>,<br>
+                bold <span>art</span>, and<br>
+                magnetic <span>people</span><br>
+                collide.
+            </h1>
+            <p class="hero-text">
+                Nexus Events is your vibrant headquarters for pop-forward concerts, creator meetups, and night markets. We craft nights that feel like neon postcards – with heavy bass, sharper memories, and zero boring moments.
+            </p>
+            <div class="cta-group">
+                <a href="nexus_events.html" class="cta-btn">Explore Events</a>
+                <a href="nexus_tickets.html" class="cta-btn yellow">Grab Tickets</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Unique Footer Teaser -->
+    <div class="footer-teaser">
+        Next Up: Synth Wave Riot (Apr 22) · Sign Up For Early Access!
+    </div>
+
+    <!-- JavaScript for Party Mode Toggle -->
+    <script>
+        const partyToggle = document.getElementById('partyToggle');
+        const body = document.body;
+
+        partyToggle.addEventListener('click', () => {
+            partyToggle.classList.toggle('on');
+            const modeText = partyToggle.querySelector('span:last-child');
+            
+            if (partyToggle.classList.contains('on')) {
+                modeText.textContent = 'ON';
+                body.style.background = 'url("https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'screen';
+            } else {
+                modeText.textContent = 'OFF';
+                body.style.background = 'url("https://images.unsplash.com/photo-1585076641399-5c06d1b38a4c?q=80&w=1000&auto=format&fit=crop") repeat';
+                body.style.backgroundBlendMode = 'overlay';
+            }
+        });
+    </script>
+</body>
+</html>
