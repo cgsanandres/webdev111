@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync – Settings</title>
+    <style>
+     /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+:root {
+    --primary-blue: #165DFF;
+    --primary-green: #36B37E;
+    --secondary-blue: #0A4BDE;
+    --alert-red: #FF5630;
+    --warning-yellow: #FFAB00;
+    --light-gray: #F5F7FA;
+    --medium-gray: #EAECEF;
+    --dark-gray: #42526E;
+    --text-muted: #6B778C;
+    --white: #FFFFFF;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius: 8px;
+    --border-radius-lg: 16px;
+}
+
+body {
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* -------------------------- SIDEBARNAVIGATION -------------------------- */
+.sidebar {
+    width: 280px;
+    background-color: var(--white);
+    box-shadow: var(--shadow-sm);
+    padding: 2rem;
+    position: fixed;
+    height: 100vh;
+    transition: var(--transition);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-collapsed {
+    width: 80px;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.sidebar-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+}
+
+.sidebar-collapsed .sidebar-logo-container {
+    justify-content: center;
+}
+
+.sidebar-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.sidebar-brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.sidebar-collapsed .sidebar-brand-name {
+    display: none;
+}
+
+.user-profile-sidebar {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--medium-gray);
+    text-align: center;
+}
+
+.sidebar-collapsed .user-profile-sidebar {
+    display: none;
+}
+
+.profile-avatar-sidebar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary-blue);
+    margin: 0 auto 1rem;
+}
+
+.profile-avatar-sidebar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name-sidebar {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.profile-id-sidebar {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.nav-menu {
+    list-style: none;
+}
+
+.nav-item {
+    margin-bottom: 0.5rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--dark-gray);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.sidebar-collapsed .nav-link span {
+    display: none;
+}
+
+.sidebar-collapsed .nav-link {
+    justify-content: center;
+    padding: 1rem;
+}
+
+.nav-link.active, .nav-link:hover {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.sidebar-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--dark-gray);
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    align-self: flex-start;
+}
+
+.sidebar-collapsed .sidebar-toggle-btn {
+    align-self: center;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: var(--medium-gray);
+}
+
+/* -------------------------- MAIN CONTENT -------------------------- */
+.main-content {
+    margin-left: 280px;
+    transition: var(--transition);
+    padding: 2rem;
+}
+
+.sidebar-collapsed + .main-content {
+    margin-left: 80px;
+}
+
+.main-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--primary-blue);
+}
+
+/* -------------------------- MOBILE TOP BAR -------------------------- */
+.mobile-top-bar {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--white);
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1rem;
+}
+
+.mobile-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* -------------------------- PROFILE TABS (Reused for Settings Navigation) -------------------------- */
+.profile-tabs {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--medium-gray);
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding-left: 2rem; /* Align with main content padding */
+}
+
+.sidebar-collapsed + .main-content .profile-tabs {
+    padding-left: 1rem; /* Adjust padding for collapsed sidebar */
+}
+
+.tab-link {
+    padding: 1rem 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transition);
+    border-bottom: 2px solid transparent;
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+.tab-link.active {
+    color: var(--primary-blue);
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+.tab-link:hover {
+    color: var(--primary-blue);
+}
+
+/* -------------------------- PROFILE SECTIONS (Used for Settings Sections) -------------------------- */
+.profile-section {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: none; /* Hidden by default, shown with 'active' class */
+}
+
+.profile-section.active {
+    display: block;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-blue); /* Title color */
+    border-bottom: 1px solid var(--medium-gray);
+    padding-bottom: 1rem;
+}
+
+.section-title i {
+    color: var(--primary-blue); /* Icon color */
+}
+
+/* -------------------------- FORM ELEMENTS -------------------------- */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--dark-gray);
+}
+
+.form-input, .form-select {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    transition: var(--transition);
+    background-color: var(--white);
+}
+
+.form-input:disabled, .form-select:disabled {
+    background-color: var(--light-gray);
+    color: var(--text-muted);
+}
+
+.form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+}
+
+.form-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Checkbox styling */
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem; /* Add some space above checkbox */
+}
+
+.form-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-blue); /* Style the checkbox color */
+}
+
+.form-check label {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    cursor: pointer;
+}
+
+/* -------------------------- BUTTONS -------------------------- */
+.section-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.btn-save {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.btn-save:hover {
+    background-color: #2d996d;
+}
+
+.btn-cancel {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--white);
+    color: var(--text-muted);
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.btn-cancel:hover {
+    background-color: var(--light-gray);
+}
+
+.btn-edit {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.btn-edit:hover {
+    background-color: var(--secondary-blue);
+}
+
+/* Specific button styles for settings page */
+#delete-account .btn-save {
+    background-color: var(--alert-red);
+}
+
+#delete-account .btn-save:hover {
+    background-color: #cc4428;
+}
+
+/* -------------------------- FONT AWESOME SPECIFIC STYLES (from provided URL) -------------------------- */
+/* These are base styles from Font Awesome. Specific icons are handled by their classes. */
+.fa {
+    font-family: var(--fa-style-family, "Font Awesome 6 Free");
+    font-weight: var(--fa-style, 900);
+}
+
+.fa, .fa-brands, .fa-classic, .fa-regular, .fa-sharp, .fa-solid, .fab, .far, .fas {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display, inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+}
+
+.fa-brands, .fab {
+    font-family: "Font Awesome 6 Brands";
+}
+
+.fa-regular, .far {
+    font-weight: 400;
+}
+
+.fa-solid, .fas {
+    font-weight: 900;
+}
+
+/* Animation keyframes and utility classes from Font Awesome */
+/* Animations */
+.fa-beat {
+    -webkit-animation-name: fa-beat;
+    animation-name: fa-beat;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+    animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+    animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+    animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+    animation-timing-function: var(--fa-animation-timing, ease-in-out);
+}
+
+.fa-bounce {
+    -webkit-animation-name: fa-bounce;
+    animation-name: fa-bounce;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+    animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+    animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+    animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(.28, .84, .42, 1));
+    animation-timing-function: var(--fa-animation-timing, cubic-bezier(.28, .84, .42, 1));
+}
+
+.fa-fade {
+    -webkit-animation-name: fa-fade;
+    animation-name: fa-fade;
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(.4, 0, .6, 1));
+    animation-timing-function: var(--fa-animation-timing, cubic-bezier(.4, 0, .6, 1));
+}
+
+.fa-beat-fade, .fa-fade {
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+    animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+    animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+    animation-duration: var(--fa-animation-duration, 1s);
+}
+
+.fa-beat-fade {
+    -webkit-animation-name: fa-beat-fade;
+    animation-name: fa-beat-fade;
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(.4, 0, .6, 1));
+    animation-timing-function: var(--fa-animation-timing, cubic-bezier(.4, 0, .6, 1));
+}
+
+.fa-flip {
+    -webkit-animation-name: fa-flip;
+    animation-name: fa-flip;
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+    animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+    animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+    animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+    animation-timing-function: var(--fa-animation-timing, ease-in-out);
+}
+
+.fa-shake {
+    -webkit-animation-name: fa-shake;
+    animation-name: fa-shake;
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+    animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+    animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+.fa-shake,
+.fa-spin {
+    -webkit-animation-delay: var(--fa-animation-delay, 0s);
+    animation-delay: var(--fa-animation-delay, 0s);
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+    animation-direction: var(--fa-animation-direction, normal);
+}
+
+.fa-spin {
+    -webkit-animation-name: fa-spin;
+    animation-name: fa-spin;
+    -webkit-animation-duration: var(--fa-animation-duration, 2s);
+    animation-duration: var(--fa-animation-duration, 2s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+    animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+.fa-spin-reverse {
+    --fa-animation-direction: reverse;
+}
+
+.fa-pulse,
+.fa-spin-pulse {
+    -webkit-animation-name: fa-spin;
+    animation-name: fa-spin;
+    -webkit-animation-direction: var(--fa-animation-direction, normal);
+    animation-direction: var(--fa-animation-direction, normal);
+    -webkit-animation-duration: var(--fa-animation-duration, 1s);
+    animation-duration: var(--fa-animation-duration, 1s);
+    -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+    -webkit-animation-timing-function: var(--fa-animation-timing, steps(8));
+    animation-timing-function: var(--fa-animation-timing, steps(8));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fa-beat,
+    .fa-beat-fade,
+    .fa-bounce,
+    .fa-fade,
+    .fa-flip,
+    .fa-pulse,
+    .fa-shake,
+    .fa-spin,
+    .fa-spin-pulse {
+        -webkit-animation-delay: -1ms;
+        animation-delay: -1ms;
+        -webkit-animation-duration: 1ms;
+        animation-duration: 1ms;
+        -webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+        -webkit-transition-delay: 0s;
+        transition-delay: 0s;
+        -webkit-transition-duration: 0s;
+        transition-duration: 0s;
+    }
+}
+
+@-webkit-keyframes fa-beat {
+    0%,
+    90% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    45% {
+        -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+        transform: scale(var(--fa-beat-scale, 1.25));
+    }
+}
+
+@keyframes fa-beat {
+    0%,
+    90% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    45% {
+        -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+        transform: scale(var(--fa-beat-scale, 1.25));
+    }
+}
+
+@-webkit-keyframes fa-bounce {
+    0% {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+    }
+    10% {
+        -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, .9)) translateY(0);
+        transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, .9)) translateY(0);
+    }
+    30% {
+        -webkit-transform: scale(var(--fa-bounce-jump-scale-x, .9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -.5em));
+        transform: scale(var(--fa-bounce-jump-scale-x, .9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -.5em));
+    }
+    50% {
+        -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, .95)) translateY(0);
+        transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, .95)) translateY(0);
+    }
+    57% {
+        -webkit-transform: scale(1) translateY(var(--fa-bounce-rebound, -.125em));
+        transform: scale(1) translateY(var(--fa-bounce-rebound, -.125em));
+    }
+    64% {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+    }
+    to {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes fa-bounce {
+    0% {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+    }
+    10% {
+        -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, .9)) translateY(0);
+        transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, .9)) translateY(0);
+    }
+    30% {
+        -webkit-transform: scale(var(--fa-bounce-jump-scale-x, .9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -.5em));
+        transform: scale(var(--fa-bounce-jump-scale-x, .9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -.5em));
+    }
+    50% {
+        -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, .95)) translateY(0);
+        transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, .95)) translateY(0);
+    }
+    57% {
+        -webkit-transform: scale(1) translateY(var(--fa-bounce-rebound, -.125em));
+        transform: scale(1) translateY(var(--fa-bounce-rebound, -.125em));
+    }
+    64% {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+    }
+    to {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+    }
+}
+
+@-webkit-keyframes fa-fade {
+    50% {
+        opacity: var(--fa-fade-opacity, .4);
+    }
+}
+
+@keyframes fa-fade {
+    50% {
+        opacity: var(--fa-fade-opacity, .4);
+    }
+}
+
+@-webkit-keyframes fa-beat-fade {
+    0%,
+    to {
+        opacity: var(--fa-beat-fade-opacity, .4);
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+        transform: scale(var(--fa-beat-fade-scale, 1.125));
+    }
+}
+
+@keyframes fa-beat-fade {
+    0%,
+    to {
+        opacity: var(--fa-beat-fade-opacity, .4);
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+        transform: scale(var(--fa-beat-fade-scale, 1.125));
+    }
+}
+
+@-webkit-keyframes fa-flip {
+    50% {
+        -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+        transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+    }
+}
+
+@keyframes fa-flip {
+    50% {
+        -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+        transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+    }
+}
+
+@-webkit-keyframes fa-shake {
+    0% {
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    4% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    8%,
+    24% {
+        -webkit-transform: rotate(-18deg);
+        transform: rotate(-18deg);
+    }
+    12%,
+    28% {
+        -webkit-transform: rotate(18deg);
+        transform: rotate(18deg);
+    }
+    16% {
+        -webkit-transform: rotate(-22deg);
+        transform: rotate(-22deg);
+    }
+    20% {
+        -webkit-transform: rotate(22deg);
+        transform: rotate(22deg);
+    }
+    32% {
+        -webkit-transform: rotate(-12deg);
+        transform: rotate(-12deg);
+    }
+    36% {
+        -webkit-transform: rotate(12deg);
+        transform: rotate(12deg);
+    }
+    40%,
+    to {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes fa-shake {
+    0% {
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+    }
+    4% {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+    }
+    8%,
+    24% {
+        -webkit-transform: rotate(-18deg);
+        transform: rotate(-18deg);
+    }
+    12%,
+    28% {
+        -webkit-transform: rotate(18deg);
+        transform: rotate(18deg);
+    }
+    16% {
+        -webkit-transform: rotate(-22deg);
+        transform: rotate(-22deg);
+    }
+    20% {
+        -webkit-transform: rotate(22deg);
+        transform: rotate(22deg);
+    }
+    32% {
+        -webkit-transform: rotate(-12deg);
+        transform: rotate(-12deg);
+    }
+    36% {
+        -webkit-transform: rotate(12deg);
+        transform: rotate(12deg);
+    }
+    40%,
+    to {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+@-webkit-keyframes fa-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(1turn);
+        transform: rotate(1turn);
+    }
+}
+
+@keyframes fa-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(1turn);
+        transform: rotate(1turn);
+    }
+}
+
+/* Rotations and flips */
+.fa-rotate-90 {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.fa-rotate-180 {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.fa-rotate-270 {
+    -webkit-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+
+.fa-flip-horizontal {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.fa-flip-vertical {
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+}
+
+.fa-flip-both,
+.fa-flip-horizontal.fa-flip-vertical {
+    -webkit-transform: scale(-1);
+    transform: scale(-1);
+}
+    </style>
+</head>
+<body>
+    <!-- Mobile Top Bar -->
+    <div class="mobile-top-bar">
+        <div class="mobile-title">Settings</div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Side Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-logo-container">
+                <div class="sidebar-logo">HS</div>
+                <div class="sidebar-brand-name">HealthSync</div>
+            </div>
+
+            <div class="user-profile-sidebar">
+                <div class="profile-avatar-sidebar">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                </div>
+                <div class="profile-name-sidebar">Maria Dela Cruz</div>
+                <div class="profile-id-sidebar">Patient ID: HS-2024-0567</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="appointments.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="records.html" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Health Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="prescriptions.html" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="insurance-billing.html" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Insurance & Billing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages & Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link active">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support.html" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <button class="sidebar-toggle-btn" id="sidebarToggle">
+            <i class="fas fa-angle-double-left"></i>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="main-title">Settings</h1>
+
+        <!-- Settings Navigation Tabs -->
+        <div class="profile-tabs">
+            <div class="tab-link active" data-section="account-settings">Account</div>
+            <div class="tab-link" data-section="notification-settings">Notifications</div>
+            <div class="tab-link" data-section="privacy-settings">Privacy</div>
+            <div class="tab-link" data-section="appearance-settings">Appearance</div>
+            <div class="tab-link" data-section="delete-account">Delete Account</div>
+        </div>
+
+        <!-- Account Settings Section -->
+        <div class="profile-section active" id="account-settings">
+            <div class="section-title">
+                <i class="fas fa-user-cog"></i> Account Settings
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" value="maria.d.cruz" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" value="maria.dela.cruz@example.com" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" value="********" disabled>
+                    <div class="form-note">Click 'Change Password' to update</div>
+                </div>
+            </div>
+            <div class="section-actions">
+                <button class="btn-edit">Change Password</button>
+                <button class="btn-save">Save Account Changes</button>
+            </div>
+        </div>
+
+        <!-- Notification Preferences Section -->
+        <div class="profile-section" id="notification-settings">
+            <div class="section-title">
+                <i class="fas fa-bell"></i> Notification Preferences
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Email Notifications</label>
+                    <select class="form-select">
+                        <option selected>All</option>
+                        <option>Important Only</option>
+                        <option>None</option>
+                    </select>
+                    <div class="form-note">Control the types of emails you receive</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">SMS Notifications</label>
+                    <select class="form-select">
+                        <option selected>All</option>
+                        <option>Important Only</option>
+                        <option>None</option>
+                    </select>
+                    <div class="form-note">Control the types of SMS alerts you receive</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Push Notifications</label>
+                    <select class="form-select">
+                        <option>Enabled</option>
+                        <option selected>Disabled</option>
+                    </select>
+                    <div class="form-note">Enable/disable app push notifications</div>
+                </div>
+            </div>
+            <div class="section-actions">
+                <button class="btn-save">Save Notification Settings</button>
+            </div>
+        </div>
+
+ <!-- Privacy Settings Section -->
+        <div class="profile-section" id="privacy-settings">
+            <div class="section-title">
+                <i class="fas fa-lock"></i> Privacy Settings
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Profile Visibility</label>
+                    <select class="form-select">
+                        <option selected>Public</option>
+                        <option>Friends Only</option>
+                        <option>Private</option>
+                    </select>
+                    <div class="form-note">Who can see your profile details</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Data Sharing</label>
+                    <div class="form-check">
+                        <input type="checkbox" id="data-sharing" checked>
+                        <label for="data-sharing">Allow anonymized data sharing for research purposes</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Two-Factor Authentication</label>
+                    <div class="form-check">
+                        <input type="checkbox" id="two-factor-auth" checked>
+                        <label for="two-factor-auth">Enable two-factor authentication for enhanced security</label>
+                    </div>
+                    <div class="form-note">Recommended for account security</div>
+                </div>
+            </div>
+            <div class="section-actions">
+                <button class="btn-save">Save Privacy Settings</button>
+            </div>
+        </div>
+
+        <!-- Appearance Settings Section -->
+        <div class="profile-section" id="appearance-settings">
+            <div class="section-title">
+                    <div class="form-note">Choose your preferred interface theme</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Font Size</label>
+                    <select class="form-select">
+                        <option>Small</option>
+                        <option selected>Medium</option>
+                        <option>Large</option>
+                    </select>
+                    <div class="form-note">Adjust text size for readability</div>
+                </div>
+            </div>
+            <div class="section-actions">
+                <button class="btn-save">Save Appearance Settings</button>
+            </div>
+        </div>
+
+        <!-- Delete Account Section -->
+        <div class="profile-section" id="delete-account">
+            <div class="section-title">
+                <i class="fas fa-trash-alt"></i> Delete Account
+            </div>
+            <div class="form-group">
+                <label class="form-label">Confirm Account Deletion</label>
+                <input type="password" class="form-input" placeholder="Enter your password to confirm">
+                <div class="form-note">This action is irreversible and will permanently delete your account and all associated data.</div>
+            </div>
+            <div class="section-actions">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save" style="background-color: var(--alert-red);">Delete Account</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Sidebar Toggle Functionality (from original profile page)
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-left');
+            icon.classList.toggle('fa-angle-double-right');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Settings Tab Switching (similar to profile tabs)
+        const tabLinks = document.querySelectorAll('.profile-tabs .tab-link');
+        const profileSections = document.querySelectorAll('.profile-section');
+
+        tabLinks.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and sections
+                tabLinks.forEach(t => t.classList.remove('active'));
+                profileSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to selected tab and section
+                tab.classList.add('active');
+                const targetSection = tab.getAttribute('data-section');
+                document.getElementById(targetSection).classList.add('active');
+            });
+        });
+
+        // Placeholder for any specific settings modal/functionality if needed
+        // For now, basic save buttons will just show an alert
+        document.querySelectorAll('.btn-save').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Settings saved successfully!');
+            });
+        });
+
+        document.querySelector('.btn-cancel').addEventListener('click', () => {
+            alert('Operation cancelled.');
+        });
+
+        document.querySelector('#delete-account .btn-save').addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                alert('Account deletion initiated.');
+            } else {
+                alert('Account deletion cancelled.');
+            }
+        });
+    </script>
+</body>
+</html>

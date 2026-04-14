@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync Clinic – Patient Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- LAYOUT STRUCTURE -------------------------- */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 80px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2.5rem 1rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .sidebar-expanded {
+            width: 280px;
+            padding: 2.5rem 2rem;
+            text-align: left;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 4rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+            justify-content: center;
+        }
+
+        .sidebar-expanded .sidebar-logo-container {
+            justify-content: flex-start;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto;
+        }
+
+        .sidebar-expanded .sidebar-logo {
+            margin: 0;
+        }
+
+        .sidebar-brand-name, .sidebar-brand-tagline {
+            display: none;
+        }
+
+        .sidebar-expanded .sidebar-brand-name {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            line-height: 1.2;
+        }
+
+        .sidebar-expanded .sidebar-brand-tagline {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+            justify-content: center;
+        }
+
+        .sidebar-expanded .nav-link {
+            justify-content: flex-start;
+            padding: 1rem 1.2rem;
+        }
+
+        .nav-link i {
+            width: 22px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .nav-link span {
+            display: none;
+        }
+
+        .sidebar-expanded .nav-link span {
+            display: inline;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 80px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .sidebar-expanded + .main-content {
+            margin-left: 280px;
+        }
+
+        /* -------------------------- LOGIN CONTAINER -------------------------- */
+        .login-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem 2.5rem;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .login-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* -------------------------- LOGIN TABS -------------------------- */
+        .login-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        /* -------------------------- FORM STYLES -------------------------- */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            color: var(--dark-gray);
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-password:hover {
+            color: var(--dark-gray);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--secondary-blue);
+            text-decoration: underline;
+        }
+
+        /* -------------------------- BUTTONS -------------------------- */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-gray);
+        }
+
+        /* -------------------------- DIVIDER -------------------------- */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- FOOTER LINKS -------------------------- */
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .login-footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .login-footer a:hover {
+            color: var(--secondary-blue);
+            text-decoration: underline;
+        }
+
+        /* -------------------------- SECURITY BADGES -------------------------- */
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .security-badge i {
+            font-size: 1rem;
+            color: var(--primary-green);
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+                padding: 2.5rem 2rem;
+                text-align: left;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-logo-container {
+                justify-content: flex-start;
+            }
+
+            .sidebar-logo {
+                margin: 0;
+            }
+
+            .sidebar-brand-name, .sidebar-brand-tagline, .nav-link span {
+                display: block;
+            }
+
+            .nav-link {
+                justify-content: flex-start;
+                padding: 1rem 1.2rem;
+            }
+
+            .sidebar-toggle-btn {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .mobile-menu-toggle {
+                position: fixed;
+                top: 1.5rem;
+                left: 1.5rem;
+                background-color: var(--white);
+                box-shadow: var(--shadow-sm);
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--dark-gray);
+                cursor: pointer;
+                z-index: 101;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .login-container {
+                padding: 2.5rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="page-wrapper">
+        <!-- Side Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo-container">
+                <div class="sidebar-logo">HS</div>
+                <div>
+                    <h2 class="sidebar-brand-name">HealthSync</h2>
+                    <p class="sidebar-brand-tagline">Comprehensive Medical Care</p>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link active">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="register.html" class="nav-link">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create Account</span>
+                    </a>
+                </li>
+            
+                       
+            </ul>
+
+            <button class="sidebar-toggle-btn" id="sidebarToggle">
+                <i class="fas fa-angle-double-right"></i>
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="logo">HS</div>
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to access your personalized health dashboard</p>
+                </div>
+
+                <div class="login-tabs">
+                    <button class="tab-btn active" id="patientTab">Patient Login</button>
+                    
+                </div>
+
+                <!-- Patient Login Form -->
+                <form id="patientLoginForm">
+                    <div class="form-group">
+                        <label for="patientId" class="form-label">Patient ID or Email</label>
+                        <input type="text" id="patientId" class="form-input" placeholder="Enter your Patient ID or registered email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="patientPassword" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="patientPassword" class="form-input" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" id="togglePatientPass">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberPatient">
+                            <span>Remember me for 30 days</span>
+                        </label>
+                        <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Sign In to Your Account</button>
+                </form>
+
+                
+    </div>
+
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-expanded');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-right');
+            icon.classList.toggle('fa-angle-double-left');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Tab Switching (Patient/Provider)
+        const patientTab = document.getElementById('patientTab');
+        const providerTab = document.getElementById('providerTab');
+        const patientLoginForm = document.getElementById('patientLoginForm');
+       
+
+        patientTab.addEventListener('click', () => {
+            patientTab.classList.add('active');
+            providerTab.classList.remove('active');
+            patientLoginForm.style.display = 'block';
+            providerLoginForm.style.display = 'none';
+            providerSignupBtn.style.display = 'none';
+        });
+
+        // Toggle Password Visibility
+        const togglePatientPass = document.getElementById('togglePatientPass');
+        const patientPassword = document.getElementById('patientPassword');
+      
+
+        togglePatientPass.addEventListener('click', () => {
+            const type = patientPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            patientPassword.setAttribute('type', type);
+            togglePatientPass.querySelector('i').classList.toggle('fa-eye');
+            togglePatientPass.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+       
+
+        // Form Submission Handling
+        patientLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const patientId = document.getElementById('patientId').value;
+            alert(`Signing in patient ${patientId}... Redirecting to dashboard.`);
+            // In production, add authentication logic here and redirect to patient-dashboard.html
+			window.location.href = 'index.html'; 
+        });
+
+        
+    </script>
+</body>
+</html>

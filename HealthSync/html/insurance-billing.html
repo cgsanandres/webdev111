@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync – Insurance & Billing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-collapsed {
+            width: 80px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-collapsed .sidebar-logo-container {
+            justify-content: center;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .sidebar-collapsed .sidebar-brand-name {
+            display: none;
+        }
+
+        .user-profile {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .sidebar-collapsed .user-profile {
+            display: none;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-blue);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .profile-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-profile {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-profile-edit {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-profile-edit:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .btn-profile-logout {
+            background-color: var(--alert-red);
+            color: var(--white);
+        }
+
+        .btn-profile-logout:hover {
+            background-color: #e04a2b;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .sidebar-collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .sidebar-collapsed .sidebar-toggle-btn {
+            align-self: center;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 280px;
+            transition: var(--transition);
+            padding: 2rem;
+        }
+
+        .sidebar-collapsed + .main-content {
+            margin-left: 80px;
+        }
+
+        /* -------------------------- TOP BAR -------------------------- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.5rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-icon:hover {
+            color: var(--primary-blue);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--alert-red);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.7rem 1rem 0.7rem 2.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            width: 250px;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .btn-download {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-download:hover {
+            background-color: var(--secondary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-contact {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-contact:hover {
+            background-color: #2d996d;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* -------------------------- BILLING TABS -------------------------- */
+        .billing-tabs {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .tab-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .tab-item {
+            padding: 1rem 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab-item.active {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .tab-item:hover {
+            color: var(--primary-blue);
+        }
+
+        /* -------------------------- SECTION STYLES -------------------------- */
+        .billing-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* -------------------------- INSURANCE CARDS -------------------------- */
+        .insurance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .insurance-card {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insurance-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .insurance-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .badge-primary {
+            background-color: var(--primary-blue);
+        }
+
+        .badge-secondary {
+            background-color: var(--primary-green);
+        }
+
+        .badge-expired {
+            background-color: var(--alert-red);
+        }
+
+        .insurance-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .insurance-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            background-color: rgba(22, 93, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+        }
+
+        .insurance-info h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .insurance-type {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .insurance-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .insurance-benefits {
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .insurance-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-insurance {
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-update {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-update:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .btn-view {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-view:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .btn-renew {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        .btn-renew:hover {
+            background-color: #2d996d;
+        }
+
+        /* -------------------------- BILLS TABLE -------------------------- */
+        .bills-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .bills-table th, .bills-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .bills-table th {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bill-status {
+            padding: 0.3rem 0.8rem
+;
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .status-paid {
+            background-color: var(--primary-green);
+        }
+
+        .status-pending {
+            background-color: var(--warning-yellow);
+        }
+
+        .status-overdue {
+            background-color: var(--alert-red);
+        }
+
+        .status-processing {
+            background-color: var(--primary-blue);
+        }
+
+        .btn-bill {
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            margin-right: 0.5rem;
+        }
+
+        .btn-pay {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        .btn-pay:hover {
+            background-color: #2d996d;
+        }
+
+        .btn-receipt {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-receipt:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .btn-dispute {
+            background-color: var(--warning-yellow);
+            color: var(--white);
+        }
+
+        .btn-dispute:hover {
+            background-color: #e09900;
+        }
+
+        /* -------------------------- PAYMENT METHODS -------------------------- */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .payment-card {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .payment-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .payment-primary {
+            border-color: var(--primary-blue);
+            background-color: rgba(22, 93, 255, 0.05);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(54, 179, 126, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-green);
+        }
+
+        .payment-details h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .payment-last-used {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .payment-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-payment {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-payment:hover {
+            color: var(--primary-blue);
+        }
+
+        .btn-add-payment {
+            padding: 1rem;
+            border: 2px dashed var(--medium-gray);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-add-payment:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+            background-color: rgba(22, 93, 255, 0.05);
+        }
+
+        /* -------------------------- CLAIMS TRACKER -------------------------- */
+        .claims-tracker {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .claim-card {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .claim-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .claim-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .claim-type {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .claim-progress {
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--border-radius);
+        }
+
+        .progress-approved {
+            background-color: rgba(54, 179, 126, 0.1);
+            color: var(--primary-green);
+        }
+
+        .progress-pending {
+            background-color: rgba(255, 171, 0, 0.1);
+            color: var(--warning-yellow);
+        }
+
+        .progress-rejected {
+            background-color: rgba(255, 86, 48, 0.1);
+            color: var(--alert-red);
+        }
+
+        .progress-processing {
+            background-color: rgba(22, 93, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .claim-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .claim-timeline {
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .timeline-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .timeline-date {
+            color: var(--text-muted);
+            min-width: 120px;
+        }
+
+        /* -------------------------- PAYMENT FORM -------------------------- */
+        .payment-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius-lg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-option {
+            padding: 0.8rem 1.2rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payment-option.active {
+            border-color: var(--primary-blue);
+            background-color: rgba(22, 93, 255, 0.05);
+            color: var(--primary-blue);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-submit-payment {
+            background-color: var(--primary-green);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-submit-payment:hover {
+            background-color: #2d996d;
+        }
+
+        .btn-cancel-payment {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid var(--medium-gray);
+            cursor: pointer;
+        }
+
+        .btn-cancel-payment:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 101;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-collapsed + .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                top: 1.5rem;
+                left: 1.5rem;
+                background-color: var(--white);
+                box-shadow: var(--shadow-sm);
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--dark-gray);
+                cursor: pointer;
+                z-index: 102;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .top-bar-actions {
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .tab-list {
+                gap: 1rem;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .insurance-grid, .claims-tracker {
+                grid-template-columns: 1fr;
+            }
+
+            .insurance-details, .claim-details {
+                grid-template-columns: 1fr;
+            }
+
+            .insurance-actions {
+                flex-direction: column;
+            }
+
+            .bills-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="page-wrapper">
+        <!-- Side Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-logo-container">
+                    <div class="sidebar-logo">HS</div>
+                    <div class="sidebar-brand-name">HealthSync</div>
+                </div>
+
+                <div class="user-profile">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                        </div>
+                        <div class="profile-info">
+                            <h3>Maria Dela Cruz</h3>
+                            <p>Patient ID: HS-2024-0567</p>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <a href="patient-profile.html" class="btn-profile btn-profile-edit">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </a>
+                        <a href="patient-login.html" class="btn-profile btn-profile-logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+
+               <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="appointments.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="records.html" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Health Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="prescriptions.html" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="insurance-billing.html" class="nav-link active">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Insurance & Billing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages & Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support.html" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+            <button class="sidebar-toggle-btn" id="sidebarToggle">
+                <i class="fas fa-angle-double-left"></i>
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <h2 class="page-title">Insurance & Billing</h2>
+                <div class="top-bar-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search bills, claims, insurance...">
+                    </div>
+                    <button class="btn-download">
+                        <i class="fas fa-download"></i> Download Statements
+                    </button>
+                    <button class="btn-contact">
+                        <i class="fas fa-headset"></i> Contact Billing Support
+                    </button>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">2</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Billing Tabs -->
+            <section class="billing-tabs">
+                <ul class="tab-list">
+                    <li class="tab-item active" data-tab="insurance">Insurance Coverage</li>
+                    <li class="tab-item" data-tab="bills">Current Bills</li>
+                    <li class="tab-item" data-tab="payment">Payment Methods</li>
+                    <li class="tab-item" data-tab="claims">Claims Tracker</li>
+                    <li class="tab-item" data-tab="pay">Make a Payment</li>
+                </ul>
+            </section>
+
+            <!-- Insurance Coverage Tab -->
+            <section id="insurance-tab" class="billing-tab-content active">
+                <div class="billing-section">
+                    <h3 class="section-subtitle"><i class="fas fa-shield-alt"></i> Your Insurance Plans</h3>
+                    <div class="insurance-grid">
+                        <div class="insurance-card">
+                            <span class="insurance-badge badge-primary">Primary</span>
+                            <div class="insurance-header">
+                                <div class="insurance-icon"><i class="fas fa-hand-holding-medical"></i></div>
+                                <div class="insurance-info">
+                                    <h3>Maxicare Healthcare</h3>
+                                    <div class="insurance-type">Comprehensive Outpatient & Inpatient Plan</div>
+                                </div>
+                            </div>
+                            <div class="insurance-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Policy Number</span>
+                                    <span class="detail-value">MAX-789-456-123</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Holder Name</span>
+                                    <span class="detail-value">Maria Dela Cruz</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Coverage Period</span>
+                                    <span class="detail-value">January 1, 2024 – December 31, 2024</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Network Providers</span>
+                                    <span class="detail-value">HealthSync Clinic, St. Luke's, Makati Med</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Outpatient Limit</span>
+                                    <span class="detail-value">₱250,000 per year</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Inpatient Limit</span>
+                                    <span class="detail-value">₱1,000,000 per year</span>
+                                </div>
+                            </div>
+                            <div class="insurance-benefits">
+                                <strong>Covered Services:</strong> Consultations, lab tests, diagnostics, medications, surgeries, emergency care. <strong>Exclusions:</strong> Cosmetic procedures, pre-existing conditions (first 6 months).
+                            </div>
+                            <div class="insurance-actions">
+                                <button class="btn-insurance btn-view">View Full Coverage</button>
+                                <button class="btn-insurance btn-update">Update Details</button>
+                            </div>
+                        </div>
+
+                        <div class="insurance-card">
+                            <span class="insurance-badge badge-secondary">Secondary</span>
+                            <div class="insurance-header">
+                                <div class="insurance-icon"><i class="fas fa-heartbeat"></i></div>
+                                <div class="insurance-info">
+                                    <h3>PhilHealth</h3>
+                                    <div class="insurance-type">National Health Insurance Program</div>
+                                </div>
+                            </div>
+                            <div class="insurance-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">ID Number</span>
+                                    <span class="detail-value">PH-123-456-7890</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Member Type</span>
+                                    <span class="detail-value">Formal Economy - Employed</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Contribution Status</span>
+                                    <span class="detail-value">Up-to-date (as of October 2024)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Benefit Package</span>
+                                    <span class="detail-value">Z Benefit, Primary Care Benefit</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Inpatient Benefit</span>
+                                    <span class="detail-value">₱15,000 - ₱40,000 per case</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Outpatient Benefit</span>
+                                    <span class="detail-value">₱1,500 per consultation</span>
+                                </div>
+                            </div>
+                            <div class="insurance-benefits">
+                                <strong>Covered Services:</strong> Ward accommodation, surgeries, maternity care, selected outpatient procedures. <strong>Note:</strong> PhilHealth serves as secondary payer after Maxicare coverage.
+                            </div>
+                            <div class="insurance-actions">
+                                <button class="btn-insurance btn-view">View Contributions</button>
+                                <button class="btn-insurance btn-update">Link to Account</button>
+                            </div>
+                        </div>
+
+                        <div class="insurance-card">
+                            <span class="insurance-badge badge-expired">Expired</span>
+                            <div class="insurance-header">
+                                <div class="insurance-icon"><i class="fas fa-medkit"></i></div>
+                                <div class="insurance-info">
+                                    <h3>Insular Health Care</h3>
+                                    <div class="insurance-type">Limited Coverage Plan</div>
+                                </div>
+                            </div>
+                            <div class="insurance-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Policy Number</span>
+                                    <span class="detail-value">IHC-987-654-321</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Coverage Period</span>
+                                    <span class="detail-value">January 1, 2023 – December 31, 2023</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Last Used</span>
+                                    <span class="detail-value">November 15, 2023 (Lab Tests)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Remaining Balance</span>
+                                    <span class="detail-value">₱0.00</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Expiration Reason</span>
+                                    <span class="detail-value">Plan not renewed</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Renewal Option</span>
+                                    <span class="detail-value">Available until March 31, 2025</span>
+                                </div>
+                            </div>
+                            <div class="insurance-benefits">
+                                <strong>Previous Coverage:</strong> Basic consultations, routine lab tests, generic medications. No inpatient benefits.
+                            </div>
+                            <div class="insurance-actions">
+                                <button class="btn-insurance btn-view">View Past Claims</button>
+                                <button class="btn-insurance btn-renew">Renew Plan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Current Bills Tab -->
+            <section id="bills-tab" class="billing-tab-content" style="display: none;">
+                <div class="billing-section">
+                    <h3 class="section-subtitle"><i class="fas fa-receipt"></i> Your Bills & Statements</h3>
+                    <table class="bills-table">
+                        <thead>
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Service Date</th>
+                                <th>Description</th>
+                                <th>Total Amount</th>
+                                <th>Insurance Coverage</th>
+                                <th>Patient Balance</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>HS-BIL-24-1089</td>
+                                <td>October 10, 2024</td>
+                                <td>Consultation + Metabolic Panel</td>
+                                <td>₱8,500.00</td>
+                                <td>₱6,800.00 (Maxicare)</td>
+                                <td>₱1,700.00</td>
+                                <td><span class="bill-status status-pending">Pending</span></td>
+                                <td>
+                                    <button class="btn-bill btn-pay">Pay Now</button>
+                                    <button class="btn-bill btn-receipt">View Bill</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HS-BIL-24-0976</td>
+                                <td>September 28, 2024</td>
+                                <td>Dermatology Consultation + Medication</td>
+                                <td>₱5,200.00</td>
+                                <td>₱4,160.00 (Maxicare)</td>
+                                <td>₱1,040.00</td>
+                                <td><span class="bill-status status-paid">Paid</span></td>
+                                <td>
+                                    <button class="btn-bill btn-receipt">Download Receipt</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HS-BIL-24-0854</td>
+                                <td>August 15, 2024</td>
+                                <td>Blood Pressure Monitoring + Follow-up</td>
+                                <td>₱3,800.00</td>
+                                <td>₱3,040.00 (Maxicare)</td>
+                                <td>₱760.00</td>
+                                <td><span class="bill-status status-paid">Paid</span></td>
+                                <td>
+                                    <button class="btn-bill btn-receipt">Download Receipt</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HS-BIL-24-0732</td>
+                                <td>July 20, 2024</td>
+                                <td>Complete Blood Count + Consultation</td>
+                                <td>₱6,400.00</td>
+                                <td>₱5,120.00 (Maxicare + PhilHealth)</td>
+                                <td>₱1,280.00</td>
+                                <td><span class="bill-status status-overdue">Overdue</span></td>
+                                <td>
+                                    <button class="btn-bill btn-pay">Pay Now</button>
+                                    <button class="btn-bill btn-receipt">View Bill</button>
+                                    <button class="btn-bill btn-dispute">Dispute</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HS-BIL-24-1120</td>
+                                <td>October 15, 2024</td>
+                                <td>Prescription Refill Request Fee</td>
+                                <td>₱500.00</td>
+                                <td>₱0.00 (Not Covered)</td>
+                                <td>₱500.00</td>
+                                <td><span class="bill-status status-processing">Processing</span></td>
+                                <td>
+                                    <button class="btn-bill btn-receipt">View Bill</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Payment Methods Tab -->
+            <section id="payment-tab" class="billing-tab-content" style="display: none;">
+                <div class="billing-section">
+                    <h3 class="section-subtitle"><i class="fas fa-payment"></i> Saved Payment Methods</h3>
+                    <div class="payment-grid">
+                        <div class="payment-card payment-primary">
+                            <div class="payment-left">
+                                <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
+                                <div class="payment-details">
+                                    <h4>Visa Credit Card</h4>
+                                    <div class="payment-last-used">Last used: September 28, 2024 • Primary Method</div>
+                                </div>
+                            </div>
+                            <div class="payment-controls">
+                                <button class="btn-payment"><i class="fas fa-edit"></i></button>
+                                <button class="btn-payment"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="payment-card">
+                            <div class="payment-left">
+                                <div class="payment-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="payment-details">
+                                    <h4>GCash</h4>
+                                    <div class="payment-last-used">Last used: August 15, 2024 • Linked to +63917XXXXXXX</div>
+                                </div>
+                            </div>
+                            <div class="payment-controls">
+                                <button class="btn-payment"><i class="fas fa-edit"></i></button>
+                                <button class="btn-payment"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="payment-card">
+                            <div class="payment-left">
+                                <div class="payment-icon"><i class="fas fa-building"></i></div>
+                                <div class="payment-details">
+                                    <h4>BDO Online Banking</h4>
+                                    <div class="payment-last-used">Last used: July 22, 2024 • Linked to Account ****-****-5678</div>
+                                </div>
+                            </div>
+                            <div class="payment-controls">
+                                <button class="btn-payment"><i class="fas fa-edit"></i></button>
+                                <button class="btn-payment"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="btn-add-payment">
+                            <i class="fas fa-plus-circle fa-2x"></i>
+                            <div>Add New Payment Method</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Claims Tracker Tab -->
+            <section id="claims-tab" class="billing-tab-content" style="display: none;">
+                <div class="billing-section">
+                    <h3 class="section-subtitle"><i class="fas fa-tasks"></i> Insurance Claims Status</h3>
+                    <div class="claims-tracker">
+                        <div class="claim-card">
+                            <div class="claim-header">
+                                <div class="claim-type">Consultation + Lab Tests</div>
+                                <div class="claim-progress progress-approved">Approved</div>
+                            </div>
+                            <div class="claim-details">
+                                <div>
+                                    <strong>Claim ID:</strong> MAX-CLM-24-8765
+                                </div>
+                                <div>
+                                    <strong>Insurance:</strong> Maxicare
+                                </div>
+                                <div>
+                                    <strong>Service Date:</strong> October 10, 2024
+                                </div>
+                                <div>
+                                    <strong>Claimed Amount:</strong> ₱6,800.00
+                                </div>
+                                <div>
+                                    <strong>Approved Amount:</strong> ₱6,800.00
+                                </div>
+                                <div>
+                                    <strong>Payment Date:</strong> October 12, 2024
+                                </div>
+                            </div>
+                            <div class="claim-timeline">
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Oct 10, 2024:</span>
+                                    <span>Claim submitted by HealthSync Clinic</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Oct 11, 2024:</span>
+                                    <span>Claim received and processed</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Oct 12, 2024:</span>
+                                    <-4321</div>
+                                <div>
+                                    <strong>Insurance:</strong> PhilHealth
+                                </div>
+                                <div>
+                                    <strong>Service Date:</strong> September 28, 2024
+                                </div>
+                                <div>
+                                    <strong>Claimed Amount:</strong> ₱1,200.00
+                                </div>
+                                <div>
+                                    <strong>Current Status:</strong> Awaiting documentation
+                                </div>
+                                <div>
+                                    <strong>Estimated Completion:</strong> October 25, 2024
+                                </div>
+                            </div>
+                            <div class="claim-timeline">
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Sep 29, 2024:</span>
+                                    <span>Claim submitted to PhilHealth portal</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Oct 5, 2024:</span>
+                                    <span>Request for additional medical records sent</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Oct 10, 2024:</span>
+                                    <span>Documents uploaded - under review</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="claim-card">
+                            <div class="claim-header">
+                                <div class="claim-type">Blood Work + Follow-up</div>
+                                <div class="claim-progress progress-rejected">Rejected</div>
+                            </div>
+                            <div class="claim-details">
+                                <div>
+                                    <strong>Claim ID:</strong> MAX-CLM-24-7654
+                                </div>
+                                <div>
+                                    <strong>Insurance:</strong> Maxicare
+                                </div>
+                                <div>
+                                    <strong>Service Date:</strong> July 20, 2024
+                                </div>
+                                <div>
+                                    <strong>Claimed Amount:</strong> ₱5,120.00
+                                </div>
+                                <div>
+                                    <strong>Rejection Reason:</strong> Missing pre-authorization
+                                </div>
+                                <div>
+                                    <strong>Appeal Deadline:</strong> November 5, 2024
+                                </div>
+                            </div>
+                            <div class="claim-timeline">
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Jul 21, 2024:</span>
+                                    <span>Claim submitted by clinic</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Jul 28, 2024:</span>
+                                    <span>Claim rejected - pre-authorization required</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Aug 2, 2024:</span>
+                                    <span>Clinic notified - appeal preparation in progress</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="claim-card">
+                            <div class="claim-header">
+                                <div class="claim-type">Prescription Coverage</div>
+                                <div class="claim-progress progress-processing">Processing</div>
+                            </div>
+                            <div class="claim-details">
+                                <div>
+                                    <strong>Claim ID:</strong> MAX-CLM-24-9876
+                                </div>
+                                <div>
+                                    <strong>Insurance:</strong> Maxicare
+                                </div>
+                                <div>
+                                    <strong>Service Date:</strong> October 12, 2024
+                                </div>
+                                <div>
+                                    <strong>Claimed Amount:</strong> ₱2,300.00
+                                </div>
+                                <div>
+                                    <strong>Current Status:</strong> Benefit eligibility check
+                                </div>
+                                <div>
+                                    <strong>Estimated Completion:</strong> October 20, 2024
+                                </div>
+                            </div>
+                            <div class="claim-timeline">
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Oct 12, 2024:</span>
+                                    <span>Claim submitted by MediCare Pharmacy</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-date">Oct 15, 2024:</span>
+                                    <span>Claim received and logged</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Make a Payment Tab -->
+            <section id="pay-tab" class="billing-tab-content" style="display: none;">
+                <div class="billing-section">
+                    <h3 class="section-subtitle"><i class="fas fa-money-check-alt"></i> Submit a Payment</h3>
+                    <div class="payment-form">
+                        <form id="paymentForm">
+                            <div class="form-group">
+                                <label for="billSelect" class="form-label">Select Bill to Pay</label>
+                                <select id="billSelect" class="form-select">
+                                    <option value="">-- Select Bill --</option>
+                                    <option value="HS-BIL-24-1089">HS-BIL-24-1089 • ₱1,700.00 • Pending</option>
+                                    <option value="HS-BIL-24-0732">HS-BIL-24-0732 • ₱1,280.00 • Overdue</option>
+                                    <option value="HS-BIL-24-1120">HS-BIL-24-1120 • ₱500.00 • Processing</option>
+                                    <option value="other">Other Payment (Donation, Advance)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="otherPaymentField" style="display: none;">
+                                <label for="otherPaymentAmount" class="form-label">Payment Amount (₱)</label>
+                                <input type="number" id="otherPaymentAmount" class="form-input" min="1" placeholder="Enter amount">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Select Payment Method</label>
+                                <div class="payment-options">
+                                    <div class="payment-option active">
+                                        <i class="fas fa-credit-card"></i> Visa ****-****-****-1234
+                                    </div>
+                                    <div class="payment-option">
+                                        <i class="fas fa-mobile-alt"></i> GCash ****-****-5678
+                                    </div>
+                                    <div class="payment-option">
+                                        <i class="fas fa-building"></i> BDO ****-****-5678
+                                    </div>
+                                    <div class="payment-option">
+                                        <i class="fas fa-plus"></i> Add New Method
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="paymentNotes" class="form-label">Additional Notes (Optional)</label>
+                                <textarea id="paymentNotes" class="form-textarea" placeholder="Enter reference numbers or special instructions"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email Receipt To</label>
+                                <input type="email" id="receiptEmail" class="form-input" value="maria.dela.cruz@example.com" placeholder="Enter email for receipt">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="reset" class="btn-cancel-payment">Cancel Payment</button>
+                                <button type="submit" class="btn-submit-payment">Complete Payment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-left');
+            icon.classList.toggle('fa-angle-double-right');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Billing Tab Switching
+        const tabItems = document.querySelectorAll('.tab-item');
+        const tabContents = document.querySelectorAll('.billing-tab-content');
+
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabItems.forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+
+                tabContents.forEach(content => content.style.display = 'none');
+                const targetTab = tab.getAttribute('data-tab');
+                document.getElementById(`${targetTab}-tab`).style.display = 'block';
+            });
+        });
+
+        // Show/Hide Other Payment Field
+        const billSelect = document.getElementById('billSelect');
+        const otherPaymentField = document.getElementById('otherPaymentField');
+        
+        billSelect.addEventListener('change', () => {
+            otherPaymentField.style.display = billSelect.value === 'other' ? 'block' : 'none';
+        });
+
+        // Payment Form Submission Handler
+        document.getElementById('paymentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Payment submitted successfully! A receipt has been sent to your email.');
+            e.target.reset();
+        });
+
+        // Payment Option Selection
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                paymentOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync – Patient Health Records</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-collapsed {
+            width: 80px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-collapsed .sidebar-logo-container {
+            justify-content: center;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .sidebar-collapsed .sidebar-brand-name {
+            display: none;
+        }
+
+        .user-profile {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .sidebar-collapsed .user-profile {
+            display: none;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-blue);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .profile-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-profile {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-profile-edit {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-profile-edit:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .btn-profile-logout {
+            background-color: var(--alert-red);
+            color: var(--white);
+        }
+
+        .btn-profile-logout:hover {
+            background-color: #e04a2b;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .sidebar-collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .sidebar-collapsed .sidebar-toggle-btn {
+            align-self: center;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 280px;
+            transition: var(--transition);
+            padding: 2rem;
+        }
+
+        .sidebar-collapsed + .main-content {
+            margin-left: 80px;
+        }
+
+        /* -------------------------- TOP BAR -------------------------- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.5rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-icon:hover {
+            color: var(--primary-blue);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--alert-red);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.7rem 1rem 0.7rem 2.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            width: 250px;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .btn-print {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-print:hover {
+            background-color: #2d996d;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-share {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-share:hover {
+            background-color: var(--secondary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* -------------------------- PATIENT OVERVIEW -------------------------- */
+        .patient-overview {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .patient-identity {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .patient-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--primary-blue);
+        }
+
+        .patient-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .patient-basic-info h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .patient-id {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .patient-tags {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tag-insurance {
+            background-color: rgba(22, 93, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .tag-condition {
+            background-color: rgba(255, 171, 0, 0.1);
+            color: var(--warning-yellow);
+        }
+
+        .tag-allergy {
+            background-color: rgba(255, 99, 63, 0.1);
+            color: var(--alert-red);
+        }
+
+        .patient-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* -------------------------- RECORD TABS -------------------------- */
+        .record-tabs {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .tab-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .tab-item {
+            padding: 1rem 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab-item.active {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .tab-item:hover {
+            color: var(--primary-blue);
+        }
+
+        /* -------------------------- RECORD SECTIONS -------------------------- */
+        .record-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* -------------------------- MEDICAL HISTORY -------------------------- */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .history-item {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .history-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .history-provider {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .history-condition {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-notes {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .history-treatments {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* -------------------------- LAB RESULTS -------------------------- */
+        .lab-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .lab-result-card {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .lab-result-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .lab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .lab-test-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .lab-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .lab-facility {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+        }
+
+        .lab-values {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .lab-value-header {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .lab-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .lab-item:last-child {
+            border-bottom: none;
+        }
+
+        .lab-metric {
+            font-size: 0.95rem;
+        }
+
+        .lab-reading {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .lab-range {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .lab-flag {
+            color: var(--alert-red);
+            font-weight: 600;
+        }
+
+        .lab-normal {
+            color: var(--primary-green);
+            font-weight: 500;
+        }
+
+        .chart-container-small {
+            height: 180px;
+            margin-top: 1rem;
+        }
+
+        /* -------------------------- MEDICATIONS -------------------------- */
+        .medications-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .medications-table th,
+        .medications-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .medications-table th {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .medication-name {
+            font-weight: 600;
+        }
+
+        .medication-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: rgba(54, 179, 126, 0.1);
+            color: var(--primary-green);
+        }
+
+        .status-completed {
+            background-color: rgba(22, 93, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        /* -------------------------- VACCINATIONS -------------------------- */
+        .vaccination-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .vaccination-card {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .vaccination-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .vaccine-icon {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .vaccine-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .vaccine-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .vaccine-dose {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .vaccine-next {
+            font-size: 0.85rem;
+            color: var(--warning-yellow);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* -------------------------- ALLERGIES & CONDITIONS -------------------------- */
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .condition-group {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .group-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .condition-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .condition-item:last-child {
+            border-bottom: none;
+        }
+
+        .condition-severity {
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .severity-mild {
+            background-color: rgba(54, 179, 126, 0.1);
+            color: var(--primary-green);
+        }
+
+        .severity-moderate {
+            background-color: rgba(255, 171, 0, 0.1);
+            color: var(--warning-yellow);
+        }
+
+        .severity-severe {
+            background-color: rgba(255, 99, 63, 0.1);
+            color: var(--alert-red);
+        }
+
+        /* -------------------------- DOCUMENT ATTACHMENTS -------------------------- */
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .document-card {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .document-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .doc-icon {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .doc-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-doc {
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-download {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        .btn-download:hover {
+            background-color: #2d996d;
+        }
+
+        .btn-preview {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-preview:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 101;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-collapsed + .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                top: 1.5rem;
+                left: 1.5rem;
+                background-color: var(--white);
+                box-shadow: var(--shadow-sm);
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--dark-gray);
+                cursor: pointer;
+                z-index: 102;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .top-bar-actions {
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .patient-overview {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .patient-identity {
+                justify-content: center;
+            }
+
+            .patient-tags {
+                justify-content: center;
+            }
+
+            .tab-list {
+                gap: 1rem;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .conditions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .medications-table th,
+            .medications-table td {
+                padding: 0.7rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="page-wrapper">
+        <!-- Side Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-logo-container">
+                    <div class="sidebar-logo">HS</div>
+                    <div class="sidebar-brand-name">HealthSync</div>
+                </div>
+
+                <div class="user-profile">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                        </div>
+                        <div class="profile-info">
+                            <h3>Maria Dela Cruz</h3>
+                            <p>Patient ID: HS-2024-0567</p>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <a href="patient-profile.html" class="btn-profile btn-profile-edit">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </a>
+                        <a href="patient-login.html" class="btn-profile btn-profile-logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="appointments.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="records.html" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Health Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="prescriptions.html" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="insurance-billing.html" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Insurance & Billing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages & Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link active">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support.html" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+            <button class="sidebar-toggle-btn" id="sidebarToggle">
+                <i class="fas fa-angle-double-left"></i>
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <h2 class="page-title">My Health Records</h2>
+                <div class="top-bar-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search records, tests, medications...">
+                    </div>
+                    <button class="btn-print">
+                        <i class="fas fa-print"></i> Print Records
+                    </button>
+                    <button class="btn-share">
+                        <i class="fas fa-share-alt"></i> Share with Provider
+                    </button>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">2</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Patient Overview -->
+            <section class="patient-overview">
+                <div class="patient-identity">
+                    <div class="patient-avatar-large">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                    </div>
+                    <div class="patient-basic-info">
+                        <h2>Maria Dela Cruz</h2>
+                        <div class="patient-id">ID: HS-2024-0567 | Age: 34 | Gender: Female</div>
+                        <div class="patient-tags">
+                            <span class="tag tag-insurance">PhilHealth + Maxicare</span>
+                            <span class="tag tag-condition">Hypertension</span>
+                            <span class="tag tag-allergy">Penicillin Allergy</span>
+                        </div>
+                        <div>
+                            <p><strong>Last Updated:</strong> October 10, 2024</p>
+                            <p><strong>Primary Care Provider:</strong> Dr. Ana Santos</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="patient-summary">
+                    <div class="summary-item">
+                        <div class="summary-label">Height</div>
+                        <div class="summary-value">162 cm</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Weight</div>
+                        <div class="summary-value">68 kg</div>
+                    </div>
+                    <div class=”summary-item">
+                        <div class="summary-label">BMI</div>
+                        <div class="summary-value">25.9</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Blood Type</div>
+                        <div class="summary-value">A Positive</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Last BP Reading</div>
+                        <div class="summary-value">140/85 mmHg</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Last Cholesterol</div>
+                        <div class="summary-value">210 mg/dL</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Record Tabs -->
+            <section class="record-tabs">
+                <ul class="tab-list">
+                    <li class="tab-item active" data-tab="overview">Overview</li>
+                    <li class="tab-item" data-tab="history">Medical History</li>
+                    <li class="tab-item" data-tab="lab">Lab Results</li>
+                    <li class="tab-item" data-tab="medications">Medications</li>
+                    <li class="tab-item" data-tab="vaccinations">Vaccinations</li>
+                    <li class="tab-item" data-tab="conditions">Allergies & Conditions</li>
+                    <li class="tab-item" data-tab="documents">Documents</li>
+                </ul>
+            </section>
+
+            <!-- Overview Tab -->
+            <section id="overview-tab" class="record-tab-content active">
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-chart-line"></i> Health Trends</h3>
+                    <div class="lab-results-grid">
+                        <div class="lab-result-card">
+                            <div class="lab-header">
+                                <div class="lab-test-name">Blood Pressure Trends (Last 6 Months)</div>
+                                <div class="lab-date">Updated: Oct 10, 2024</div>
+                            </div>
+                            <div class="chart-container-small">
+                                <canvas id="bpChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="lab-result-card">
+                            <div class="lab-header">
+                                <div class="lab-test-name">Weight & BMI Trends (Last Year)</div>
+                                <div class="lab-date">Updated: Oct 10, 2024</div>
+                            </div>
+                            <div class="chart-container-small">
+                                <canvas id="weightChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-clock"></i> Recent Updates</h3>
+                    <div class="history-list">
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-date">October 10, 2024</div>
+                                <div class="history-provider">Dr. Ana Santos</div>
+                            </div>
+                            <div class="history-condition">Routine Check-up</div>
+                            <div class="history-notes">Blood pressure slightly elevated - adjusted medication dosage. Recommended low-sodium diet and increased physical activity.</div>
+                            <div class="history-treatments"><strong>Actions Taken:</strong> Losartan dosage increased from 50mg to 100mg daily. Scheduled follow-up in 4 weeks.</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-date">September 28, 2024</div>
+                                <div class="history-provider">Dr. Maria Lopez</div>
+                            </div>
+                            <div class="history-condition">Dermatology Consultation</div>
+                            <div class="history-notes">Acne flare-up on cheeks and forehead - likely triggered by stress. Prescribed topical treatment and recommended gentle skincare routine.</div>
+                            <div class="history-treatments"><strong>Actions Taken:</strong> Prescribed Clindamycin gel (apply twice daily). Scheduled follow-up in 6 weeks.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Medical History Tab -->
+            <section id="history-tab" class="record-tab-content" style="display: none;">
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-history"></i> Past Conditions & Treatments</h3>
+                    <div class="history-list">
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-date">March 15, 2024 - June 15, 2024</div>
+                                <div class="history-provider">Dr. Luis Reyes</div>
+                            </div>
+                            <div class="history-condition">Mild Hypertension</div>
+                            <div class="history-notes">Diagnosed with stage 1 hypertension after consistent elevated readings. Started on medication and lifestyle modifications.</div>
+                            <div class="history-treatments"><strong>Treatment:</strong> Losartan 50mg daily, low-sodium diet, 30 mins exercise 5x/week. <strong>Outcome:</strong> Readings improved but still slightly elevated.</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-date">December 20, 2023</div>
+                                <div class="history-provider">Dr. Ana Santos</div>
+                            </div>
+                            <div class="history-condition">Acute Sinusitis</div>
+                            <div class="history-notes">Developed sinus infection with fever, congestion and facial pain. Allergy to penicillin noted.</div>
+                            <div class="history-treatments"><strong>Treatment:</strong> Azithromycin 500mg daily for 5 days, decongestants. <strong>Outcome:</strong> Full recovery within 10 days.</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-date">July 8, 2023</div>
+                                <div class="history-provider">Dr. Mark Dizon</div>
+                            </div>
+                            <div class="history-condition">Stress Management Consultation</div>
+                            <div class="history-notes">Reported increased stress levels affecting sleep and mood. No underlying mental health conditions identified.</div>
+                            <div class="history-treatments"><strong>Treatment:</strong> Relaxation techniques, mindfulness exercises, recommended 7-8 hours sleep. <strong>Outcome:</strong> Stress levels reduced significantly after 3 months.</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-date">February 12, 2022</div>
+                                <div class="history-provider">Dr. Rita Castro</div>
+                            </div>
+                            <div class="history-condition">Appendectomy</div>
+                            <div class="history-notes">Acute appendicitis requiring emergency surgery. Procedure successful with no complications.</div>
+                            <div class="history-treatments"><strong>Treatment:</strong> Laparoscopic appendectomy. <strong>Outcome:</strong> Full recovery within 4 weeks. No long-term issues.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lab Results Tab -->
+            <section id="lab-tab" class="record-tab-content" style="display: none;">
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-flask"></i> Recent Lab Results</h3>
+                    <div class="lab-results-grid">
+                        <div class="lab-result-card">
+                            <div class="lab-header">
+                                <div class="lab-test-name">Complete Blood Count (CBC)</div>
+                                <div class="lab-date">October 10, 2024</div>
+                            </div>
+                            <div class="lab-facility">HealthSync Diagnostic Center</div>
+                            <div class="lab-values">
+                                <div class="lab-value-header">Metric</div>
+                                <div class="lab-value-header">Reading</div>
+                                <div class="lab-value-header">Reference Range</div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Red Blood Cells</div>
+                                    <div class="lab-reading">4.8 x 10¹²/L</div>
+                                    <div class="lab-range">4.5 - 5.5 x 10¹²/L <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">White Blood Cells</div>
+                                    <div class="lab-reading">7.2 x 10⁹/L</div>
+                                    <div class="lab-range">4.0 - 10.0 x 10⁹/L <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Hemoglobin</div>
+                                    <div class="lab-reading">13.2 g/dL</div>
+                                    <div class="lab-range">12.0 - 15.5 g/dL <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Platelets</div>
+                                    <div class="lab-reading">285 x 10⁹/L</div>
+                                    <div class="lab-range">150 - 450 x 10⁹/L <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lab-result-card">
+                            <div class="lab-header">
+                                <div class="lab-test-name">Metabolic Panel</div>
+                                <div class="lab-date">October 10, 2024</div>
+                            </div>
+                            <div class="lab-facility">HealthSync Diagnostic Center</div>
+                            <div class="lab-values">
+                                <div class="lab-value-header">Metric</div>
+                                <div class="lab-value-header">Reading</div>
+                                <div class="lab-value-header">Reference Range</div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Fasting Glucose</div>
+                                    <div class="lab-reading">92 mg/dL</div>
+                                    <div class="lab-range">70 - 99 mg/dL <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Total Cholesterol</div>
+                                    <div class="lab-reading">210 mg/dL</div>
+                                    <div class="lab-range"><200 mg/dL <span class="lab-flag">HIGH</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">HDL Cholesterol</div>
+                                    <div class="lab-reading">55 mg/dL</div>
+                                    <div class="lab-range">>40 mg/dL <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">LDL Cholesterol</div>
+                                    <div class="lab-reading">130 mg/dL</div>
+                                    <div class="lab-range"><100 mg/dL <span class="lab-flag">HIGH</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Triglycerides</div>
+                                    <div class="lab-reading">150 mg/dL</div>
+                                    <div class="lab-range"><150 mg/dL <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lab-result-card">
+                            <div class="lab-header">
+                                <div class="lab-test-name">Blood Pressure Monitoring</div>
+                                <div class="lab-date">October 10, 2024</div>
+                            </div>
+                            <div class="lab-facility">HealthSync Clinic</div>
+                            <div class="lab-values">
+                                <div class="lab-value-header">Metric</div>
+                                <div class="lab-value-header">Reading</div>
+                                <div class="lab-value-header">Reference Range</div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Systolic</div>
+                                    <div class="lab-reading">140 mmHg</div>
+                                    <div class="lab-range"><120 mmHg <span class="lab-flag">HIGH</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Diastolic</div>
+                                    <div class="lab-reading">85 mmHg</div>
+                                    <div class="lab-range"><80 mmHg <span class="lab-flag">HIGH</span></div>
+                                </div>
+                                <div class="lab-item">
+                                    <div class="lab-metric">Heart Rate</div>
+                                    <div class="lab-reading">72 bpm</div>
+                                    <div class="lab-range">60 - 100 bpm <span class="lab-normal">NORMAL</span></div>
+                                </div>
+                            </div>
+                            <div class="chart-container-small">
+                                <canvas id="bpDailyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Medications Tab -->
+            <section id="medications-tab" class="record-tab-content" style="display: none;">
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-pills"></i> Current & Past Medications</h3>
+                    <table class="medications-table">
+                        <thead>
+                            <tr>
+                                <th>Medication Name</th>
+                                <th>Dosage</th>
+                                <th>Frequency</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Prescribing Doctor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="medication-name">Losartan</div>
+                                    <div class="medication-purpose">Hypertension</div>
+                                </td>
+                                <td>100 mg</td>
+                                <td>Once daily (morning)</td>
+                                <td>Oct 10, 2024</td>
+                                <td>Ongoing</td>
+                                <td><span class="medication-status status-active">Active</span></td>
+                                <td>Dr. Ana Santos</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="medication-name">Clindamycin Gel</div>
+                                    <div class="medication-purpose">Acne Treatment</div>
+                                </td>
+                                <td>1% Topical</td>
+                                <td>Twice daily (morning/night)</td>
+                                <td>Sep 28, 2024</td>
+                                <td>Nov 16, 2024</td>
+                                <td><span class="medication-status status-active">Active</span></td>
+                                <td>Dr. Maria Lopez</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="medication-name">Losartan</div>
+                                    <div class="medication-purpose">Hypertension</div>
+                                </td>
+                                <td>50 mg</td>
+                                <td>Once daily (morning)</td>
+                                <td>Mar 15, 2024</td>
+                                <td>Oct 9, 2024</td>
+                                <td><span class="medication-status status-completed">Completed</span></td>
+                                <td>Dr. Luis Reyes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="medication-name">Azithromycin</div>
+                                    <div class="medication-purpose">Acute Sinusitis</div>
+                                </td>
+                                <td>500 mg</td>
+                                <td>Once daily</td>
+                                <td>Dec 20, 2023</td>
+                                <td>Dec 24, 2023</td>
+                                <td><span class="medication-status status-completed">Completed</span></td>
+                                <td>Dr. Ana Santos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Vaccinations Tab -->
+            <section id="vaccinations-tab" class="record-tab-content" style="display:
+
+ none;">
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-syringe"></i> Vaccination History</h3>
+                    <div class="vaccination-list">
+                        <div class="vaccination-card">
+                            <div class="vaccine-icon"><i class="fas fa-shield-virus"></i></div>
+                            <div class="vaccine-name">COVID-19 Booster</div>
+                            <div class="vaccine-date">April 15, 2024</div>
+                            <div class="vaccine-dose">Dose 4 - Pfizer-BioNTech</div>
+                            <div class="vaccine-next">Next booster recommended: April 2025</div>
+                        </div>
+                        <div class="vaccination-card">
+                            <div class="vaccine-icon"><i class="fas fa-shield-virus"></i></div>
+                            <div class="vaccine-name">Influenza</div>
+                            <div class="vaccine-date">October 5, 2023</div>
+                            <div class="vaccine-dose">Annual Dose - Quadrivalent</div>
+                            <div class="vaccine-next">Next dose recommended: October 2024</div>
+                        </div>
+                        <div class="vaccination-card">
+                            <div class="vaccine-icon"><i class="fas fa-shield-virus"></i></div>
+                            <div class="vaccine-name">Tetanus, Diphtheria, Pertussis (Tdap)</div>
+                            <div class="vaccine-date">March 20, 2022</div>
+                            <div class="vaccine-dose">Single Dose</div>
+                            <div class="vaccine-next">Next dose recommended: March 2032</div>
+                        </div>
+                        <div class="vaccination-card">
+                            <div class="vaccine-icon"><i class="fas fa-shield-virus"></i></div>
+                            <div class="vaccine-name">Human Papillomavirus (HPV)</div>
+                            <div class="vaccine-date">Completed Series: June 2021</div>
+                            <div class="vaccine-dose">3 Doses - Gardasil 9</div>
+                            <div class="vaccine-next">No further doses needed</div>
+                        </div>
+                        <div class="vaccination-card">
+                            <div class="vaccine-icon"><i class="fas fa-shield-virus"></i></div>
+                            <div class="vaccine-name">Hepatitis B</div>
+                            <div class="vaccine-date">Completed Series: January 2020</div>
+                            <div class="vaccine-dose">3 Doses</div>
+                            <div class="vaccine-next">No further doses needed</div>
+                        </div>
+                        <div class="vaccination-card">
+                            <div class="vaccine-icon"><i class="fas fa-shield-virus"></i></div>
+                            <div class="vaccine-name">Measles, Mumps, Rubella (MMR)</div>
+                            <div class="vaccine-date">Completed Series: Childhood</div>
+                            <div class="vaccine-dose">2 Doses</div>
+                            <div class="vaccine-next">Booster not currently recommended</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Allergies & Conditions Tab -->
+            <section id="conditions-tab" class="record-tab-content" style="display: none;">
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-notes-medical"></i> Chronic Conditions & Allergies</h3>
+                    <div class="conditions-grid">
+                        <div class="condition-group">
+                            <div class="group-title"><i class="fas fa-heartbeat"></i> Chronic Conditions</div>
+                            <div class="condition-item">
+                                <div>
+                                    <div class="condition-name"><strong>Hypertension (Stage 1)</strong></div>
+                                    <div class="condition-date">Diagnosed: March 15, 2024</div>
+                                </div>
+                                <div class="condition-severity severity-moderate">Moderate</div>
+                            </div>
+                            <div class="condition-item">
+                                <div>
+                                    <div class="condition-name"><strong>Mild Acne Vulgaris</strong></div>
+                                    <div class="condition-date">Diagnosed: September 28, 2024</div>
+                                </div>
+                                <div class="condition-severity severity-mild">Mild</div>
+                            </div>
+                            <div class="condition-item">
+                                <div>
+                                    <div class="condition-name"><strong>Overweight</strong></div>
+                                    <div class="condition-date">Assessed: March 15, 2024</div>
+                                </div>
+                                <div class="condition-severity severity-mild">Mild</div>
+                            </div>
+                        </div>
+                        <div class="condition-group">
+                            <div class="group-title"><i class="fas fa-allergies"></i> Allergies</div>
+                            <div class="condition-item">
+                                <div>
+                                    <div class="condition-name"><strong>Penicillin</strong></div>
+                                    <div class="condition-date">Identified: Childhood</div>
+                                    <div class="condition-reaction">Hives, skin rash</div>
+                                </div>
+                                <div class="condition-severity severity-severe">Severe</div>
+                            </div>
+                            <div class="condition-item">
+                                <div>
+                                    <div class="condition-name"><strong>Dust Mites</strong></div>
+                                    <div class="condition-date">Identified: June 2022</div>
+                                    <div class="condition-reaction">Sneezing, nasal congestion</div>
+                                </div>
+                                <div class="condition-severity severity-mild">Mild</div>
+                            </div>
+                            <div class="condition-item">
+                                <div>
+                                    <div class="condition-name"><strong>Cat Dander</strong></div>
+                                    <div class="condition-date">Identified: August 2023</div>
+                                    <div class="condition-reaction">Watery eyes, asthma-like symptoms</div>
+                                </div>
+                                <div class="condition-severity severity-moderate">Moderate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documents Tab -->
+            <section id="documents-tab" class="record-tab-content" style="display: none;">
+                <div class="record-section">
+                    <h3 class="section-subtitle"><i class="fas fa-file-alt"></i> Medical Documents & Attachments</h3>
+                    <div class="documents-grid">
+                        <div class="document-card">
+                            <div class="doc-icon"><i class="fas fa-file-pdf"></i></div>
+                            <div class="doc-name">October 2024 Consultation Notes</div>
+                            <div class="doc-date">Uploaded: October 10, 2024</div>
+                            <div class="doc-actions">
+                                <button class="btn-doc btn-download"><i class="fas fa-download"></i> Download</button>
+                                <button class="btn-doc btn-preview"><i class="fas fa-eye"></i> Preview</button>
+                            </div>
+                        </div>
+                        <div class="document-card">
+                            <div class="doc-icon"><i class="fas fa-file-pdf"></i></div>
+                            <div class="doc-name">Complete Blood Count Report</div>
+                            <div class="doc-date">Uploaded: October 10, 2024</div>
+                            <div class="doc-actions">
+                                <button class="btn-doc btn-download"><i class="fas fa-download"></i> Download</button>
+                                <button class="btn-doc btn-preview"><i class="fas fa-eye"></i> Preview</button>
+                            </div>
+                        </div>
+                        <div class="document-card">
+                            <div class="doc-icon"><i class="fas fa-file-pdf"></i></div>
+                            <div class="doc-name">Metabolic Panel Results</div>
+                            <div class="doc-date">Uploaded: October 10, 2024</div>
+                            <div class="doc-actions">
+                                <button class="btn-doc btn-download"><i class="fas fa-download"></i> Download</button>
+                                <button class="btn-doc btn-preview"><i class="fas fa-eye"></i> Preview</button>
+                            </div>
+                        </div>
+                        <div class="document-card">
+                            <div class="doc-icon"><i class="fas fa-file-pdf"></i></div>
+                            <div class="doc-name">Appendectomy Surgical Report</div>
+                            <div class="doc-date">Uploaded: February 15, 2022</div>
+                            <div class="doc-actions">
+                                <button class="btn-doc btn-download"><i class="fas fa-download"></i> Download</button>
+                                <button class="btn-doc btn-preview"><i class="fas fa-eye"></i> Preview</button>
+                            </div>
+                        </div>
+                        <div class="document-card">
+                            <div class="doc-icon"><i class="fas fa-file-pdf"></i></div>
+                            <div class="doc-name">Vaccination Record Card</div>
+                            <div class="doc-date">Uploaded: April 15, 2024</div>
+                            <div class="doc-actions">
+                                <button class="btn-doc btn-download"><i class="fas fa-download"></i> Download</button>
+                                <button class="btn-doc btn-preview"><i class="fas fa-eye"></i> Preview</button>
+                            </div>
+                        </div>
+                        <div class="document-card">
+                            <div class="doc-icon"><i class="fas fa-file-pdf"></i></div>
+                            <div class="doc-name">Health Insurance Coverage Letter</div>
+                            <div class="doc-date">Uploaded: January 5, 2024</div>
+                            <div class="doc-actions">
+                                <button class="btn-doc btn-download"><i class="fas fa-download"></i> Download</button>
+                                <button class="btn-doc btn-preview"><i class="fas fa-eye"></i> Preview</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-left');
+            icon.classList.toggle('fa-angle-double-right');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Record Tab Switching
+        const tabItems = document.querySelectorAll('.tab-item');
+        const tabContents = document.querySelectorAll('.record-tab-content');
+
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabItems.forEach(item => item.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+
+                // Hide all tab contents
+                tabContents.forEach(content => content.style.display = 'none');
+                // Show corresponding tab content
+                const targetTab = tab.getAttribute('data-tab');
+                document.getElementById(`${targetTab}-tab`).style.display = 'block';
+            });
+        });
+
+        // Health Trend Charts
+        // Blood Pressure Chart
+        const bpCtx = document.getElementById('bpChart').getContext('2d');
+        new Chart(bpCtx, {
+            type: 'line',
+            data: {
+                labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                datasets: [{
+                    label: 'Systolic BP',
+                    data: [135, 138, 142, 139, 141, 140],
+                    borderColor: '#FF5630',
+                    tension: 0.3,
+                    fill: false
+                }, {
+                    label: 'Diastolic BP',
+                    data: [82, 84, 86, 83, 84, 85],
+                    borderColor: '#165DFF',
+                    tension: 0.3,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Blood Pressure (mmHg)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Weight & BMI Chart
+        const weightCtx = document.getElementById('weightChart').getContext('2d');
+        new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: ['Nov 2023', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct 2024'],
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: [72, 71, 70, 69.5, 69, 68.5, 68.5, 69, 68.8, 68.5, 68.2, 68],
+                    borderColor: '#36B37E',
+                    backgroundColor: 'rgba(54, 179, 126, 0.1)',
+                    tension: 0.3,
+                    fill: true,
+                    yAxisID: 'y'
+                }, {
+                    label: 'BMI',
+                    data: [27.5, 27.1, 26.7, 26.5, 26.3, 26.1, 26.1, 26.3, 26.2, 26.1, 26.0, 25.9],
+                    borderColor: '#FFAB00',
+                    tension: 0.3,
+                    fill: false,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Weight (kg)'
+                        },
+                        position: 'left'
+                    },
+                    y1: {
+                        title: {
+                            display: true,
+                            text: 'BMI'
+                        },
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Daily BP Chart
+        const bpDailyCtx = document.getElementById('bpDailyChart').getContext('2d');
+        new Chart(bpDailyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Morning', 'Noon', 'Afternoon', 'Evening'],
+                datasets: [{
+                    label: 'Systolic',
+                    data: [142, 138, 140, 136],
+                    backgroundColor: 'rgba(255, 99, 63, 0.6)'
+                }, {
+                    label: 'Diastolic',
+                    data: [86, 82, 85, 80],
+                    backgroundColor: 'rgba(22, 93, 255, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Blood Pressure (mmHg)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Print functionality
+        document.querySelector('.btn-print').addEventListener('click', () => {
+            window.print();
+        });
+    </script>
+</body>
+</html>

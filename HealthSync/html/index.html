@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync – Patient Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-collapsed {
+            width: 80px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-collapsed .sidebar-logo-container {
+            justify-content: center;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .sidebar-collapsed .sidebar-brand-name {
+            display: none;
+        }
+
+        .patient-profile {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .sidebar-collapsed .patient-profile {
+            display: none;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-blue);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .profile-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-profile {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-profile-edit {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-profile-edit:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .btn-profile-logout {
+            background-color: var(--alert-red);
+            color: var(--white);
+        }
+
+        .btn-profile-logout:hover {
+            background-color: #e04a2b;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .sidebar-collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .sidebar-collapsed .sidebar-toggle-btn {
+            align-self: center;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 280px;
+            transition: var(--transition);
+            padding: 2rem;
+        }
+
+        .sidebar-collapsed + .main-content {
+            margin-left: 80px;
+        }
+
+        /* -------------------------- TOP BAR -------------------------- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.5rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-icon:hover {
+            color: var(--primary-blue);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--alert-red);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.7rem 1rem 0.7rem 2.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            width: 250px;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* -------------------------- DASHBOARD CARDS SECTION -------------------------- */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stats-card {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .icon-appointments { background-color: var(--primary-blue); }
+        .icon-prescriptions { background-color: var(--primary-green); }
+        .icon-records { background-color: var(--warning-yellow); }
+        .icon-bills { background-color: var(--secondary-blue); }
+
+        .card-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-content p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* -------------------------- RECENT ACTIVITY SECTION -------------------------- */
+        .dashboard-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-card {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .section-action {
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .section-action:hover {
+            text-decoration: underline;
+        }
+
+        /* -------------------------- UPCOMING APPOINTMENTS -------------------------- */
+        .appointments-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .appointments-table th,
+        .appointments-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .appointments-table th {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .appointments-table td {
+            font-size: 0.95rem;
+        }
+
+        .appointment-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-upcoming {
+            background-color: rgba(54, 179, 126, 0.1);
+            color: var(--primary-green);
+        }
+
+        .status-pending {
+            background-color: rgba(255, 171, 0, 0.1);
+            color: var(--warning-yellow);
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-view {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-view:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .btn-reschedule {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-reschedule:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .btn-cancel {
+            background-color: var(--alert-red);
+            color: var(--white);
+        }
+
+        .btn-cancel:hover {
+            background-color: #e04a2b;
+        }
+
+        /* -------------------------- MEDICATION REMINDERS -------------------------- */
+        .medication-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .medication-item:last-child {
+            border-bottom: none;
+        }
+
+        .medication-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .medication-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .medication-reminder {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .reminder-toggle {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background-color: var(--medium-gray);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .reminder-toggle.active {
+            background-color: var(--primary-green);
+        }
+
+        .toggle-knob {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: var(--white);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .reminder-toggle.active .toggle-knob {
+            left: 22px;
+        }
+
+        /* -------------------------- HEALTH METRICS SECTION -------------------------- */
+        .health-metrics {
+            grid-column: 1 / -1;
+        }
+
+        .metrics-charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-container {
+            height: 250px;
+            position: relative;
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 1200px) {
+            .dashboard-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 101;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-collapsed + .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                top: 1.5rem;
+                left: 1.5rem;
+                background-color: var(--white);
+                box-shadow: var(--shadow-sm);
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--dark-gray);
+                cursor: pointer;
+                z-index: 102;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .top-bar-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .appointments-table {
+                font-size: 0.85rem;
+            }
+
+            .appointments-table th,
+            .appointments-table td {
+                padding: 0.7rem;
+            }
+
+            .appointment-actions {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+
+            .metrics-charts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="page-wrapper">
+        <!-- Side Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-logo-container">
+                    <div class="sidebar-logo">HS</div>
+                    <div class="sidebar-brand-name">HealthSync</div>
+                </div>
+
+                <div class="patient-profile">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                        </div>
+                        <div class="profile-info">
+                            <h3>Maria Dela Cruz</h3>
+                            <p>Patient ID: HS-2024-0567</p>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <a href="patient-profile.html" class="btn-profile btn-profile-edit">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </a>
+                        <a href="patient-login.html" class="btn-profile btn-profile-logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="appointments.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="records.html" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Health Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="prescriptions.html" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a hrefpatient-insurance-billing.html" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Insurance & Billing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages & Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support.html" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+            <button class="sidebar-toggle-btn" id="sidebarToggle">
+                <i class="fas fa-angle-double-left"></i>
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <h2 class="page-title">Patient Dashboard</h2>
+                <div class="top-bar-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search records, doctors, services...">
+                    </div>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Stats Cards -->
+            <section class="dashboard-cards">
+                <div class="stats-card">
+                    <div class="card-icon icon-appointments">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>2</h3>
+                        <p>Upcoming Appointments</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="card-icon icon-prescriptions">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>3</h3>
+                        <p>Active Medications</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="card-icon icon-records">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>12</h3>
+                        <p>Health Records</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="card-icon icon-bills">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>₱2,500</h3>
+                        <p>Pending Payments</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Sections -->
+            <section class="dashboard-sections">
+                <!-- Upcoming Appointments -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3 class="section-title">Upcoming Appointments</h3>
+                        <a href="patient-appointments.html" class="section-action">View All</a>
+                    </div>
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Doctor</th>
+                                <th>Specialty</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Oct 15, 2024 • 10:00 AM</td>
+                                <td>Dr. Ana Santos</td>
+                                <td>General Medicine</td>
+                                <td><span class="appointment-status status-upcoming">Upcoming</span></td>
+                                <td class="appointment-actions">
+                                    <button class="btn-action btn-view">View</button>
+                                    <button class="btn-action btn-reschedule">Reschedule</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Oct 22, 2024 • 2:30 PM</td>
+                                <td>Dr. Luis Reyes</td>
+                                <td>Cardiology</td>
+                                <td><span class="appointment-status status-upcoming">Upcoming</span></td>
+                                <td class="appointment-actions">
+                                    <button class="btn-action btn-view">View</button>
+                                    <button class="btn-action btn-reschedule">Reschedule</button>
+                                    <button class="btn-action btn-cancel">Cancel</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Nov 5, 2024 • 9:15 AM</td>
+                                <td>Dr. Maria Lopez</td>
+                                <td>Dermatology</td>
+                                <td><span class="appointment-status status-pending">Pending Confirmation</span></td>
+                                <td class="appointment-actions">
+                                    <button class="btn-action btn-view">View</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Medication Reminders -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3 class="section-title">Medication Reminders</h3>
+                        <a href="patient-prescriptions.html" class="section-action">Manage All</a>
+                    </div>
+                    <div class="medication-list">
+                        <div class="medication-item">
+                            <div class="medication-info">
+                                <h4>Losartan 50mg</h4>
+                                <p>Once daily • Morning • Refill in 5 days</p>
+                            </div>
+                            <div class="medication-reminder">
+                                <span class="reminder-toggle active">
+                                    <span class="toggle-knob"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-info">
+                                <h4>Metformin 1000mg</h4>
+                                <p>Twice daily • After meals • Refill in 12 days</p>
+                            </div>
+                            <div class="medication-reminder">
+                                <span class="reminder-toggle active">
+                                    <span class="toggle-knob"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="medication-item">
+                            <div class="medication-info">
+                                <h4>Aspirin 81mg</h4>
+                                <p>Once daily • Evening • Refill in 3 days</p>
+                            </div>
+                            <div class="medication-reminder">
+                                <span class="reminder-toggle">
+                                    <span class="toggle-knob"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Metrics -->
+                <div class="section-card health-metrics">
+                    <div class="section-header">
+                        <h3 class="section-title">Health Metrics Overview</h3>
+                        <a href="patient-records.html#metrics" class="section-action">View Detailed Reports</a>
+                    </div>
+                    <div class="metrics-charts">
+                        <div class="chart-container">
+                            <canvas id="bloodPressureChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="bloodSugarChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="weightChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-left');
+            icon.classList.toggle('fa-angle-double-right');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Medication Reminder Toggle
+        const reminderToggles = document.querySelectorAll('.reminder-toggle');
+        reminderToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('active');
+            });
+        });
+
+        // Health Metrics Charts
+        // Blood Pressure Chart
+        const bpCtx = document.getElementById('bloodPressureChart').getContext('2d');
+        new Chart(bpCtx, {
+            type: 'line',
+            data: {
+                labels: ['Oct 1', 'Oct 5', 'Oct 10', 'Oct 15', 'Oct 20', 'Oct 25'],
+                datasets: [
+                    {
+                        label: 'Systolic (mmHg)',
+                        data: [135, 132, 128, 130, 125, 122],
+                        borderColor: var(--primary-blue),
+                        backgroundColor: 'rgba(22, 93, 255, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Diastolic (mmHg)',
+                        data: [85, 82, 80, 81, 78, 76],
+                        borderColor: var(--secondary-blue),
+                        backgroundColor: 'rgba(10, 75, 222, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Blood Pressure Trends'
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 60,
+                        max: 150
+                    }
+                }
+            }
+        });
+
+        // Blood Sugar Chart
+        const bsCtx = document.getElementById('bloodSugarChart').getContext('2d');
+        new Chart(bsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Oct 1', 'Oct 5', 'Oct 10', 'Oct 15', 'Oct 20', 'Oct 25'],
+                datasets: [{
+                    label: 'Fasting Blood Sugar (mg/dL)',
+                    data: [112, 108, 105, 102, 98, 95],
+                    backgroundColor: 'rgba(54, 179, 126, 0.6)',
+                    borderColor: var(--primary-green),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Fasting Blood Sugar Levels'
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 70,
+                        max: 140,
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' mg/dL';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Weight Chart
+        const weightCtx = document.getElementById('weightChart').getContext('2d');
+        new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: ['Oct 1', 'Oct 5', 'Oct 10', 'Oct 15', 'Oct 20', 'Oct 25'],
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: [68.5, 68.2, 67.8, 67.5, 67.2, 66.9],
+                    borderColor: var(--warning-yellow),
+                    backgroundColor: 'rgba(255, 171, 0, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Weight Trends'
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 65,
+                        max: 70,
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' kg';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

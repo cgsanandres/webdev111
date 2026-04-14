@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync – Patient Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-collapsed {
+            width: 80px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-collapsed .sidebar-logo-container {
+            justify-content: center;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .sidebar-collapsed .sidebar-brand-name {
+            display: none;
+        }
+
+        .user-profile-sidebar {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+            text-align: center;
+        }
+
+        .sidebar-collapsed .user-profile-sidebar {
+            display: none;
+        }
+
+        .profile-avatar-sidebar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-blue);
+            margin: 0 auto 1rem;
+        }
+
+        .profile-avatar-sidebar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name-sidebar {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-id-sidebar {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .sidebar-collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .sidebar-collapsed .sidebar-toggle-btn {
+            align-self: center;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 280px;
+            transition: var(--transition);
+            padding: 2rem;
+        }
+
+        .sidebar-collapsed + .main-content {
+            margin-left: 80px;
+        }
+
+        /* -------------------------- MOBILE TOP BAR -------------------------- */
+        .mobile-top-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--white);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1rem;
+        }
+
+        .mobile-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* -------------------------- PROFILE HEADER -------------------------- */
+        .profile-header {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-avatar-main {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--primary-blue);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .profile-avatar-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-edit-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .avatar-edit-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .profile-info-header {
+            flex: 1;
+        }
+
+        .profile-name-main {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-tagline {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .profile-actions-header {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-edit-profile {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-edit-profile:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .btn-download-profile {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--white);
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-download-profile:hover {
+            background-color: rgba(22, 93, 255, 0.05);
+        }
+
+        /* -------------------------- PROFILE TABS -------------------------- */
+        .profile-tabs {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab-link {
+            padding: 1rem 0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-link.active {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .tab-link:hover {
+            color: var(--primary-blue);
+        }
+
+        /* -------------------------- PROFILE SECTIONS -------------------------- */
+        .profile-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .profile-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .form-input, .form-select {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        .form-input:disabled, .form-select:disabled {
+            background-color: var(--light-gray);
+            color: var(--text-muted);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .form-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-save {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-save:hover {
+            background-color: #2d996d;
+        }
+
+        .btn-cancel {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--white);
+            color: var(--text-muted);
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-cancel:hover {
+            background-color: var(--light-gray);
+        }
+
+        .btn-edit {
+            padding: 0.6rem 1.2rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-edit:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        /* -------------------------- MEDICAL HISTORY TABLE -------------------------- */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .history-table th, .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .history-table th {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .history-table td {
+            font-size: 0.9rem;
+        }
+
+        .condition-tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tag-active {
+            background-color: rgba(54, 179, 126, 0.1);
+            color: var(--primary-green);
+        }
+
+        .tag-resolved {
+            background-color: rgba(22, 93, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        /* -------------------------- ALLERGIES & MEDICATIONS LIST -------------------------- */
+        .list-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .list-details {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 101;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .mobile-top-bar {
+                display: flex;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            .profile-actions-header {
+                justify-content: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Top Bar -->
+    <div class="mobile-top-bar">
+        <div class="mobile-title">Patient Profile</div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Side Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-logo-container">
+                <div class="sidebar-logo">HS</div>
+                <div class="sidebar-brand-name">HealthSync</div>
+            </div>
+
+            <div class="user-profile-sidebar">
+                <div class="profile-avatar-sidebar">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                </div>
+                <div class="profile-name-sidebar">Maria Dela Cruz</div>
+                <div class="profile-id-sidebar">Patient ID: HS-2024-0567</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="appointments.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="records.html" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Health Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="prescriptions.html" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="insurance-billing.html" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Insurance & Billing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages & Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link active">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support.html" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <button class="sidebar-toggle-btn" id="sidebarToggle">
+            <i class="fas fa-angle-double-left"></i>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar-main">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                <button class="avatar-edit-btn">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+            <div class="profile-info-header">
+                <div class="profile-name-main">Maria Dela Cruz</div>
+                <div class="profile-tagline">Resident of Quezon City, Metro Manila | Member since January 2024</div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Visits</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Active Medications</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Active Conditions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Allergy</div>
+                    </div>
+                </div>
+                <div class="profile-actions-header">
+                    <button class="btn-edit-profile" id="editProfileBtn">
+                        <i class="fas fa-pencil-alt"></i> Edit Profile
+                    </button>
+                    <button class="btn-download-profile">
+                        <i class="fas fa-download"></i> Download Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tabs -->
+        <div class="profile-tabs">
+            <div class="tab-link active" data-section="personal">Personal Information</div>
+            <div class="tab-link" data-section="contact">Contact Details</div>
+            <div class="tab-link" data-section="emergency">Emergency Contacts</div>
+            <div class="tab-link" data-section="medical">Medical History</div>
+            <div class="tab-link" data-section="allergies">Allergies</div>
+            <div class="tab-link" data-section="medications">Medications</div>
+            <div class="tab-link" data-section="insurance">Insurance Information</div>
+        </div>
+
+        <!-- Personal Information Section -->
+        <div class="profile-section active" id="personal">
+            <div class="section-title">
+                <i class="fas fa-user"></i> Personal Information
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" value="Maria Santos Dela Cruz" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nickname</label>
+                    <input type="text" class="form-input" value="Maria" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-input" value="1985-06-15" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <input type="text" class="form-input" value="40 years old" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select" disabled>
+                        <option selected>Female</option>
+                        <option>Male</option>
+                        <option>Non-binary</option>
+                        <option>Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Civil Status</label>
+                    <select class="form-select" disabled>
+                        <option>Single</option>
+                        <option selected>Married</option>
+                        <option>Widowed</option>
+                        <option>Divorced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Citizenship</label>
+                    <input type="text" class="form-input" value="Filipino" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">PhilSys ID Number</label>
+                    <input type="text" class="form-input" value="1234-5678-9012-3456" disabled>
+                    <div class="form-note">Last 4 digits only visible to authorized staff</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Occupation</label>
+                    <input type="text" class="form-input" value="Marketing Manager" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Employer</label>
+                    <input type="text" class="form-input" value="Manila Digital Solutions Inc." disabled>
+                </div>
+            </div>
+            <button class="btn-edit" id="editPersonalBtn">Edit Personal Information</button>
+        </div>
+
+        <!-- Contact Details Section -->
+        <div class="profile-section" id="contact">
+            <div class="section-title">
+                <i class="fas fa-phone"></i> Contact Details
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Primary Mobile Number</label>
+                    <input type="text" class="form-input" value="+63 917 123 4567" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Secondary Mobile Number</label>
+                    <input type="text" class="form-input" value="+63 922 765 4321" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" value="maria.dela.cruz@example.com" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alternative Email</label>
+                    <input type="email" class="form-input" value="maria.santos@example.com" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Home Address</label>
+                    <textarea class="form-input" disabled rows="2">123 Palm Street, Barangay Kapitolyo, Quezon City, Metro Manila, Philippines 1100</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Work Address</label>
+                    <textarea class="form-input" disabled rows="2">456 Business Park Drive, Ortigas Center, Pasig City, Metro Manila, Philippines 1605</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input type="text" class="form-input" value="Quezon City" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Region</label>
+                    <input type="text" class="form-input" value="National Capital Region (NCR)" disabled>
+                </div>
+            </div>
+            <button class="btn-edit" id="editContactBtn">Edit Contact Details</button>
+        </div>
+
+        <!-- Emergency Contacts Section -->
+        <div class="profile-section" id="emergency">
+            <div class="section-title">
+                <i class="fas fa-medkit"></i> Emergency Contacts
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">Juan Carlos Dela Cruz</div>
+                    <div class="list-details">Spouse | +63 918 987 6543 | juan.dela.cruz@example.com</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">Teresa Santos</div>
+                    <div class="list-details">Mother | +63 920 234 5678 | teresa.santos@example.com</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">Mark Anthony Santos</div>
+                    <div class="list-details">Brother | +63 919 876 5432 | mark.santos@example.com</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <button class="btn-edit" style="margin-top: 1rem;">Add New Emergency Contact</button>
+        </div>
+
+        <!-- Medical History Section -->
+        <div class="profile-section" id="medical">
+            <div class="section-title">
+                <i class="fas fa-stethoscope"></i> Medical History
+            </div>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Diagnosed On</th>
+                        <th>Treated By</th>
+                        <th>Status</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Essential Hypertension</td>
+                        <td>January 15, 2024</td>
+                        <td>Dr. Ana Santos (Cardiologist)</td>
+                        <td><span class="condition-tag tag-active">Active</span></td>
+                        <td>Managed with medication and lifestyle changes</td>
+                    </tr>
+                    <tr>
+                        <td>Mild Hypercholesterolemia</td>
+                        <td>February 20, 2024</td>
+                        <td>Dr. Ana Santos (Cardiologist)</td>
+                        <td><span class="condition-tag tag-active">Active</span></td>
+                        <td>Improving with diet adjustments and medication</td>
+                    </tr>
+                    <tr>
+                        <td>Acute Bronchitis</td>
+                        <td>March 10, 2024</td>
+                        <td>Dr. Ramon Reyes (Pulmonologist)</td>
+                        <td><span class="condition-tag tag-resolved">Resolved</span></td>
+                        <td>Treated with antibiotics; full recovery by March 25, 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Urinary Tract Infection (UTI)</td>
+                        <td>August 5, 2023</td>
+                        <td>Dr. Lisa Mendoza (General Practitioner)</td>
+                        <td><span class="condition-tag tag-resolved">Resolved</span></td>
+                        <td>Treated with 7-day antibiotic course; no recurrence</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn-edit" style="margin-top: 1rem;">Add Medical Condition</button>
+        </div>
+
+        <!-- Allergies Section -->
+        <div class="profile-section" id="allergies">
+            <div class="section-title">
+                <i class="fas fa-exclamation-triangle"></i> Allergies
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">Penicillin</div>
+                    <div class="list-details">Type: Drug Allergy | Reaction: Skin rash, itching, mild swelling | Identified: 2005</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">No Known Food Allergies</div>
+                    <div class="list-details">Confirmed via allergy testing - January 2024</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit                </button>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">No Known Environmental Allergies</div>
+                    <div class="list-details">Confirmed via allergy testing - January 2024</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <button class="btn-edit" style="margin-top: 1rem;">Add Allergy Information</button>
+        </div>
+
+        <!-- Medications Section -->
+        <div class="profile-section" id="medications">
+            <div class="section-title">
+                <i class="fas fa-pills"></i> Current Medications
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">Losartan 50mg</div>
+                    <div class="list-details">Prescribed by: Dr. Ana Santos | Dose: 1 tablet daily (morning) | Started: October 15, 2024 | Purpose: Hypertension management</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">Atorvastatin 10mg</div>
+                    <div class="list-details">Prescribed by: Dr. Ana Santos | Dose: 1 tablet daily (evening) | Started: February 20, 2024 | Purpose: Cholesterol management</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-info">
+                    <div class="list-name">Multivitamin Complex</div>
+                    <div class="list-details">Prescribed by: Dr. Lisa Mendoza | Dose: 1 tablet daily (morning) | Started: January 20, 2024 | Purpose: General nutrition support</div>
+                </div>
+                <div>
+                    <button class="btn-edit">Edit</button>
+                </div>
+            </div>
+            <button class="btn-edit" style="margin-top: 1rem;">Add Medication</button>
+        </div>
+
+        <!-- Insurance Information Section -->
+        <div class="profile-section" id="insurance">
+            <div class="section-title">
+                <i class="fas fa-shield-alt"></i> Insurance Information
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Primary Insurance Provider</label>
+                    <input type="text" class="form-input" value="Maxicare Healthcare" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Policy Number</label>
+                    <input type="text" class="form-input" value="MAX-789-456-123" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Coverage Type</label>
+                    <input type="text" class="form-input" value="Comprehensive Outpatient & Inpatient Plan" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Policy Expiry Date</label>
+                    <input type="date" class="form-input" value="2024-12-31" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Secondary Insurance Provider</label>
+                    <input type="text" class="form-input" value="PhilHealth" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Member ID</label>
+                    <input type="text" class="form-input" value="PH-123-456-7890" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Member Type</label>
+                    <input type="text" class="form-input" value="Formal Economy - Employed" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contribution Status</label>
+                    <input type="text" class="form-input" value="Up-to-date (as of October 2024)" disabled>
+                </div>
+            </div>
+            <button class="btn-edit" id="editInsuranceBtn">Edit Insurance Information</button>
+        </div>
+    </main>
+
+    <!-- Edit Profile Modal (Hidden by Default) -->
+    <div id="editProfileModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: var(--border-radius); padding: 2rem; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 id="modalTitle">Edit Personal Information</h3>
+                <button id="closeModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" value="Maria Santos Dela Cruz">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nickname</label>
+                    <input type="text" class="form-input" value="Maria">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-input" value="1985-06-15">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select">
+                        <option selected>Female</option>
+                        <option>Male</option>
+                        <option>Non-binary</option>
+                        <option>Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Civil Status</label>
+                    <select class="form-select">
+                        <option>Single</option>
+                        <option selected>Married</option>
+                        <option>Widowed</option>
+                        <option>Divorced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Occupation</label>
+                    <input type="text" class="form-input" value="Marketing Manager">
+                </div>
+            </div>
+            <div class="section-actions">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-left');
+            icon.classList.toggle('fa-angle-double-right');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Profile Tab Switching
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const profileSections = document.querySelectorAll('.profile-section');
+
+        tabLinks.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and sections
+                tabLinks.forEach(t => t.classList.remove('active'));
+                profileSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to selected tab and section
+                tab.classList.add('active');
+                const targetSection = tab.getAttribute('data-section');
+                document.getElementById(targetSection).classList.add('active');
+            });
+        });
+
+        // Edit Profile Modal Functionality
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const editPersonalBtn = document.getElementById('editPersonalBtn');
+        const editContactBtn = document.getElementById('editContactBtn');
+        const editInsuranceBtn = document.getElementById('editInsuranceBtn');
+        const editProfileModal = document.getElementById('editProfileModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const cancelBtn = document.querySelector('.btn-cancel');
+
+        // Open modal with appropriate title
+        function openModal(title) {
+            modalTitle.textContent = title;
+            editProfileModal.style.display = 'flex';
+        }
+
+        editProfileBtn.addEventListener('click', () => openModal('Edit Profile Information'));
+        editPersonalBtn.addEventListener('click', () => openModal('Edit Personal Information'));
+        editContactBtn.addEventListener('click', () => openModal('Edit Contact Details'));
+        editInsuranceBtn.addEventListener('click', () => openModal('Edit Insurance Information'));
+
+        // Close modal
+        function closeModalFunc() {
+            editProfileModal.style.display = 'none';
+        }
+
+        closeModal.addEventListener('click', closeModalFunc);
+        cancelBtn.addEventListener('click', closeModalFunc);
+
+        // Close modal when clicking outside
+        editProfileModal.addEventListener('click', (e) => {
+            if (e.target === editProfileModal) closeModalFunc();
+        });
+
+        // Save changes functionality
+        const saveBtn = document.querySelector('.btn-save');
+        saveBtn.addEventListener('click', () => {
+            alert('Changes saved successfully!');
+            closeModalFunc();
+        });
+    </script>
+</body>
+</html>

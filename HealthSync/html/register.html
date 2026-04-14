@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync Clinic – Create Patient Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- LAYOUT STRUCTURE -------------------------- */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 80px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2.5rem 1rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .sidebar-expanded {
+            width: 280px;
+            padding: 2.5rem 2rem;
+            text-align: left;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 4rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+            justify-content: center;
+        }
+
+        .sidebar-expanded .sidebar-logo-container {
+            justify-content: flex-start;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto;
+        }
+
+        .sidebar-expanded .sidebar-logo {
+            margin: 0;
+        }
+
+        .sidebar-brand-name, .sidebar-brand-tagline {
+            display: none;
+        }
+
+        .sidebar-expanded .sidebar-brand-name {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            line-height: 1.2;
+        }
+
+        .sidebar-expanded .sidebar-brand-tagline {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+            justify-content: center;
+        }
+
+        .sidebar-expanded .nav-link {
+            justify-content: flex-start;
+            padding: 1rem 1.2rem;
+        }
+
+        .nav-link i {
+            width: 22px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .nav-link span {
+            display: none;
+        }
+
+        .sidebar-expanded .nav-link span {
+            display: inline;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 80px;
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 2.5rem 3rem;
+            transition: var(--transition);
+        }
+
+        .sidebar-expanded + .main-content {
+            margin-left: 280px;
+        }
+
+        /* -------------------------- REGISTRATION CONTAINER -------------------------- */
+        .registration-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem 2.8rem;
+            margin: 2rem 0;
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .registration-header .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .registration-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 0.8rem;
+        }
+
+        .registration-header p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* -------------------------- PROGRESS STEPS -------------------------- */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 2px;
+            background-color: var(--medium-gray);
+            z-index: 0;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 33%;
+            height: 2px;
+            background-color: var(--primary-blue);
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            background-color: var(--white);
+            padding: 0 0.5rem;
+        }
+
+        .step-indicator {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--medium-gray);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 auto 0.5rem auto;
+            transition: var(--transition);
+        }
+
+        .step.active .step-indicator {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .step.completed .step-indicator {
+            background-color: var(--primary-green);
+            color: var(--white);
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .step.active .step-label {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .step.completed .step-label {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        /* -------------------------- FORM SECTIONS -------------------------- */
+        .form-section {
+            display: block;
+        }
+
+        .form-section.hidden {
+            display: none;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: var(--alert-red);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            color: var(--dark-gray);
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-password:hover {
+            color: var(--dark-gray);
+        }
+
+        .select-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B778C' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.2rem center;
+            background-size: 1.2rem;
+            padding-right: 3.5rem !important;
+        }
+
+        .date-input {
+            color: var(--text-muted);
+        }
+
+        .date-input:focus {
+            color: var(--dark-gray);
+        }
+
+        /* -------------------------- CONSENT SECTION -------------------------- */
+        .consent-group {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .consent-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .consent-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .consent-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+            margin-top: 0.2rem;
+        }
+
+        .consent-text {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+
+        .consent-text a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .consent-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* -------------------------- BUTTONS -------------------------- */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            border: 1px solid var(--medium-gray);
+            width: 120px;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-gray);
+            border-color: var(--text-muted);
+        }
+
+        .btn-disabled {
+            background-color: var(--medium-gray);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            flex: 1;
+        }
+
+        .btn-disabled:hover {
+            background-color: var(--medium-gray);
+            box-shadow: none;
+        }
+
+        /* -------------------------- HELPER TEXT -------------------------- */
+        .helper-text {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .helper-text.info {
+            color: var(--text-muted);
+        }
+
+        .helper-text.error {
+            color: var(--alert-red);
+        }
+
+        .helper-text.success {
+            color: var(--primary-green);
+        }
+
+        /* -------------------------- ACCOUNT TYPE SWITCH -------------------------- */
+        .account-type-switch {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--medium-gray);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .account-type-switch a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .account-type-switch a:hover {
+            color: var(--secondary-blue);
+            text-decoration: underline;
+        }
+
+                /* -------------------------- SECURITY BADGES -------------------------- */
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .security-badge i {
+            font-size: 1rem;
+            color: var(--primary-green);
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+                padding: 2.5rem 2rem;
+                text-align: left;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-logo-container {
+                justify-content: flex-start;
+            }
+
+            .sidebar-logo {
+                margin: 0;
+            }
+
+            .sidebar-brand-name, .sidebar-brand-tagline, .nav-link span {
+                display: block;
+            }
+
+            .nav-link {
+                justify-content: flex-start;
+                padding: 1rem 1.2rem;
+            }
+
+            .sidebar-toggle-btn {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+                align-items: flex-start;
+            }
+
+            .mobile-menu-toggle {
+                position: fixed;
+                top: 1.5rem;
+                left: 1.5rem;
+                background-color: var(--white);
+                box-shadow: var(--shadow-sm);
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--dark-gray);
+                cursor: pointer;
+                z-index: 101;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .registration-container {
+                padding: 2.5rem 2rem;
+                margin: 1rem 0;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn-secondary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="page-wrapper">
+        <!-- Side Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo-container">
+                <div class="sidebar-logo">HS</div>
+                <div>
+                    <h2 class="sidebar-brand-name">HealthSync</h2>
+                    <p class="sidebar-brand-tagline">Comprehensive Medical Care</p>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+               
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="register.html" class="nav-link active">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create Account</span>
+                    </a>
+                </li>
+               
+              
+            </ul>
+
+            <button class="sidebar-toggle-btn" id="sidebarToggle">
+                <i class="fas fa-angle-double-right"></i>
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="registration-container">
+                <div class="registration-header">
+                    <div class="logo">HS</div>
+                    <h1>Create Patient Account</h1>
+                    <p>Complete the 3-step registration to access your personalized health management tools. All information is protected under HIPAA guidelines.</p>
+                </div>
+
+                <!-- Progress Steps -->
+                <div class="progress-steps">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="step active" id="step1">
+                        <div class="step-indicator">1</div>
+                        <div class="step-label">Personal Info</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-indicator">2</div>
+                        <div class="step-label">Account Details</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-indicator">3</div>
+                        <div class="step-label">Consent & Verify</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Personal Information -->
+                <form id="registrationForm">
+                    <div class="form-section active" id="section1">
+                        <h3 class="section-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem; color: var(--dark-gray);">Personal Information</h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label required">First Name</label>
+                                <input type="text" id="firstName" class="form-input" placeholder="Enter your first name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="form-label required">Last Name</label>
+                                <input type="text" id="lastName" class="form-input" placeholder="Enter your last name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="birthDate" class="form-label required">Date of Birth</label>
+                                <input type="date" id="birthDate" class="form-input date-input" required>
+                                <p class="helper-text info">Required for identity verification and age-appropriate care.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender" class="form-label required">Gender Identity</label>
+                                <select id="gender" class="form-input select-input" required>
+                                    <option value="" disabled selected>Select your gender identity</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="non-binary">Non-Binary</option>
+                                    <option value="prefer-not-say">Prefer Not to Say</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactNumber" class="form-label required">Contact Number</label>
+                            <input type="tel" id="contactNumber" class="form-input" placeholder="+63 9XX XXX XXXX" required>
+                            <p class="helper-text info">Used for appointment reminders and critical health updates.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address" class="form-label required">Residential Address</label>
+                            <input type="text" id="address" class="form-input" placeholder="House number, street, barangay, city" required>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="city" class="form-label required">City/Municipality</label>
+                                <input type="text" id="city" class="form-input" placeholder="Enter city or municipality" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipCode" class="form-label required">ZIP/Postal Code</label>
+                                <input type="text" id="zipCode" class="form-input" placeholder="Enter ZIP code" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="prevBtn1" disabled style="display: none;">Back</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn1">Continue to Account Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Account Details -->
+                    <div class="form-section hidden" id="section2">
+                        <h3 class="section-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem; color: var(--dark-gray);">Account Details</h3>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label required">Email Address</label>
+                            <input type="email" id="email" class="form-input" placeholder="Enter your active email address" required>
+                            <p class="helper-text info">Will be used as your username for login and communication.</p>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="password" class="form-label required">Password</label>
+                                <div class="input-group">
+                                    <input type="password" id="password" class="form-input" placeholder="Create a strong password" required>
+                                    <button type="button" class="toggle-password" id="togglePass">
+                                        <i class="fas fa-eye-slash"></i>
+                                    </button>
+                                </div>
+                                <p class="helper-text info">Must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number, and 1 special character.</p>
+                                <p class="helper-text error hidden" id="passwordError">Password does not meet requirements.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-label required">Confirm Password</label>
+                                <div class="input-group">
+                                    <input type="password" id="confirmPassword" class="form-input" placeholder="Re-enter your password" required>
+                                    <button type="button" class="toggle-password" id="toggleConfirmPass">
+                                        <i class="fas fa-eye-slash"></i>
+                                    </button>
+                                </div>
+                                <p class="helper-text error hidden" id="confirmError">Passwords do not match.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergencyContactName" class="form-label required">Emergency Contact Name</label>
+                            <input type="text" id="emergencyContactName" class="form-input" placeholder="Enter full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergencyContactRel" class="form-label required">Relationship to You</label>
+                            <input type="text" id="emergencyContactRel" class="form-input" placeholder="e.g., Spouse, Parent, Sibling" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergencyContactNum" class="form-label required">Emergency Contact Number</label>
+                            <input type="tel" id="emergencyContactNum" class="form-input" placeholder="+63 9XX XXX XXXX" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="prevBtn2">Back to Personal Info</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn2">Continue to Consent</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Consent & Verification -->
+                    <div class="form-section hidden" id="section3">
+                        <h3 class="section-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem; color: var(--dark-gray);">Consent & Identity Verification</h3>
+                        
+                        <div class="form-group">
+                            <label for="govIdType" class="form-label required">Government-issued ID Type</label>
+                            <select id="govIdType" class="form-input select-input" required>
+                                <option value="" disabled selected>Select ID type for verification</option>
+                                <option value="passport">Passport</option>
+                                <option value="sss">SSS ID</option>
+                                <option value="umid">UMID Card</option>
+                                <option value="prc">PRC ID</option>
+                                <option value="driver">Driver's License</option>
+                                <option value="voter">Voter's ID</option>
+                            </select>
+                            <p class="helper-text info">A clear photo of this ID will be required after registration for verification.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="govIdNumber" class="form-label required">ID Number</label>
+                            <input type="text" id="govIdNumber" class="form-input" placeholder="Enter ID number exactly as shown" required>
+                        </div>
+
+                        <div class="consent-group">
+                            <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--dark-gray);">Required Consents</h4>
+                            
+                            <div class="consent-item">
+                                <input type="checkbox" id="consent1" required>
+                                <label for="consent1" class="consent-text">I consent to HealthSync Clinic collecting and storing my personal and health information for the purpose of providing medical care, as outlined in the <a href="privacy-policy.html">Privacy Policy</a>.</label>
+                            </div>
+                            
+                            <div class="consent-item">
+                                <input type="checkbox" id="consent2" required>
+                                <label for="consent2" class="consent-text">I consent to receiving appointment reminders, health updates, and billing notifications via email and SMS.</label>
+                            </div>
+                            
+                            <div class="consent-item">
+                                <input type="checkbox" id="consent3" required>
+                                <label for="consent3" class="consent-text">I confirm that all information provided is true and accurate. I understand that providing false information may result in account suspension.</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="termsAgree" class="form-label required">
+                                <input type="checkbox" id="termsAgree" required>
+                                <span style="margin-left: 0.5rem;">I have read and agree to the <a href="terms-of-service.html">Terms of Service</a> and <a href="privacy-policy.html">Privacy Policy</a></span>
+                            </label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="prevBtn3">Back to Account Details</button>
+                            <button type="submit" class="btn btn-primary">Submit Registration</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="account-type-switch">
+                    <p>Are you a healthcare provider? <a href="create-provider-account.html">Register as Provider Here</a></p>
+                </div>
+
+                <div class="security-badges">
+                    <div class="security-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>End-to-End Encrypted</span>
+                    </div>
+                    <div class="security-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>HIPAA Compliant</span>
+                    </div>
+                    <div class="security-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Verified by DOH</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+                sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-expanded');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-right');
+            icon.classList.toggle('fa-angle-double-left');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Step Navigation
+        const progressBar = document.getElementById('progressBar');
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+        const section1 = document.getElementById('section1');
+        const section2 = document.getElementById('section2');
+        const section3 = document.getElementById('section3');
+        const nextBtn1 = document.getElementById('nextBtn1');
+        const nextBtn2 = document.getElementById('nextBtn2');
+        const prevBtn2 = document.getElementById('prevBtn2');
+        const prevBtn3 = document.getElementById('prevBtn3');
+
+        // Password Toggle
+        const togglePass = document.getElementById('togglePass');
+        const password = document.getElementById('password');
+        const toggleConfirmPass = document.getElementById('toggleConfirmPass');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        togglePass.addEventListener('click', () => {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            togglePass.querySelector('i').classList.toggle('fa-eye');
+            togglePass.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        toggleConfirmPass.addEventListener('click', () => {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            toggleConfirmPass.querySelector('i').classList.toggle('fa-eye');
+            toggleConfirmPass.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        // Password Validation
+        const passwordError = document.getElementById('passwordError');
+        const confirmError = document.getElementById('confirmError');
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        password.addEventListener('input', () => {
+            if (!passwordRegex.test(password.value)) {
+                passwordError.classList.remove('hidden');
+                nextBtn2.disabled = true;
+                nextBtn2.classList.add('btn-disabled');
+            } else {
+                passwordError.classList.add('hidden');
+                checkPasswordMatch();
+            }
+        });
+
+        confirmPassword.addEventListener('input', checkPasswordMatch);
+
+        function checkPasswordMatch() {
+            if (password.value !== confirmPassword.value) {
+                confirmError.classList.remove('hidden');
+                nextBtn2.disabled = true;
+                nextBtn2.classList.add('btn-disabled');
+            } else {
+                confirmError.classList.add('hidden');
+                if (passwordRegex.test(password.value)) {
+                    nextBtn2.disabled = false;
+                    nextBtn2.classList.remove('btn-disabled');
+                }
+            }
+        }
+
+        // Step Navigation Logic
+        nextBtn1.addEventListener('click', () => {
+            section1.classList.add('hidden');
+            section1.classList.remove('active');
+            section2.classList.remove('hidden');
+            section2.classList.add('active');
+            
+            step1.classList.add('completed');
+            step1.classList.remove('active');
+            step2.classList.add('active');
+            
+            progressBar.style.width = '66%';
+            step1.querySelector('.step-indicator').innerHTML = '<i class="fas fa-check"></i>';
+        });
+
+        prevBtn2.addEventListener('click', () => {
+            section2.classList.add('hidden');
+            section2.classList.remove('active');
+            section1.classList.remove('hidden');
+            section1.classList.add('active');
+            
+            step2.classList.remove('active');
+            step1.classList.add('active');
+            step1.classList.remove('completed');
+            
+            progressBar.style.width = '33%';
+            step1.querySelector('.step-indicator').textContent = '1';
+        });
+
+        nextBtn2.addEventListener('click', () => {
+            section2.classList.add('hidden');
+            section2.classList.remove('active');
+            section3.classList.remove('hidden');
+            section3.classList.add('active');
+            
+            step2.classList.add('completed');
+            step2.classList.remove('active');
+            step3.classList.add('active');
+            
+            progressBar.style.width = '100%';
+            step2.querySelector('.step-indicator').innerHTML = '<i class="fas fa-check"></i>';
+        });
+
+        prevBtn3.addEventListener('click', () => {
+            section3.classList.add('hidden');
+            section3.classList.remove('active');
+            section2.classList.remove('hidden');
+            section2.classList.add('active');
+            
+            step3.classList.remove('active');
+            step2.classList.add('active');
+            step2.classList.remove('completed');
+            
+            progressBar.style.width = '66%';
+            step2.querySelector('.step-indicator').textContent = '2';
+        });
+
+        // Form Submission Handling
+        const registrationForm = document.getElementById('registrationForm');
+        registrationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Registration submitted successfully! You will receive a verification email shortly. Please upload a copy of your ID in the verification portal after email confirmation.');
+            // In production: Add form data handling, API call to backend, and redirect to verification page
+            window.location.href = 'patient-login.html';
+        });
+    </script>
+</body>
+</html>

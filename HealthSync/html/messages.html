@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync – Messages & Contact</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-collapsed {
+            width: 80px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-collapsed .sidebar-logo-container {
+            justify-content: center;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .sidebar-collapsed .sidebar-brand-name {
+            display: none;
+        }
+
+        .user-profile {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .sidebar-collapsed .user-profile {
+            display: none;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-blue);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .profile-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-profile {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-profile-edit {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-profile-edit:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .btn-profile-logout {
+            background-color: var(--alert-red);
+            color: var(--white);
+        }
+
+        .btn-profile-logout:hover {
+            background-color: #e04a2b;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .sidebar-collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .sidebar-collapsed .sidebar-toggle-btn {
+            align-self: center;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 280px;
+            transition: var(--transition);
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            height: 100vh;
+        }
+
+        .sidebar-collapsed + .main-content {
+            margin-left: 80px;
+        }
+
+        /* -------------------------- TOP BAR (MOBILE ONLY) -------------------------- */
+        .mobile-top-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--white);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1rem;
+        }
+
+        .mobile-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* -------------------------- CONVERSATIONS LIST -------------------------- */
+        .conversations-panel {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .new-message-btn {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .new-message-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .search-conversations {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236B778C' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 0.8rem center;
+        }
+
+        .conversations-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .conversation-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .conversation-item:hover {
+            background-color: var(--light-gray);
+        }
+
+        .conversation-item.active {
+            background-color: rgba(22, 93, 255, 0.05);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .contact-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .contact-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .contact-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .last-message {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .unread-badge {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            font-size: 0.75rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+        }
+
+        /* -------------------------- MESSAGE VIEWER -------------------------- */
+        .message-viewer {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chat-contact-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .chat-contact-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .chat-contact-info {
+            flex: 1;
+        }
+
+        .chat-contact-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .chat-contact-status {
+            font-size: 0.8rem;
+            color: var(--primary-green);
+        }
+
+        .chat-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-control-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-control-btn:hover {
+            color: var(--primary-blue);
+        }
+
+        .messages-container {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background-color: var(--light-gray);
+        }
+
+        .message-bubble {
+            margin-bottom: 1rem;
+            max-width: 70%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-bubble.sent {
+            align-items: flex-end;
+        }
+
+        .message-bubble.received {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+        }
+
+        .sent .message-content {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border-bottom-right-radius: 0;
+        }
+
+        .received .message-content {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            border-bottom-left-radius: 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .message-input-area {
+            padding: 1.5rem;
+            border-top: 1px solid var(--medium-gray);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .attach-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .attach-btn:hover {
+            color: var(--primary-blue);
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            resize: none;
+            min-height: 40px;
+            max-height: 120px;
+        }
+
+        .send-btn {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .send-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        /* -------------------------- CONTACT OPTIONS SECTION -------------------------- */
+        .contact-options {
+            grid-column: 1 / -1;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .contact-options.active {
+            display: block;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-card {
+            padding: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .contact-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(22, 93, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            margin: 0 auto 1rem;
+        }
+
+        .contact-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-details {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .contact-action-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--primary-blue);
+            color: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .contact-action-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 101;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .mobile-top-bar {
+                display: flex;
+            }
+
+            .conversations-panel {
+                display: none;
+                height: auto;
+                margin-bottom: 1rem;
+            }
+
+            .conversations-panel.active {
+                display: flex;
+            }
+
+            .message-viewer {
+                display: none;
+                height: auto;
+            }
+
+            .message-viewer.active {
+                display: flex;
+            }
+
+            .contact-options {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Top Bar -->
+    <div class="mobile-top-bar">
+        <div class="mobile-title" id="mobileHeaderTitle">Messages</div>
+        <div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button class="chat-control-btn" id="mobileBackBtn" style="display: none;">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <button class="chat-control-btn" id="mobileContactBtn">
+                <i class="fas fa-phone-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Side Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-logo-container">
+                <div class="sidebar-logo">HS</div>
+                <div class="sidebar-brand-name">HealthSync</div>
+            </div>
+
+            <div class="user-profile">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                    </div>
+                    <div class="profile-info">
+                        <h3>Maria Dela Cruz</h3>
+                        <p>Patient ID: HS-2024-0567</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <a href="patient-profile.html" class="btn-profile btn-profile-edit">
+                        <i class="fas fa-user-edit"></i> Edit Profile
+                    </a>
+                    <a href="patient-login.html" class="btn-profile btn-profile-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+           <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="appointments.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="records.html" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Health Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="prescriptions.html" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="insurance-billing.html" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Insurance & Billing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link active">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages & Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support.html" class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <button class="sidebar-toggle-btn" id="sidebarToggle">
+            <i class="fas fa-angle-double-left"></i>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Conversations Panel -->
+        <div class="conversations-panel" id="conversationsPanel">
+            <div class="panel-header">
+                <div class="panel-title">Messages</div>
+                <button class="new-message-btn" id="newMessageBtn">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <div class="search-conversations">
+                <input type="text" class="search-input" placeholder="Search contacts or messages...">
+            </div>
+            <div class="conversations-list">
+                <div class="conversation-item active" data-contact="dr-ana">
+                    <div class="contact-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Ana Santos">
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <div class="contact-name">Dr. Ana Santos (Cardiologist)</div>
+                            <div class="message-time">10:15 AM</div>
+                        </div>
+                        <div class="last-message">Your lab results look good - we can adjust your medication...</div>
+                    </div>
+                </div>
+                <div class="conversation-item" data-contact="nurse-maria">
+                    <div class="contact-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Nurse Maria">
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <div class="contact-name">Nurse Maria Lopez</div>
+                            <div class="message-time">Yesterday</div>
+                        </div>
+                        <div class="last-message">Reminder: Your follow-up appointment is on Oct 25 at 2 PM...</div>
+                    </div>
+                </div>
+                <div class="conversation-item" data-contact="billing-team">
+                    <div class="contact-avatar">
+                        <img src="https://randomuser.me/api/portraits/lego/4.jpg" alt="Billing Team">
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <div class="contact-name">Billing Support Team</div>
+                            <div class="message-time">Oct 12</div>
+                        </div>
+                        <div class="last-message">Your payment for bill HS-BIL-24-0976 has been processed...</div>
+                    </div>
+                </div>
+                <div class="conversation-item" data-contact="pharmacy">
+                    <div class="contact-avatar">
+                        <img src="https://randomuser.me/api/portraits/lego/2.jpg" alt="MediCare Pharmacy">
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <div class="contact-name">MediCare Pharmacy</div>
+                            <div class="message-time">Oct 10</div>
+                        </div>
+                        <div class="last-message">Your prescription refill is ready for pickup...</div>
+                    </div>
+                </div>
+                <div class="conversation-item" data-contact="dr-rosa">
+                    <div class="contact-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Dr. Rosa Reyes">
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <div class="contact-name">Dr. Rosa Reyes (Dermatologist)</div>
+                            <div class="message-time">Oct 8</div>
+                        </div>
+                        <div class="last-message">The cream should help with the irritation - let me know if...</div>
+                    </div>
+                </div>
+                <div class="conversation-item" data-contact="support-team">
+                    <div class="contact-avatar">
+                        <img src="https://randomuser.me/api/portraits/lego/1.jpg" alt="Support Team">
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <div class="contact-name">Patient Support Team</div>
+                            <div class="message-time">Oct 5</div>
+                        </div>
+                        <div class="last-message">
+                            <span class="unread-badge">2</span>
+                            We've updated your account details as requested...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Viewer -->
+        <div class="message-viewer active" id="messageViewer">
+            <div class="chat-header" id="chatHeader">
+                <div class="chat-contact-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Ana Santos">
+                </div>
+                <div class="chat-contact-info">
+                    <div class="chat-contact-name">Dr. Ana Santos (Cardiologist)</div>
+                    <div class="chat-contact-status">Online • Responds within 24 hours</div>
+                </div>
+                <div class="chat-controls">
+                    <button class="chat-control-btn">
+                        <i class="fas fa-phone-alt"></i>
+                    </button>
+                    <button class="chat-control-btn">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button class="chat-control-btn">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="messages-container" id="messagesContainer">
+                <div class="message-bubble received">
+                    <div class="message-content">
+                        Good morning Maria! I've reviewed your latest metabolic panel results - everything looks stable and your cholesterol levels have improved slightly.
+                    </div>
+                    <div class="message-meta">Yesterday at 2:30 PM</div>
+                </div>
+                <div class="message-bubble received">
+                    <div class="message-content">
+                        Given your progress, I think we can reduce your Losartan dosage from 100mg to 50mg daily. Would you like to schedule a quick follow-up next week to adjust this, or would you prefer I send the updated prescription directly to your pharmacy?
+                    </div>
+                    <div class="message-meta">Yesterday at 2:32 PM</div>
+                </div>
+                <div class="message-bubble sent">
+                    <div class="message-content">
+                        Hi Dr. Santos! Thank you for reviewing my results - that's great news. I think sending the updated prescription to MediCare Pharmacy would be more convenient for me. I can come in for a follow-up in 2 weeks instead if that works better?
+                    </div>
+                    <div class="message-meta">Yesterday at 8:15 PM • Delivered</div>
+                </div>
+                <div class="message-bubble received">
+                    <div class="message-content">
+                        Perfect! I've sent the new prescription over to MediCare - they should have it ready by tomorrow morning. A 2-week follow-up is fine - I'll have my assistant send you an appointment confirmation shortly. Let me know if you have any questions before then!
+                    </div>
+                    <div class="message-meta">10:15 AM • Read</div>
+                </div>
+            </div>
+            <div class="message-input-area">
+                <button class="attach-btn">
+                    <i class="fas fa-paperclip"></i>
+                </button>
+                <textarea class="message-input" placeholder="Type your message here..."></textarea>
+                <button class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Contact Options Section -->
+        <div class="contact-options" id="contactOptions">
+            <h3 class="section-subtitle"><i class="fas fa-phone-square-alt"></i> Contact HealthSync Clinic</h3>
+            <div class="options-grid">
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-user-md"></i></div>
+                    <h4>Speak with Your Doctor</h4>
+                    <div class="contact-details">
+                        Schedule a phone/video consultation<br>
+                        Available Mon-Fri: 8 AM - 6 PM
+                    </div>
+                    <button class="contact-action-btn">Schedule Consultation</button>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-headset"></i></div>
+                    <h4>Patient Support Hotline</h4>
+                    <div class="contact-details">
+                        (02) 8-123-4567<br>
+                        Available 24/7 for emergencies<br>
+                        Mon-Fri: 7 AM - 9 PM for general queries
+                    </div>
+                    <button class="contact-action-btn">Call Now</button>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <h4>Billing Support</h4>
+                    <div class="contact-details">
+                        (02) 8-123-4568 | billing@healthsync.ph<br>
+                        Available Mon-Fri: 8 AM - 5 PM
+                    </div>
+                    <button class="contact-action-btn">Contact Billing</button>
+                </div>
+                <div class=”contact-card">
+                    <div class="contact-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h4>Appointment Booking</h4>
+                    <div class="contact-details">
+                        (02) 8-123-4569 | appointments@healthsync.ph<br>
+                        Available Mon-Sat: 7 AM - 7 PM
+                    </div>
+                    <button class="contact-action-btn">Book Now</button>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h4>Visit Our Clinic</h4>
+                    <div class="contact-details">
+                        123 Main Avenue, Quezon City<br>
+                        Metro Manila, Philippines<br>
+                        Open Mon-Sat: 8 AM - 6 PM | Sun: 9 AM - 12 NN
+                    </div>
+                    <button class="contact-action-btn">Get Directions</button>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <h4>General Inquiries</h4>
+                    <div class="contact-details">
+                        info@healthsync.ph<br>
+                        Facebook / Instagram: @HealthSyncPH<br>
+                        Response time: Within 24 hours
+                    </div>
+                    <button class="contact-action-btn">Send Email</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-left');
+            icon.classList.toggle('fa-angle-double-right');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // Conversation Selection
+        const conversationItems = document.querySelectorAll('.conversation-item');
+        const messageViewer = document.getElementById('messageViewer');
+        const chatHeader = document.getElementById('chatHeader');
+        const messagesContainer = document.getElementById('messagesContainer');
+        const mobileHeaderTitle = document.getElementById('mobileHeaderTitle');
+        const mobileBackBtn = document.getElementById('mobileBackBtn');
+        const conversationsPanel = document.getElementById('conversationsPanel');
+        const contactOptions = document.getElementById('contactOptions');
+        const mobileContactBtn = document.getElementById('mobileContactBtn');
+        const newMessageBtn = document.getElementById('newMessageBtn');
+
+        // Message Data for All Contacts
+        const contactMessages = {
+            "dr-ana": {
+                name: "Dr. Ana Santos (Cardiologist)",
+                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                status: "Online • Responds within 24 hours",
+                messages: `
+                    <div class="message-bubble received">
+                        <div class="message-content">
+                            Good morning Maria! I've reviewed your latest metabolic panel results - everything looks stable and your cholesterol levels have improved slightly.
+                        </div>
+                        <div class="message-meta">Yesterday at 2:30 PM</div>
+                    </div>
+                    <div class="message-bubble received">
+                        <div class="message-content">
+                            Given your progress, I think we can reduce your Losartan dosage from 100mg to 50mg daily. Would you like to schedule a quick follow-up next week to adjust this, or would you prefer I send the updated prescription directly to your pharmacy?
+                        </div>
+                        <div class="message-meta">Yesterday at 2:32 PM</div>
+                    </div>
+                    <div class="message-bubble sent">
+                        <div class="message-content">
+                            Hi Dr. Santos! Thank you for reviewing my results - that's great news. I think sending the updated prescription to MediCare Pharmacy would be more convenient for me. I can come in for a follow-up in 2 weeks instead if that works better?
+                        </div>
+                        <div class="message-meta">Yesterday at 8:15 PM • Delivered</div>
+                    </div>
+                    <div class="message-bubble received">
+                        <div class="message-content">
+                            Perfect! I've sent the new prescription over to MediCare - they should have it ready by tomorrow morning. A 2-week follow-up is fine - I'll have my assistant send you an appointment confirmation shortly. Let me know if you have any questions before then!
+                        </div>
+                        <div class="message-meta">10:15 AM • Read</div>
+                    </div>
+                `
+            },
+            "nurse-maria": {
+                name: "Nurse Maria Lopez",
+                avatar: "https://randomuser.me/api/portraits/women/28.jpg",
+                status: "Online • Responds within 1-2 hours",
+                messages: `
+                    <div class="message-bubble received">
+                        <div class="message-content">
+                            Hi Maria! This is Nurse Maria from HealthSync Clinic - just sending a friendly reminder that your follow-up appointment with Dr. Santos is scheduled for October 25 at 2 PM.
+                        </div>
+                        <div class="message-meta">Yesterday at 10:00 AM</div>
+                    </div>
+                    <div class="message-bubble received">
+                        <div class="message-content">
+                            Please remember to fast for 8 hours before your appointment if you need to have any blood work done. Let us know if you need to reschedule - we have slots available on Oct 26 at 10 AM and Oct 27 at 3 PM too!
+                        </div>
+                        <div class="message-meta">Yesterday at 10:02 AM</div>
+                    </div>
+                    <div class="message-bubble sent">
+                        <div class="message-content">
+                            Hi Nurse Maria! Thank you for the reminder - I'll be there on time and will make sure to fast beforehand. No need to reschedule 😊
+                        </div>
+                        <div class="message-meta">Yesterday at 8:20 PM • Delivered</div>
+                    </div>
+                `
+            },
+            "billing-team": {
+                name: "Billing Support Team",
+                avatar: "https://randomuser.me/api/portraits/lego/4.jpg",
+                status: "Response within 24 hours",
+                messages: `
+                    <div class="message-bubble received">
+                        <div class="message-content">
+                            Good day Maria! We're writing to confirm that your payment of ₱1,040 for bill ID HS-BIL-24-0976 has been successfully processed.
+                        </div>
+                        <div class="message-meta">Oct 12 at 2:15 PM</div>
+                    </div>
+                    <div class="message-bubble received">
+                        <div class="message-content">
+                            A copy of your official receipt has been sent to your email address on file. If you need any additional copies or have questions about your billing statement, please don't hesitate to reach out!
+                        </div>
+                        <div class="message-meta">Oct 12 at 2:16 PM</div>
+                    </div>
+                    <div class="message-bubble sent">
+                        <div class="message-content">
+                            Thank you for the confirmation! I've received the receipt - everything checks out 😊
+                        </div>
+                        <div class="message-meta">Oct 12 at 3:05 PM • Delivered</div>
+                    </div>
+                `
+            }
+        };
+
+        // Load Selected Conversation
+        conversationItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove active class from all items
+                conversationItems.forEach(i => i.classList.remove('active'));
+                // Add active class to selected item
+                item.classList.add('active');
+                
+                // Get contact data
+                const contactId = item.getAttribute('data-contact');
+                const contact = contactMessages[contactId] || contactMessages["dr-ana"];
+                
+                // Update chat header
+                chatHeader.innerHTML = `
+                    <div class="chat-contact-avatar">
+                        <img src="${contact.avatar}" alt="${contact.name}">
+                    </div>
+                    <div class="chat-contact-info">
+                        <div class="chat-contact-name">${contact.name}</div>
+                        <div class="chat-contact-status">${contact.status}</div>
+                    </div>
+                    <div class="chat-controls">
+                        <button class="chat-control-btn">
+                            <i class="fas fa-phone-alt"></i>
+                        </button>
+                        <button class="chat-control-btn">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="chat-control-btn">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Update messages
+                messagesContainer.innerHTML = contact.messages;
+                
+                // Scroll to bottom of messages
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // Mobile view adjustments
+                if (window.innerWidth <= 1200) {
+                    mobileHeaderTitle.textContent = contact.name;
+                    mobileBackBtn.style.display = 'inline-block';
+                    conversationsPanel.classList.remove('active');
+                    messageViewer.classList.add('active');
+                    contactOptions.classList.remove('active');
+                }
+            });
+        });
+
+        // Mobile Back Button
+        mobileBackBtn.addEventListener('click', () => {
+            mobileHeaderTitle.textContent = 'Messages';
+            mobileBackBtn.style.display = 'none';
+            conversationsPanel.classList.add('active');
+            messageViewer.classList.remove('active');
+            contactOptions.classList.remove('active');
+        });
+
+        // Mobile Contact Options Button
+        mobileContactBtn.addEventListener('click', () => {
+            mobileHeaderTitle.textContent = 'Contact Us';
+            mobileBackBtn.style.display = 'inline-block';
+            conversationsPanel.classList.remove('active');
+            messageViewer.classList.remove('active');
+            contactOptions.classList.add('active');
+        });
+
+        // New Message Button
+        newMessageBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 1200) {
+                mobileHeaderTitle.textContent = 'Contact Us';
+                mobileBackBtn.style.display = 'inline-block';
+                conversationsPanel.classList.remove('active');
+                messageViewer.classList.remove('active');
+                contactOptions.classList.add('active');
+            } else {
+                contactOptions.classList.toggle('active');
+            }
+        });
+
+        // Send Message Functionality
+        const sendBtn = document.querySelector('.send-btn');
+        const messageInput = document.querySelector('.message-input');
+
+        sendBtn.addEventListener('click', () => {
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const newMessage = `
+                    <div class="message-bubble sent">
+                        <div class="message-content">${messageText}</div>
+                        <div class="message-meta">${currentTime} • Sending...</div>
+                    </div>
+                `;
+                messagesContainer.innerHTML += newMessage;
+                messageInput.value = '';
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // Simulate message delivery
+                setTimeout(() => {
+                    const lastMessage = messagesContainer.lastElementChild;
+                    lastMessage.querySelector('.message-meta').textContent = `${currentTime} • Delivered`;
+                }, 1000);
+            }
+        });
+
+        // Allow Enter to send message
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendBtn.click();
+            }
+        });
+
+        // Initialize mobile view
+        if (window.innerWidth <= 1200) {
+            conversationsPanel.classList.add('active');
+            messageViewer.classList.remove('active');
+            contactOptions.classList.remove('active');
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1200) {
+                conversationsPanel.style.display = 'flex';
+                messageViewer.style.display = 'flex';
+                contactOptions.style.display = contactOptions.classList.contains('active') ? 'block' : 'none';
+                mobileBackBtn.style.display = 'none';
+                mobileHeaderTitle.textContent = 'Messages';
+            } else {
+                conversationsPanel.style.display = conversationsPanel.classList.contains('active') ? 'flex' : 'none';
+                messageViewer.style.display = messageViewer.classList.contains('active') ? 'flex' : 'none';
+                contactOptions.style.display = contactOptions.classList.contains('active') ? 'block' : 'none';
+            }
+        });
+    </script>
+</body>
+</html>

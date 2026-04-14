@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync – Patient Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* -------------------------- GLOBAL VARIABLES & RESET -------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-blue: #165DFF;
+            --primary-green: #36B37E;
+            --secondary-blue: #0A4BDE;
+            --alert-red: #FF5630;
+            --warning-yellow: #FFAB00;
+            --light-gray: #F5F7FA;
+            --medium-gray: #EAECEF;
+            --dark-gray: #42526E;
+            --text-muted: #6B778C;
+            --white: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 8px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------- SIDEBAR NAVIGATION -------------------------- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            transition: var(--transition);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-collapsed {
+            width: 80px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-collapsed .sidebar-logo-container {
+            justify-content: center;
+        }
+
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .sidebar-collapsed .sidebar-brand-name {
+            display: none;
+        }
+
+        .user-profile-sidebar {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--medium-gray);
+            text-align: center;
+        }
+
+        .sidebar-collapsed .user-profile-sidebar {
+            display: none;
+        }
+
+        .profile-avatar-sidebar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-blue);
+            margin: 0 auto 1rem;
+        }
+
+        .profile-avatar-sidebar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name-sidebar {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-id-sidebar {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .sidebar-collapsed .nav-link span {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-link {
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .sidebar-collapsed .sidebar-toggle-btn {
+            align-self: center;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        /* -------------------------- MAIN CONTENT -------------------------- */
+        .main-content {
+            margin-left: 280px;
+            transition: var(--transition);
+            padding: 2rem;
+        }
+
+        .sidebar-collapsed + .main-content {
+            margin-left: 80px;
+        }
+
+        /* -------------------------- MOBILE TOP BAR -------------------------- */
+        .mobile-top-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--white);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1rem;
+        }
+
+        .mobile-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* -------------------------- SUPPORT HEADER -------------------------- */
+        .support-header {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .support-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .support-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* -------------------------- SUPPORT OPTIONS -------------------------- */
+        .support-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .support-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .support-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .support-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: rgba(22, 93, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin: 0 auto 1.5rem;
+        }
+
+        .support-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .support-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .support-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .support-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        /* -------------------------- FAQ SECTION -------------------------- */
+        .faq-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .faq-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .faq-category {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--medium-gray);
+            padding: 1.5rem 0;
+        }
+
+        .faq-item:first-child {
+            padding-top: 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* -------------------------- CONTACT FORM -------------------------- */
+        .contact-form-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-attach {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px dashed var(--medium-gray);
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-attach:hover {
+            border-color: var(--primary-blue);
+            background-color: rgba(22, 93, 255, 0.05);
+        }
+
+        .attach-icon {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .attach-text {
+            font-size: 0.9rem;
+        }
+
+        .attach-text span {
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            padding: 0.9rem 2rem;
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2d996d;
+        }
+
+        /* -------------------------- MOBILE RESPONSIVENESS -------------------------- */
+        @media (max-width: 1200px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 101;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .mobile-top-bar {
+                display: flex;
+            }
+
+            .support-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Top Bar -->
+    <div class="mobile-top-bar">
+        <div class="mobile-title">Patient Support</div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Side Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-logo-container">
+                <div class="sidebar-logo">HS</div>
+                <div class="sidebar-brand-name">HealthSync</div>
+            </div>
+
+            <div class="user-profile-sidebar">
+                <div class="profile-avatar-sidebar">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Dela Cruz">
+                </div>
+                <div class="profile-name-sidebar">Maria Dela Cruz</div>
+                <div class="profile-id-sidebar">Patient ID: HS-2024-0567</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="appointments.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="records.html" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Health Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="prescriptions.html" class="nav-link">
+                        <i class="fas fa-pills"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="insurance-billing.html" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Insurance & Billing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Messages & Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link active">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Patient Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="support.html" class="nav-link active">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+		
+        <button class="sidebar-toggle-btn" id="sidebarToggle">
+            <i class="fas fa-angle-double-left"></i>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Support Header -->
+        <div class="support-header">
+            <div class="support-title">We're Here To Help You</div>
+            <div class="support-subtitle">Find answers to common questions, contact our support team, or get assistance with your account and services</div>
+        </div>
+
+        <!-- Support Options -->
+        <div class="support-options">
+            <div class="support-card">
+                <div class="support-icon"><i class="fas fa-headphones"></i></div>
+                <h3>Live Chat Support</h3>
+                <p>Chat with a support agent in real-time for immediate assistance</p>
+                <button class="support-btn">Start Live Chat</button>
+            </div>
+            <div class="support-card">
+                <div class="support-icon"><i class="fas fa-phone"></i></div>
+                <h3>Call Us</h3>
+                <p>Speak directly with our support team during business hours</p>
+                <p style="color: var(--primary-blue); font-weight: 600; margin-bottom: 1.5rem;">(02) 8-123-4567</p>
+                <button class="support-btn">View Call Hours</button>
+            </div>
+            <div class="support-card">
+                <div class="support-icon"><i class="fas fa-envelope"></i></div>
+                <h3>Email Support</h3>
+                <p>Send us a detailed message and we'll respond within 24 hours</p>
+                <p style="color: var(--primary-blue); font-weight: 600; margin-bottom: 1.5rem;">support@healthsync.ph</p>
+                <button class="support-btn">Compose Email</button>
+            </div>
+            <div class="support-card">
+                <div class="support-icon"><i class="fas fa-calendar-check"></i></div>
+                <h3>Visit Our Support Center</h3>
+                <p>Schedule an in-person visit to our Quezon City support office</p>
+                <p style="color: var(--primary-blue); font-weight: 600; margin-bottom: 1.5rem;">Mon-Fri: 8AM - 6PM | Sat: 9AM - 12NN</p>
+                <button class="support-btn">Get Directions</button>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <div class="faq-title"><i class="fas fa-question-circle"></i> Frequently Asked Questions</div>
+            
+            <div class="faq-category">Account & Login</div>
+            <div class="faq-item active">
+                <div class="faq-question">
+                    <span>How do I reset my password?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Go to the login page and click "Forgot Password". Enter your registered email address, and we'll send you a password reset link. The link will be valid for 24 hours. If you don't receive the email, please check your spam folder or contact support.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Why can't I log into my account?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Common reasons include entering an incorrect username or password, your account being temporarily locked after multiple failed attempts, or a browser issue. Try resetting your password first. If the problem persists, clear your browser cache or contact support to verify your account status.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I update my personal information?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Log into your account, go to the "Patient Profile" page, and click "Edit Profile". You can update most personal information there. For sensitive changes like your PhilSys ID or date of birth, you'll need to submit a request through the support form and provide valid identification documents.
+                </div>
+            </div>
+
+            <div class="faq-category" style="margin-top: 2rem;">Appointments</div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I book or reschedule an appointment?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Go to the "Appointments" page and click "Book New Appointment" to schedule a visit. To reschedule an existing appointment, select it from your upcoming appointments list and choose "Reschedule". You can also cancel appointments at least 24 hours in advance to avoid cancellation fees.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What should I bring to my in-person appointment?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Please bring a valid government-issued ID, your insurance card (if applicable), any prescribed medications you're currently taking, previous medical records or lab results relevant to your visit, and a list of any symptoms or questions you have for your doctor.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I join a video consultation?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    A video consultation link will be sent to your registered email and mobile number 30 minutes before your appointment time. You can also find the link in the "Upcoming Appointments" section of your dashboard. Ensure you have a stable internet connection and enable camera/microphone access in your browser or mobile app.
+                </div>
+            </div>
+
+            <div class="faq-category" style="margin-top: 2rem;">Billing & Insurance</div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I view and pay my bills online?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Go to the "Insurance & Billing" page to view all outstanding and paid bills. Select a bill to view details and choose from available payment options including credit/debit card, GCash, PayMaya, or bank transfer. Payment confirmations are sent immediately via email and SMS.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Which insurance providers do you accept?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    We accept all major HMO providers including Maxicare, Medicard, PhilHealth, Cocolife, Intellicare, and Fortune Care. We also work with international insurance providers for eligible patients. Please check with your provider or our support team to confirm coverage for specific services.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I submit a claim for reimbursement?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Download the reimbursement form from the "Insurance & Billing" page, fill it out completely, and attach all required documents including official receipts, itemized statements, and your insurance provider's claim form. Submit everything via email to billing@healthsync.ph or in person at our support center.
+                </div>
+            </div>
+
+            <div class="faq-category" style="margin-top: 2rem;">Medical Records & Prescriptions</div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I access my medical records and lab results?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Log into your account and go to the "Health Records" page to view all available records, lab results, and doctor's notes. Most results are posted within 24-48 hours after testing. You can download or print copies for your personal records or to share with other healthcare providers.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I request a prescription refill?</span>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    Go to the "Prescriptions" page, select the medication you need refilled, and click "Request Refill". Refill requests are reviewed by your prescribing doctor within 24 hours. Once approved, you can choose to pick up your medication at our clinic or have it delivered to your address for a small fee.
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div class="contact-form-section">
+            <div class="form-title"><i class="fas fa-envelope"></i> Send Us A Message</div>
+            
+            <form>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" value="Maria Dela Cruz" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" value="maria.dela.cruz@example.com" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Number</label>
+                        <input type="text" class="form-input" value="+63 917 123 4567" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Patient ID</label>
+                        <input type="text" class="form-input" value="HS-2024-0567" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <select class="form-select">
+                            <option>Select a subject</option>
+                            <option>Account & Login Issues</option>
+                            <option>Appointment Booking/Rescheduling</option>
+                            <option>Billing & Payment Questions</option>
+                            <option>Insurance Coverage</option>
+                            <option>Medical Records Request</option>
+                            <option>Prescription Refill Issues</option>
+                            <option>Technical Support</option>
+                            <option>Feedback & Suggestions</option>
+                            <option>Other Concerns</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority Level</label>
+                        <select class="form-select">
+                            <option selected>Normal (Response within 24 hours)</option>
+                            <option>Urgent (Response within 4 hours)</option>
+                            <option>Emergency (Immediate assistance required)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Message Details</label>
+                    <textarea class="form-textarea" placeholder="Please describe your concern or question in detail..."></textarea>
+                </div>
+
+                <div class="form-attach">
+                    <div class="attach-icon"><i class="fas fa-paperclip"></i></div>
+                    <div class="attach-text"><span>Click to attach files</span> or drag and drop here (Max 5 files, 10MB each)</div>
+                    <input type="file" multiple style="display: none;" id="file-upload">
+                </div>
+
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Sidebar Toggle Functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            icon.classList.toggle('fa-angle-double-left');
+            icon.classList.toggle('fa-angle-double-right');
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+            }
+        });
+
+        // FAQ Toggle Functionality
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const parentItem = question.parentElement;
+                parentItem.classList.toggle('active');
+            });
+        });
+
+        // File Upload Trigger
+        const formAttach = document.querySelector('.form-attach');
+        const fileUpload = document.getElementById('file-upload');
+        
+        formAttach.addEventListener('click', () => {
+            fileUpload.click();
+        });
+
+        fileUpload.addEventListener('change', () => {
+            if (fileUpload.files.length > 0) {
+                let fileNames = '';
+                for (let i = 0; i < fileUpload.files.length; i++) {
+                    fileNames += fileUpload.files[i].name + (i < fileUpload.files.length - 1 ? ', ' : '');
+                }
+                formAttach.querySelector('.attach-text').innerHTML = `<span>${fileUpload.files.length} file(s) attached:</span> ${fileNames}`;
+            }
+        });
+
+        // Submit Button Functionality
+        const submitBtn = document.querySelector('.submit-btn');
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Your message has been sent successfully! We will respond to you within the specified timeframe.');
+            document.querySelector('form').reset();
+            formAttach.querySelector('.attach-text').innerHTML = '<span>Click to attach files</span> or drag and drop here (Max 5 files, 10MB each)';
+        });
+
+        // Support Button Alerts
+        const supportBtns = document.querySelectorAll('.support-btn');
+        supportBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.textContent === 'Start Live Chat') {
+                    alert('Opening live chat window... You will be connected to the next available agent shortly!');
+
+        // Support Button Alerts
+        const supportBtns = document.querySelectorAll('.support-btn');
+        supportBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.textContent === 'Start Live Chat') {
+                    alert('Opening live chat window... You will be connected to the next available agent shortly!');
+                } else if (btn.textContent === 'View Call Hours') {
+                    alert('Call Hours:\nMonday-Friday: 8AM - 8PM\nSaturday: 9AM - 5PM\nSunday: 10AM - 2PM\nHolidays: 10AM - 2PM');
+                } else if (btn.textContent === 'Compose Email') {
+                    window.location.href = 'mailto:support@healthsync.ph?subject=Patient Support Request - HS-2024-0567';
+                } else if (btn.textContent === 'Get Directions') {
+                    alert('Support Center Address:\n123 Health Tower, Ortigas Avenue, Quezon City, Metro Manila\nYou can also view directions on Google Maps by clicking the link we just sent to your email!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
