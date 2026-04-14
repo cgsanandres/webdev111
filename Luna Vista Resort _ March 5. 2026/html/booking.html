@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Luna Vista Resort | Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://googleapis.com');
+
+:root {
+    --primary: #0a192f;
+    --accent: #c5a059;
+    --white: #ffffff;
+}
+
+* { box-sizing: border-box; transition: all 0.4s ease; }
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--primary);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+/* --- Persistent Video Background --- */
+#bg-video {
+    position: fixed;
+    right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+    filter: brightness(0.4);
+}
+
+/* --- Header & Navigation --- */
+header {
+    background-color: var(--primary);
+    padding: 25px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+header h1 { font-family: 'Cinzel', serif; color: var(--accent); margin: 0; letter-spacing: 4px; font-size: 1.6rem; }
+
+nav a {
+    color: white; text-decoration: none; margin-left: 25px;
+    font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+}
+nav a:hover { color: var(--accent); }
+
+/* --- Centered Form Section --- */
+.section {
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px);
+}
+
+.form-container {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 60px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+.form-container h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 5px;
+    color: var(--accent);
+}
+
+.form-tagline {
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    display: block;
+}
+
+/* --- Luxury Form Inputs --- */
+label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 25px;
+    color: var(--accent);
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 0;
+    margin-bottom: 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-bottom: 1px solid var(--accent);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+option { background: var(--primary); color: white; }
+
+/* --- Elegant Submit Button --- */
+button {
+    width: 100%;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: var(--accent);
+    border: none;
+    color: var(--primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: white;
+    letter-spacing: 6px;
+}
+
+footer {
+    background-color: var(--primary);
+    color: var(--accent);
+    text-align: center;
+    padding: 40px;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Persistant Video Background -->
+<video autoplay muted loop id="bg-video">
+    <source src="video/resort.mp4" type="video/mp4">
+</video>
+
+<header>
+    <h1>Luna Vista Resort</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="amenities.html">Amenities</a>
+        <a href="booking.html">Book Now</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+        <a href="account.html">Account</a>
+    </nav>
+</header>
+
+<section class="section">
+    <div class="form-container">
+        <h2>Book Your Stay</h2>
+        <span class="form-tagline">Secure Your Piece of Paradise</span>
+
+        <form onsubmit="return confirmBooking()">
+            <label>Personal Details</label>
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Electronic Mail" required>
+
+            <div style="display: flex; gap: 30px;">
+                <div style="flex: 1;">
+                    <label>Check-In</label>
+                    <input type="date" required>
+                </div>
+                <div style="flex: 1;">
+                    <label>Check-Out</label>
+                    <input type="date" required>
+                </div>
+            </div>
+
+            <label>Residence Preference</label>
+            <select required>
+                <option value="">Select Residence</option>
+                <option>The Garden Haven - $120/night</option>
+                <option>Azure Ocean View - $220/night</option>
+                <option>The Luna Suite - $350/night</option>
+            </select>
+
+            <label>Travelers</label>
+            <select required>
+                <option value="">Number of Guests</option>
+                <option>1 Traveler</option>
+                <option>2 Travelers</option>
+                <option>3 Travelers</option>
+                <option>4+ Travelers</option>
+            </select>
+
+            <label>Concierge Requests</label>
+            <input type="text" placeholder="Dietary needs, yacht transfer, or special occasions">
+
+            <button type="submit">Complete Reservation</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    © 2026 Luna Vista Resort | All Rights Reserved
+</footer>
+
+<script>
+function confirmBooking() {
+    alert("Thank you. Your reservation inquiry has been sent to our concierge.");
+    return false; 
+}
+</script>
+
+</body>
+</html>

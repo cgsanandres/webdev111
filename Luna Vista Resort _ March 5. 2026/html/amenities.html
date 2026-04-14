@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Luna Vista Resort | Amenities</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://googleapis.com');
+
+:root {
+    --primary: #0a192f;
+    --accent: #c5a059;
+    --white: #ffffff;
+}
+
+* { box-sizing: border-box; transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); }
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--primary);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+/* --- Persistent Video Background --- */
+#bg-video {
+    position: fixed;
+    right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+    filter: brightness(0.4);
+}
+
+/* --- Header & Navigation --- */
+header {
+    background-color: var(--primary);
+    padding: 25px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+header h1 { font-family: 'Cinzel', serif; color: var(--accent); margin: 0; letter-spacing: 4px; font-size: 1.6rem; }
+
+nav a {
+    color: white; text-decoration: none; margin-left: 30px;
+    font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+}
+nav a:hover { color: var(--accent); }
+
+/* --- Section Intro --- */
+.section { padding: 100px 10%; text-align: center; }
+
+.section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-style: italic;
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    color: var(--accent);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    margin-bottom: 80px;
+    display: block;
+}
+
+/* --- Glassmorphism Amenities Grid --- */
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-15px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--accent);
+}
+
+.icon {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.4));
+}
+
+.card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+.card p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+/* --- Signature Experience Section --- */
+.features-section {
+    background: rgba(10, 25, 47, 0.9);
+    padding: 120px 10%;
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    text-align: left;
+}
+
+.features-content { flex: 1; }
+.features-img { 
+    flex: 1; 
+    height: 500px; 
+    background: url('https://unsplash.com') center/cover;
+    border: 1px solid var(--accent);
+    outline: 15px solid rgba(197, 160, 89, 0.1);
+    outline-offset: 15px;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--primary);
+    color: var(--accent);
+    text-align: center;
+    padding: 50px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+</style>
+<body>
+
+<!-- Persistant Full-Screen Video -->
+<video autoplay muted loop id="bg-video">
+    <source src="video/resort.mp4" type="video/mp4">
+</video>
+
+<header>
+    <h1>Luna Vista Resort</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="amenities.html">Amenities</a>
+        <a href="booking.html">Book Now</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+        <a href="account.html">Account</a>
+    </nav>
+</header>
+
+<section class="section">
+    <span class="subtitle">A Curated Journey</span>
+    <h2>The Art of Leisure</h2>
+
+    <div class="amenities-grid">
+        <div class="card">
+            <span class="icon">🌊</span>
+            <h3>Infinity Horizon</h3>
+            <p>Our temperature-controlled infinity pool merges seamlessly with the Indian Ocean, offering a tranquil sanctuary under the Maldivian sun.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">✨</span>
+            <h3>Celestial Spa</h3>
+            <p>Indulge in ancient healing rituals and modern skincare in our award-winning sanctuary. Holistic wellness designed for the soul.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">🏖️</span>
+            <h3>Private Shoreline</h3>
+            <p>Access our exclusive white-sand beach. Features private cabanas with dedicated butler service and chilled refreshments.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">🍽️</span>
+            <h3>Epicurean Dining</h3>
+            <p>Michelin-starred culinary artists curate a daily menu of fresh, local ingredients and international delicacies at The Azure Grill.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">🍷</span>
+            <h3>Vintage Cellar</h3>
+            <p>Explore an extensive collection of rare world-class vintages with our master sommelier in an intimate, subterranean setting.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">🛥️</span>
+            <h3>Yacht Expeditions</h3>
+            <p>Charter our private fleet for sunset cruises, deep-sea exploration, or intimate island hopping curated by our concierge.</p>
+        </div>
+    </div>
+</section>
+
+<!-- SIGNATURE EXPERIENCE SECTION -->
+<section class="features-section">
+    <div class="features-content">
+        <span style="color: var(--accent); letter-spacing: 4px; font-size: 0.8rem; text-transform: uppercase;">Unforgettable Moments</span>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 20px 0; color: #fff; font-style: italic;">The Wellness Ritual</h2>
+        <p style="color: #cbd5e1; margin-bottom: 40px; line-height: 2;">
+            Immerse yourself in a full-day curated wellness journey. From sunrise yoga on the private dock to moonlit meditation, 
+            our holistic approach ensures a total rejuvenation of the spirit. Our practitioners are world-renowned specialists 
+            in Ayurvedic and modern therapy.
+        </p>
+        <button style="background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 20px 40px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; font-weight: 600;" onclick="location.href='contact.html'">Inquire with Concierge</button>
+    </div>
+    <div class="features-img"></div>
+</section>
+
+<footer>
+    © 2026 Luna Vista Resort | All Rights Reserved
+</footer>
+
+</body>
+</html>

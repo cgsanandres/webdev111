@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create Account</title>
+
+<style>
+@import url('https://googleapis.com');
+
+:root {
+    --primary: #0a192f;
+    --accent: #c5a059;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--primary);
+}
+
+/* --- Background Video --- */
+#bg-video {
+    position: fixed;
+    right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+    filter: brightness(0.4); /* Slightly darker for better focus on larger form */
+}
+
+/* --- The Registration Card --- */
+.register-box {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 50px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    color: white;
+}
+
+.register-box h1 {
+    font-family: 'Cinzel', serif;
+    color: var(--accent);
+    letter-spacing: 5px;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.register-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 35px;
+    color: white;
+}
+
+/* --- Luxury Underline Inputs --- */
+input {
+    width: 100%;
+    padding: 12px 0;
+    margin-bottom: 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: 0.3s;
+}
+
+input::placeholder { color: rgba(255,255,255,0.4); font-size: 0.8rem; letter-spacing: 1px; }
+
+input:focus {
+    border-bottom: 1px solid var(--accent);
+}
+
+/* --- Button Styling --- */
+button {
+    width: 100%;
+    padding: 18px;
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: 0.4s;
+}
+
+button:hover {
+    background: white;
+    letter-spacing: 5px;
+}
+
+.login-link {
+    display: block;
+    margin-top: 25px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.login-link:hover { color: var(--accent); }
+</style>
+</head>
+
+<body>
+
+<!-- Video Background -->
+<video autoplay muted loop id="bg-video">
+  <source src="video/resort.mp4" type="video/mp4">
+</video>
+
+<div class="register-box">
+    <h1>Luna Vista Resort</h1>
+    <h2>Begin Your Legacy</h2>
+
+    <form onsubmit="return handleCreateAccount(event)">
+        <input type="text" id="reg-name" placeholder="Full Name" required>
+        <input type="email" id="reg-email" placeholder="Email Address" required>
+        <input type="password" id="reg-pass" placeholder="Create Password" required>
+        <input type="password" id="reg-confirm" placeholder="Confirm Password" required>
+
+        <button type="submit">Join the Sanctuary</button>
+    </form>
+
+    <a href="login.html" class="login-link">Already a Member? Log In</a>
+</div>
+
+<script>
+function handleCreateAccount(event) {
+    event.preventDefault();
+    
+    let pass = document.getElementById("reg-pass").value;
+    let confirm = document.getElementById("reg-confirm").value;
+
+    if(pass !== confirm) {
+        alert("Passwords do not match.");
+        return false;
+    }
+
+    alert("Welcome to the Legacy. Your account has been created.");
+    window.location = "login.html";
+}
+</script>
+
+</body>
+
+</html>

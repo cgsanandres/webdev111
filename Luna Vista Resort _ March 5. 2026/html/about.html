@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>About | Luna Vista</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+@import url('https://googleapis.com');
+
+:root {
+    --primary: #0a192f;
+    --accent: #c5a059;
+    --white: #ffffff;
+}
+
+* { box-sizing: border-box; transition: all 0.5s ease; }
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--primary);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+/* --- Persistent Video Background --- */
+#bg-video {
+    position: fixed;
+    right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+    filter: brightness(0.4);
+}
+
+/* --- Header & Nav --- */
+header {
+    background-color: var(--primary);
+    padding: 25px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+header h1 { font-family: 'Cinzel', serif; color: var(--accent); letter-spacing: 4px; margin: 0; font-size: 1.6rem; }
+
+nav a {
+    color: white; text-decoration: none; margin-left: 25px;
+    font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+}
+nav a:hover { color: var(--accent); }
+
+/* --- About Content Card --- */
+.section {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 80px;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: center;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+.section span {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-style: italic;
+    font-weight: 400;
+    margin: 0;
+}
+
+.section p {
+    line-height: 2.2;
+    color: #cbd5e1;
+    font-size: 1.1rem;
+    max-width: 850px;
+    margin: 40px auto;
+}
+
+/* --- Stats Grid --- */
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 60px;
+    border-top: 1px solid rgba(197, 160, 89, 0.3);
+    padding-top: 50px;
+}
+
+.stat-item h3 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--accent); margin: 0; }
+.stat-item p { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; }
+
+/* --- Secondary Philosophy Section --- */
+.philosophy {
+    background: rgba(10, 25, 47, 0.9);
+    padding: 100px 15%;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    text-align: left;
+}
+
+.philosophy-text { flex: 1; }
+.philosophy-text h3 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--accent); margin-bottom: 20px; }
+
+footer {
+    background: var(--primary);
+    color: var(--accent);
+    text-align: center;
+    padding: 40px;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Persistant Full-Screen Video -->
+<video autoplay muted loop id="bg-video">
+    <source src="video/resort.mp4" type="video/mp4">
+</video>
+
+<header>
+    <h1>Luna Vista Resort</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="amenities.html">Amenities</a>
+        <a href="booking.html">Book Now</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+        <a href="account.html">Account</a>
+    </nav>
+</header>
+
+<section class="section">
+    <span>The Legacy of Crystal Bay</span>
+    <h2>A Sanctuary of Serenity</h2>
+
+    <p>
+        Founded on the principle of harmonious luxury, Luna Vista Resort has been a cornerstone 
+        of coastal elegance for over two decades. What began as a private family estate has 
+        transformed into a globally recognized sanctuary for those seeking the ultimate 
+        tropical escape.
+    </p>
+
+    <p>
+        Our philosophy is simple: to merge world-class hospitality with the raw, 
+        unspoiled beauty of the ocean. Every suite is designed to capture the 
+        gentle rhythms of the tide, and every meal is a celebration of local 
+        artisanal flavors.
+    </p>
+
+    <div class="stats-grid">
+        <div class="stat-item">
+            <h3>25</h3>
+            <p>Years of Legacy</p>
+        </div>
+        <div class="stat-item">
+            <h3>140</h3>
+            <p>Private Cabanas</p>
+        </div>
+        <div class="stat-item">
+            <h3>12</h3>
+            <p>Michelin Chefs</p>
+        </div>
+        <div class="stat-item">
+            <h3>100%</h3>
+            <p>Ocean-Front Suites</p>
+        </div>
+    </div>
+</section>
+
+<!-- NEW DESIGN SECTION: Philosophy -->
+<section class="philosophy">
+    <div class="philosophy-text">
+        <span style="color: var(--accent); letter-spacing: 3px; font-size: 0.8rem; text-transform: uppercase;">Our Commitment</span>
+        <h3>Ecological Elegance</h3>
+        <p style="color: #cbd5e1; line-height: 2;">
+            At Luna Vista, we believe true luxury is sustainable. Our resort operates with a zero-plastic 
+            initiative and supports the Crystal Bay Coral Restoration project. We invite our guests to 
+            experience a paradise that we are actively preserving for the generations to follow.
+        </p>
+    </div>
+    <!-- This can be a placeholder for a high-end image or graphic -->
+    <div style="flex: 0.8; height: 350px; border: 1px solid var(--accent); outline: 15px solid rgba(197, 160, 89, 0.1); outline-offset: 15px; background: url('images/nature.jpg') center/cover;"></div>
+</section>
+
+<footer>
+    © 2026 Luna Vista Resort | The Art of Leisure
+</footer>
+
+</body>
+</html>

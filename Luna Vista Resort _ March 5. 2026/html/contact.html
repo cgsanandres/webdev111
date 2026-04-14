@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact | Luna Vista</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+
+@import url('https://googleapis.com');
+
+:root {
+    --primary: #0a192f;
+    --accent: #c5a059;
+    --white: #ffffff;
+}
+
+* { box-sizing: border-box; transition: all 0.4s ease; }
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--primary);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+/* --- Persistent Video Background --- */
+#bg-video {
+    position: fixed;
+    right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
+    filter: brightness(0.4);
+}
+
+/* --- Header & Navigation --- */
+header {
+    background-color: var(--primary);
+    padding: 25px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+header h1 { font-family: 'Cinzel', serif; color: var(--accent); letter-spacing: 4px; margin: 0; font-size: 1.6rem; }
+
+nav a {
+    color: white; text-decoration: none; margin-left: 25px;
+    font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+}
+nav a:hover { color: var(--accent); }
+
+/* --- Contact Layout --- */
+.section {
+    padding: 80px 8%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    min-height: 80vh;
+}
+
+/* --- Left Side: Information --- */
+.contact-info {
+    flex: 1;
+    max-width: 450px;
+}
+
+.contact-info span {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.contact-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-style: italic;
+    margin: 0 0 25px;
+}
+
+.info-item {
+    margin-top: 45px;
+    padding-left: 15px;
+    border-left: 1px solid var(--accent);
+}
+
+.info-item h4 {
+    font-family: 'Cinzel', serif;
+    color: var(--accent);
+    margin: 0 0 10px;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+.info-item p {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* --- Right Side: Glass Form --- */
+.contact-box {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 60px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+.contact-box h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    margin: 0 0 30px;
+    color: var(--accent);
+    text-align: center;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 15px 0;
+    margin-bottom: 25px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+}
+
+input:focus, textarea:focus { border-bottom: 1px solid var(--accent); }
+
+button {
+    width: 100%;
+    padding: 20px;
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover { background: var(--white); letter-spacing: 6px; }
+
+/* --- Arrival Section --- */
+.arrival-experience {
+    background: rgba(10, 25, 47, 0.9);
+    padding: 100px 10%;
+    text-align: center;
+}
+
+.arrival-experience h2 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--accent); font-style: italic; }
+
+footer {
+    background: var(--primary);
+    color: var(--accent);
+    text-align: center;
+    padding: 40px;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- Persistant Full-Screen Video -->
+<video autoplay muted loop id="bg-video">
+    <source src="video/resort.mp4" type="video/mp4">
+</video>
+
+<header>
+    <h1>Luna Vista Resort</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="amenities.html">Amenities</a>
+        <a href="booking.html">Book Now</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+        <a href="account.html">Account</a>
+    </nav>
+</header>
+
+<section class="section">
+    <div class="contact-info">
+        <span>The Concierge</span>
+        <h2>Reach Out</h2>
+        <p style="color: #cbd5e1; line-height: 1.8;">Our dedicated concierge team is available around the clock to curate your perfect stay, from yacht transfers to bespoke island excursions.</p>
+
+        <div class="info-item">
+            <h4>Crystal Bay Sanctuary</h4>
+            <p>102 Paradise Cove, Crystal Bay<br>Maldives, Indian Ocean</p>
+        </div>
+
+        <div class="info-item">
+            <h4>Bespoke Assistance</h4>
+            <p>Direct: +1 (800) LUNA-VISTA<br>Press & Media: concierge@lunavista.com</p>
+        </div>
+
+        <div class="info-item">
+            <h4>Travel Arrangements</h4>
+            <p>Private Jet & Yacht Coordination<br>Available upon request for Platinum Members.</p>
+        </div>
+    </div>
+
+    <div class="contact-box">
+        <h3>Begin the Dialogue</h3>
+        <form id="contactForm" onsubmit="return sendMessage(event)">
+            <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent);">Full Identity</label>
+            <input type="text" placeholder="e.g. Julianne Moore" required>
+
+            <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent);">Communication Channel</label>
+            <input type="email" placeholder="email@address.com" required>
+
+            <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent);">Nature of Inquiry</label>
+            <textarea placeholder="How may we curate your experience?" rows="4" required></textarea>
+
+            <button type="submit">Submit Inquiry</button>
+        </form>
+    </div>
+</section>
+
+<!-- NEW DESIGN SECTION: Arrival Experience -->
+<section class="arrival-experience">
+    <span>Your Journey Starts Here</span>
+    <h2>The Arrival Experience</h2>
+    <p style="max-width: 700px; margin: 20px auto; color: #cbd5e1; line-height: 2;">
+        Every guest arrival is celebrated. Whether you arrive by private yacht or sea-plane, our greeting committee 
+        ensures your transition into paradise is seamless and accompanied by our signature chilled refreshments.
+    </p>
+</section>
+
+<footer>
+    © 2026 Luna Vista Resort | All Rights Reserved
+</footer>
+
+<script>
+function sendMessage(event) {
+    event.preventDefault();
+    alert("Your inquiry has been sent to our head concierge. Expect a response within the hour.");
+    document.getElementById("contactForm").reset();
+    return false;
+}
+</script>
+
+</body>
+</html>

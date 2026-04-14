@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Luna Vista Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+@import url('https://googleapis.com');
+
+:root {
+    --primary: #0a192f;
+    --accent: #c5a059;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevents scrollbars from the video */
+    background-color: var(--primary); /* Fallback color */
+}
+
+/* --- Background Video Logic --- */
+#bg-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1; /* Puts it behind everything */
+    object-fit: cover;
+    filter: brightness(0.5); /* Dims the video so the login box pops */
+}
+
+/* --- The Login Card --- */
+.login-box {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 60px 45px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: white;
+}
+
+.login-box h1 {
+    font-family: 'Cinzel', serif;
+    color: var(--accent);
+    letter-spacing: 5px;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.login-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 40px;
+    color: white;
+}
+
+/* --- Luxury Inputs --- */
+input {
+    width: 100%;
+    padding: 15px 0;
+    margin-bottom: 25px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: 0.3s;
+}
+
+input::placeholder { color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 1px; }
+
+input:focus {
+    border-bottom: 1px solid var(--accent);
+}
+
+/* --- Luxury Button --- */
+button {
+    width: 100%;
+    padding: 18px;
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.4s;
+}
+
+button:hover {
+    background: white;
+    letter-spacing: 5px;
+}
+
+a {
+    display: block;
+    margin-top: 25px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+a:hover { color: var(--accent); }
+
+
+</style>
+</head>
+
+<body>
+
+<!-- Full Screen Video Background -->
+<video autoplay muted loop id="bg-video">
+  <source src="video/resort.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<div class="login-box">
+    <h1>Luna Vista Resort</h1>
+    <h2>Welcome Back</h2>
+
+    <input type="email" id="email" placeholder="Email Address">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Enter Sanctuary</button>
+
+    <a href="register.html">Join the Legacy</a>
+</div>
+
+<script>
+function login(){
+    let email = document.getElementById("email").value;
+    let pass = document.getElementById("password").value;
+
+    if(email == "" || pass == ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    localStorage.setItem("user", email);
+    window.location = "index.html";
+}
+</script>
+
+</body>
+</html>
