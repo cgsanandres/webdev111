@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronCore Fitness | Membership Plans</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+    <style>
+        :root {
+            --primary: #f5c518;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR (Locked Consistency) */
+        .sidebar {
+            width: 240px;
+            background: #000;
+            height: 100vh;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            border-right: 1px solid #222;
+        }
+
+        .sidebar h2 { color: var(--primary); text-align: center; letter-spacing: 2px; margin-bottom: 30px; }
+
+        .sidebar a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar a:hover, .sidebar a.active { background: var(--glass); color: var(--primary); padding-left: 20px; }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            margin-left: 240px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 { font-size: 36px; color: var(--primary); margin: 0; }
+
+        /* MEMBERSHIP GRID */
+        .membership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .plan {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #222;
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan.popular {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            background: linear-gradient(180deg, #1c1c1c 0%, #111 100%);
+            z-index: 1;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: black;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .plan:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .plan h3 { color: var(--primary); font-size: 24px; margin-top: 0; }
+        
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .price span { font-size: 16px; color: var(--text-muted); }
+
+        .plan ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0 30px;
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .plan li {
+            margin: 12px 0;
+            color: #ccc;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan li i { color: var(--primary); font-size: 14px; }
+
+        .join-btn {
+            background: var(--primary);
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .join-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(245, 197, 24, 0.3);
+        }
+
+        .join-btn.outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>IRONCORE</h2>
+     <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="classes.html"><i class="fas fa-dumbbell"></i> Classes</a>
+    <a href="trainers.html"><i class="fas fa-user-tie"></i> Trainers</a>
+    <a href="membership.html"><i class="fas fa-credit-card"></i> Membership</a>
+    <a href="gallery.html"><i class="fas fa-camera"></i> Gallery</a>
+    <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+	 <a href="account.html"><i class="fas fa-phone"></i> Account</a>
+     <a onclick="logout.html" style="margin-top: auto; border-top: 1px solid #222;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main">
+    <div class="page-header">
+        <h1>Elite Membership Plans</h1>
+        <p style="color: var(--text-muted); margin-top: 10px;">Invest in yourself with flexible plans designed for every level of commitment.</p>
+    </div>
+
+    <div class="membership-grid">
+        <!-- BASIC -->
+        <div class="plan">
+            <h3>Basic</h3>
+            <div class="price">₱999 <span>/mo</span></div>
+            <ul>
+                <li><i class="fas fa-check"></i> Standard Gym Access</li>
+                <li><i class="fas fa-check"></i> Locker Room & Showers</li>
+                <li><i class="fas fa-check"></i> 1 Free Guest Pass/Mo</li>
+                <li style="opacity: 0.5;"><i class="fas fa-times"></i> Group Classes</li>
+            </ul>
+            <button class="join-btn outline" onclick="joinPlan('Basic')">Select Basic</button>
+        </div>
+
+        <!-- PRO -->
+        <div class="plan popular">
+            <div class="popular-badge">Most Popular</div>
+            <h3>Pro</h3>
+            <div class="price">₱1,499 <span>/mo</span></div>
+            <ul>
+                <li><i class="fas fa-check"></i> 24/7 Elite Access</li>
+                <li><i class="fas fa-check"></i> All Group Classes</li>
+                <li><i class="fas fa-check"></i> Monthly Progress Report</li>
+                <li><i class="fas fa-check"></i> HIIT & Yoga Zones</li>
+            </ul>
+            <button class="join-btn" onclick="joinPlan('Pro')">Get Started</button>
+        </div>
+
+        <!-- ELITE -->
+        <div class="plan">
+            <h3>Elite</h3>
+            <div class="price">₱2,199 <span>/mo</span></div>
+            <ul>
+                <li><i class="fas fa-check"></i> Dedicated Personal Trainer</li>
+                <li><i class="fas fa-check"></i> Custom Nutrition Plan</li>
+                <li><i class="fas fa-check"></i> Recovery Zone (Sauna/Ice)</li>
+                <li><i class="fas fa-check"></i> Premium Protein Shakes</li>
+            </ul>
+            <button class="join-btn outline" onclick="joinPlan('Elite')">Go Elite</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* PROTECTION */
+    if(localStorage.getItem("fitnessLoggedIn") !== "true"){
+        window.location.href="login.html";
+    }
+
+    /* LOGOUT */
+    function logout(){
+        localStorage.removeItem("fitnessLoggedIn");
+        window.location.href="login.html";
+    }
+
+    function joinPlan(plan){
+        alert("Success! You've upgraded to the " + plan + " plan. Let's get to work! 💪");
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronCore Fitness | Contact</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+    <style>
+        :root {
+            --primary: #f5c518;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR (Locked Consistency) */
+        .sidebar {
+            width: 240px;
+            background: #000;
+            height: 100vh;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            border-right: 1px solid #222;
+        }
+
+        .sidebar h2 { color: var(--primary); text-align: center; letter-spacing: 2px; margin-bottom: 30px; }
+
+        .sidebar a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar a:hover, .sidebar a.active { background: var(--glass); color: var(--primary); padding-left: 20px; }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            margin-left: 240px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* CONTACT GRID */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; }
+
+        .info-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #222;
+            height: fit-content;
+        }
+
+        .info-item { display: flex; gap: 15px; margin-bottom: 25px; }
+        .info-item i { color: var(--primary); font-size: 20px; margin-top: 5px; }
+        .info-item h4 { margin: 0; font-size: 18px; }
+        .info-item p { margin: 5px 0 0; color: var(--text-muted); font-size: 14px; }
+
+        /* FORM STYLING */
+        .form-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #222;
+        }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--primary); font-weight: bold; }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus { border-color: var(--primary); background: #2a2a2a; }
+
+        .submit-btn {
+            background: var(--primary);
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(245, 197, 24, 0.2); }
+
+        /* BUSINESS HOURS STATUS */
+        .status-badge {
+            background: #222;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #4BB543; }
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>IRONCORE</h2>
+     <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="classes.html"><i class="fas fa-dumbbell"></i> Classes</a>
+    <a href="trainers.html"><i class="fas fa-user-tie"></i> Trainers</a>
+    <a href="membership.html"><i class="fas fa-credit-card"></i> Membership</a>
+    <a href="gallery.html"><i class="fas fa-camera"></i> Gallery</a>
+    <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+	 <a href="account.html"><i class="fas fa-phone"></i> Account</a>
+     <a onclick="logout.html" style="margin-top: auto; border-top: 1px solid #222;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main">
+    <div class="page-header">
+        <h1 style="margin:0; font-size: 36px; color: var(--primary);">Get In Touch</h1>
+        <p style="color: var(--text-muted); margin-top: 10px;">Have questions? Our team of elite fitness consultants is ready to help.</p>
+    </div>
+
+    <div class="contact-grid">
+        <!-- LEFT: INFO -->
+        <div>
+            <div class="status-badge">
+                <div class="dot"></div> Currently Open: 24/7 Access
+            </div>
+
+            <div class="info-card">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Headquarters</h4>
+                        <p>123 Strength Avenue, Fitness City<br>Metro Manila, Philippines</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <h4>Member Support</h4>
+                        <p>+63 912 345 6789</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>General Inquiries</h4>
+                        <p>hello@ironcorefitness.com</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                    <h4 style="margin-bottom: 15px;">Follow the Journey</h4>
+                    <div style="display: flex; gap: 15px; font-size: 20px;">
+                        <i class="fab fa-instagram" style="cursor: pointer;"></i>
+                        <i class="fab fa-facebook" style="cursor: pointer;"></i>
+                        <i class="fab fa-youtube" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: FORM -->
+        <div class="form-card">
+            <h2 style="margin-top:0; border-left: none; padding-left: 0;">Send an Inquiry</h2>
+            
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="John Doe">
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="john@example.com">
+            </div>
+
+            <div class="input-group">
+                <label>Topic</label>
+                <select style="width:100%; padding:12px; background:#222; border:1px solid #333; color:white; border-radius:8px;">
+                    <option>General Inquiry</option>
+                    <option>Membership Issues</option>
+                    <option>Personal Training</option>
+                    <option>Feedback</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Message</label>
+                <textarea id="message" rows="5" placeholder="Tell us how we can help..."></textarea>
+            </div>
+
+            <button class="submit-btn" onclick="sendInquiry()">Send Message</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    if(localStorage.getItem("fitnessLoggedIn") !== "true"){
+        window.location.href="login.html";
+    }
+
+    function logout(){
+        localStorage.removeItem("fitnessLoggedIn");
+        window.location.href="login.html";
+    }
+
+    function sendInquiry() {
+        const name = document.getElementById('name').value;
+        if(!name) {
+            alert("Please enter your name.");
+            return;
+        }
+        alert("Thanks " + name + "! Your inquiry has been received. Our team will contact you within 24 hours.");
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>

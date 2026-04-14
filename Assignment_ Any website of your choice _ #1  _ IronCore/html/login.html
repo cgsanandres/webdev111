@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronCore Fitness | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
+    <style>
+        :root {
+            --primary: #f5c518;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--bg-dark);
+            color: white;
+            transition: 0.3s;
+            /* Subtle background pattern */
+            background-image: radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        body.light {
+            background: #f4f4f4;
+            color: #111;
+            background-image: radial-gradient(circle at 2px 2px, #ddd 1px, transparent 0);
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            border: 1px solid #222;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        body.light .container {
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: none;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        h3 {
+            font-weight: 400;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        body.light input {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            color: #111;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: #2a2a2a;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            border: none;
+            color: black;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 197, 24, 0.3);
+        }
+
+        .error {
+            color: #ff4d4d;
+            font-size: 13px;
+            height: 20px;
+            margin-top: 10px;
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            border-top: 1px solid #222;
+            padding-top: 20px;
+        }
+
+        body.light .footer-links { border-top: 1px solid #eee; }
+
+        .link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .theme-btn {
+            background: var(--glass);
+            border: 1px solid #333;
+            color: inherit;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="logo">IronCore</div>
+    <h3>MEMBER LOGIN</h3>
+
+    <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" placeholder="Email Address">
+    </div>
+
+    <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" placeholder="Password">
+    </div>
+
+    <button onclick="login()">SIGN IN</button>
+
+    <div class="error" id="errorMsg"></div>
+
+    <div class="footer-links">
+        <div class="link">
+            New to IronCore? <a href="register.html">Create Account</a>
+        </div>
+        
+        <button class="theme-btn" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i> Toggle Theme
+        </button>
+    </div>
+</div>
+
+<script>
+    // Theme Logic
+    if(localStorage.getItem("theme") === "light"){
+        document.body.classList.add("light");
+    }
+
+    function toggleTheme(){
+        document.body.classList.toggle("light");
+        localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+    }
+
+    // Login Logic
+    function login(){
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const errorMsg = document.getElementById("errorMsg");
+
+        const savedEmail = localStorage.getItem("fitnessEmail");
+        const savedPassword = localStorage.getItem("fitnessPassword");
+
+        if(!email || !password){
+            errorMsg.innerText = "Please fill in all fields.";
+            return;
+        }
+
+        if(email === savedEmail && password === savedPassword){
+            localStorage.setItem("fitnessLoggedIn", "true");
+            // Animated transition feel
+            errorMsg.style.color = "#4BB543";
+            errorMsg.innerText = "Login successful! Redirecting...";
+            
+            setTimeout(() => {
+                window.location.href = "index.html"; // Ensure this matches your dashboard filename
+            }, 1000);
+        } else {
+            errorMsg.style.color = "#ff4d4d";
+            errorMsg.innerText = "Invalid email or password.";
+        }
+    }
+</script>
+
+</body>
+</html>

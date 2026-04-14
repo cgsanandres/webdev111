@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IronCore Fitness | Our Story</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+    <style>
+        :root {
+            --primary: #f5c518;
+            --bg-dark: #0a0a0a;
+            --card-bg: #161616;
+            --text-muted: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+
+        body {
+            margin: 0;
+            display: flex;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR (Consistent with others) */
+        .sidebar {
+            width: 240px;
+            background: #000;
+            height: 100vh;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            border-right: 1px solid #222;
+        }
+
+        .sidebar h2 { color: var(--primary); text-align: center; letter-spacing: 2px; margin-bottom: 30px; }
+
+        .sidebar a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar a:hover, .sidebar a.active { background: var(--glass); color: var(--primary); padding-left: 20px; }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            margin-left: 240px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        /* HERO SECTION */
+        .about-hero {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 40px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #333;
+            margin-bottom: 50px;
+        }
+
+        .about-hero h1 { font-size: 48px; color: var(--primary); margin: 0; text-transform: uppercase; }
+
+        /* STORY SECTION */
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .story-text h2 { color: var(--primary); border-left: 4px solid var(--primary); padding-left: 15px; }
+        .story-text p { line-height: 1.8; color: #ccc; font-size: 17px; }
+
+        .story-image img {
+            width: 100%;
+            border-radius: 15px;
+            border: 1px solid #444;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        /* VALUES GRID */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .value-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #222;
+            transition: 0.3s;
+        }
+
+        .value-card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .value-card i { font-size: 40px; color: var(--primary); margin-bottom: 20px; }
+        .value-card h3 { margin-bottom: 10px; }
+        .value-card p { font-size: 14px; color: #aaa; }
+
+        /* STATS BAR */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: var(--primary);
+            color: black;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-item h2 { font-size: 36px; margin: 0; }
+        .stat-item p { margin: 5px 0 0; font-weight: bold; text-transform: uppercase; font-size: 12px; }
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>IRONCORE</h2>
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="classes.html"><i class="fas fa-dumbbell"></i> Classes</a>
+    <a href="trainers.html"><i class="fas fa-user-tie"></i> Trainers</a>
+    <a href="membership.html"><i class="fas fa-credit-card"></i> Membership</a>
+    <a href="gallery.html"><i class="fas fa-camera"></i> Gallery</a>
+    <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+	 <a href="account.html"><i class="fas fa-phone"></i> Account</a>
+     <a onclick="logout.html" style="margin-top: auto; border-top: 1px solid #222;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main">
+    
+    <div class="about-hero">
+        <h1>Built From Iron</h1>
+        <p style="color: var(--primary); font-weight: bold; letter-spacing: 2px;">ESTABLISHED 2018</p>
+    </div>
+
+    <div class="story-grid">
+        <div class="story-text">
+            <h2>Our Philosophy</h2>
+            <p>At IronCore Fitness, we believe that strength is the foundation of a better life. We started in a small warehouse with nothing but a few racks and a passion for real results. Today, we are the city's premier elite training facility.</p>
+            <p>Our mission is simple: to provide a high-performance environment where excuses die and champions are built. Whether you are an athlete or a beginner, we provide the tools, the culture, and the coaching to surpass your limits.</p>
+        </div>
+        <div class="story-image">
+            <img src="images/gym_interior.jpeg" alt="Gym Interior">
+        </div>
+    </div>
+
+    <h2 style="text-align: center; margin-bottom: 40px; color: var(--primary);">Our Core Pillars</h2>
+    
+    <div class="values-grid">
+        <div class="value-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Integrity</h3>
+            <p>We don't sell shortcuts. We sell hard work and honest progress.</p>
+        </div>
+        <div class="value-card">
+            <i class="fas fa-users"></i>
+            <h3>Community</h3>
+            <p>IronCore is more than a gym; it's a family of like-minded warriors.</p>
+        </div>
+        <div class="value-card">
+            <i class="fas fa-bolt"></i>
+            <h3>Excellence</h3>
+            <p>We invest in the highest-grade equipment and the sharpest coaches.</p>
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <h2>15k+</h2>
+            <p>Square Feet</p>
+        </div>
+        <div class="stat-item">
+            <h2>5000+</h2>
+            <p>Success Stories</p>
+        </div>
+        <div class="stat-item">
+            <h2>24/7</h2>
+            <p>Member Access</p>
+        </div>
+        <div class="stat-item">
+            <h2>0</h2>
+            <p>Excuses Allowed</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    if(localStorage.getItem("fitnessLoggedIn") !== "true") window.location.href="login.html";
+
+    function logout(){
+        localStorage.removeItem("fitnessLoggedIn");
+        window.location.href="login.html";
+    }
+</script>
+
+</body>
+</html>
