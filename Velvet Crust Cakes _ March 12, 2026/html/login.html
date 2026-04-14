@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Velvet Crust | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  /* Import Elegant & Playful Typography */
+@import url('https://googleapis.com');
+
+:root {
+    --cocoa: #3d2b1f;       /* Deep Chocolate */
+    --cream: #fdf5e6;       /* Warm Flour/Cream */
+    --rose: #d4a373;        /* Toasted Crust Gold */
+    --soft-pink: #f4d3d3;   /* Strawberry Frosting */
+    --white: #ffffff;
+}
+
+* { box-sizing: border-box; transition: all 0.3s ease; }
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--cream);
+    color: var(--cocoa);
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- Login Background --- */
+.login-bg {
+    height: 100vh;
+    background: linear-gradient(rgba(61, 43, 31, 0.4), rgba(61, 43, 31, 0.4)), 
+                url('https://unsplash.com') center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Floating Glass Card --- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3rem;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.glass-card h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
+
+.glass-card p {
+    color: var(--soft-pink);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+/* --- Form Elements --- */
+.input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    color: var(--cocoa);
+}
+
+input:focus {
+    box-shadow: 0 0 10px var(--soft-pink);
+}
+
+/* --- Cream Buttons --- */
+.btn-cream {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--cream);
+    color: var(--cocoa);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-cream:hover {
+    background-color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.footer-link {
+    display: block;
+    margin-top: 1.5rem;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.footer-link:hover {
+    color: var(--soft-pink);
+}
+
+  </style>
+</head>
+<body>
+
+    <div class="login-bg">
+        <div class="glass-card">
+            <h1>Velvet Crust</h1>
+            <p>Boutique Cakery</p>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+
+                <button type="submit" class="btn-cream">Enter Bakery</button>
+            </form>
+
+            <a href="register.html" class="footer-link">New guest? Create an account</a>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            // Basic logic to simulate entry
+            alert("Welcome back to Velvet Crust. Redirecting to your dashboard...");
+            window.location.href = "index.html"; 
+        }
+    </script>
+</body>
+</html>

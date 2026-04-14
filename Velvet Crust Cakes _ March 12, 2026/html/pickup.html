@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Velvet Crust | Order Confirmed</title>
+    <style>
+        @import url('https://googleapis.com');
+
+        :root {
+            --cocoa: #3d2b1f;
+            --cream: #fdf5e6;
+            --rose: #d4a373;
+            --soft-pink: #f4d3d3;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--cream);
+            color: var(--cocoa);
+            line-height: 1.6;
+        }
+
+        /* --- Unified Glass Header --- */
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 1rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(61, 43, 31, 0.1);
+        }
+
+        header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-style: italic; margin: 0; }
+        nav a { color: var(--cocoa); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-left: 2rem; font-weight: 600; }
+
+        /* --- Layout --- */
+        .confirmation-container {
+            max-width: 1100px;
+            margin: 60px auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            padding: 0 5%;
+        }
+
+        /* --- Left: Status & Tracking --- */
+        .status-main {
+            background: var(--white);
+            padding: 50px;
+            border: 1px solid rgba(61, 43, 31, 0.05);
+        }
+
+        .success-badge {
+            color: var(--rose);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.75rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        h2 { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; margin: 0 0 20px 0; font-weight: 400; }
+
+        /* --- Baking Progress Tracker --- */
+        .tracking-viz {
+            margin: 40px 0;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .tracking-viz::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #eee;
+            z-index: 1;
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 25%;
+        }
+
+        .dot {
+            width: 30px;
+            height: 30px;
+            background: var(--white);
+            border: 2px solid #eee;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+        }
+
+        .step.active .dot { background: var(--rose); border-color: var(--rose); }
+        .step.active span { color: var(--cocoa); font-weight: 600; }
+        .step span { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: #aaa; display: block; }
+
+        /* --- Right: The Digital Pass --- */
+        .digital-pass {
+            background: var(--cocoa);
+            color: var(--cream);
+            padding: 40px;
+            text-align: center;
+            position: sticky;
+            top: 120px;
+        }
+
+        .qr-placeholder {
+            background: var(--white);
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 30px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid var(--soft-pink);
+        }
+
+        .qr-placeholder img { width: 100%; filter: grayscale(1); }
+
+        .pickup-info-grid {
+            text-align: left;
+            margin-top: 30px;
+            border-top: 1px solid rgba(253, 245, 230, 0.1);
+            padding-top: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        .info-row label { opacity: 0.6; font-style: italic; }
+
+        .btn-gallery {
+            width: 100%;
+            padding: 20px;
+            background: var(--rose);
+            color: var(--white);
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .confirmation-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Velvet Crust</h1>
+        <nav>
+           <a href="index.html">Gallery</a>
+            <a href="design.html">Design</a>
+            <a href="orders.html">Orders</a>
+            <a href="pickup.html">Pickup</a>
+            <a href="#" class="schedule-btn">Schedule Session</a>
+ 
+            <a href="about.html" style="color: var(--rose);">Our Story</a>
+            <a href="contact.html" style="color: var(--rose);">Contact</a>
+			<a href="account.html" style="color: var(--rose);">Vault</a>
+        </nav>
+    </header>
+
+    <div class="confirmation-container">
+        <!-- Left: Status & Order Details -->
+        <div class="status-main">
+            <span class="success-badge">Booking Confirmed</span>
+            <h2>The oven is preheating.</h2>
+            <p style="color: #666;">Your Order <strong>#VC-8829</strong> has been accepted by our head pâtissier. We are currently sourcing your ingredients.</p>
+
+            <div class="tracking-viz">
+                <div class="step active">
+                    <div class="dot"></div>
+                    <span>Confirmed</span>
+                </div>
+                <div class="step active">
+                    <div class="dot"></div>
+                    <span>Sourcing</span>
+                </div>
+                <div class="step">
+                    <div class="dot"></div>
+                    <span>Baking</span>
+                </div>
+                <div class="step">
+                    <div class="dot"></div>
+                    <span>Ready</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px;">
+                <h4 style="font-family: 'Cormorant Garamond'; font-size: 1.8rem; margin-bottom: 20px;">The Velvet Selection</h4>
+                <div style="border-top: 1px solid #eee; padding-top: 20px;">
+                    <p style="display: flex; justify-content: space-between;"><span>Classic Cocoa Sponge + Salted Caramel</span> <span>$85.00</span></p>
+                    <p style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #888;"><span>Boutique Handling & Packaging</span> <span>Included</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Digital Pickup Pass -->
+        <div class="digital-pass">
+            <p style="font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 25px;">DIGITAL PICKUP PASS</p>
+            
+            <div class="qr-placeholder">
+                <!-- Using a placeholder QR image -->
+                <img src="https://qrserver.com" alt="Order QR Code">
+            </div>
+
+            <h3 style="font-family: 'Cormorant Garamond'; font-size: 1.5rem;">Saturday, Oct 12th</h3>
+            <p style="font-size: 0.8rem; color: var(--rose);">Sunset Collection (16:00 - 18:00)</p>
+
+            <div class="pickup-info-grid">
+                <div class="info-row">
+                    <label>Collection Point</label>
+                    <span>Suite 4B, The Velvet Kitchen</span>
+                </div>
+                <div class="info-row">
+                    <label>Contact</label>
+                    <span>+1 (555) VELVET-01</span>
+                </div>
+            </div>
+
+            <button class="btn-gallery" onclick="location.href='index.html'">Return to Gallery</button>
+            <p style="font-size: 0.6rem; margin-top: 20px; opacity: 0.5;">Add this pass to your Digital Wallet</p>
+        </div>
+    </div>
+
+</body>
+</html>

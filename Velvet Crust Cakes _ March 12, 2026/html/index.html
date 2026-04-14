@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Velvet Crust | Boutique Cakes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+@import url('https://googleapis.com');
+
+:root {
+    --cocoa: #3d2b1f;
+    --cream: #fdf5e6;
+    --rose: #d4a373;
+    --soft-pink: #f4d3d3;
+    --white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.8);
+}
+
+* { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--cream);
+    color: var(--cocoa);
+    overflow-x: hidden;
+}
+
+/* --- Refined Navigation --- */
+header {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 1rem 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(61, 43, 31, 0.1);
+}
+
+header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--cocoa);
+    margin: 0;
+    font-size: 2rem;
+    font-style: italic;
+}
+
+nav a {
+    color: var(--cocoa);
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-left: 2rem;
+    font-weight: 600;
+}
+
+nav a:hover { color: var(--rose); }
+
+.schedule-btn {
+    background: var(--cocoa);
+    color: var(--white) !important;
+    padding: 10px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(61, 43, 31, 0.2);
+}
+
+/* --- Hero Intro Section --- */
+.hero-intro {
+    text-align: center;
+    padding: 80px 10% 40px;
+    background: linear-gradient(to bottom, #f9ebdf, var(--cream));
+}
+
+.hero-intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    margin: 0;
+    font-weight: 400;
+}
+
+.masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    align-items: start;
+}
+
+.cake-card {
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensures all cards are the same height */
+}
+
+.cake-card img {
+    width: 100%;
+    height: 350px; /* Forces all images to the same height */
+    object-fit: cover;
+}
+
+
+.cake-details {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background: var(--white);
+}
+
+.cake-card:hover {
+    box-shadow: 0 30px 60px rgba(61, 43, 31, 0.1);
+    transform: translateY(-10px);
+}
+
+.cake-card:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.03);
+}
+
+.price-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--rose);
+    margin-top: 10px;
+    display: block;
+}
+
+/* --- Featured Baker Section --- */
+.baker-section {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    padding: 100px 15%;
+    background: var(--cocoa);
+    color: var(--cream);
+}
+
+.baker-text { flex: 1; }
+.baker-image { 
+    flex: 1; 
+    height: 500px; 
+    background: url('https://unsplash.com') center/cover;
+    border: 10px solid var(--rose);
+}
+
+/* --- Footer Newsletter --- */
+.newsletter {
+    padding: 80px 10%;
+    text-align: center;
+    background: var(--soft-pink);
+}
+
+.newsletter input {
+    padding: 15px 30px;
+    border: none;
+    width: 300px;
+    border-radius: 50px 0 0 50px;
+    outline: none;
+}
+
+.newsletter button {
+    padding: 15px 30px;
+    border: none;
+    background: var(--cocoa);
+    color: var(--white);
+    border-radius: 0 50px 50px 0;
+    cursor: pointer;
+}
+
+
+  
+  </style>
+</head>
+<body>
+
+    <header>
+        <h1>Velvet Crust</h1>
+        <nav>
+             <a href="index.html">Gallery</a>
+            <a href="design.html">Design</a>
+            <a href="orders.html">Orders</a>
+            <a href="pickup.html">Pickup</a>
+            <a href="#" class="schedule-btn">Schedule Session</a>
+ 
+            <a href="about.html" style="color: var(--rose);">Our Story</a>
+            <a href="contact.html" style="color: var(--rose);">Contact</a>
+			<a href="account.html" style="color: var(--rose);">Vault</a>
+        </nav>
+    </header>
+
+    <section class="hero-intro">
+        <p style="text-transform: uppercase; letter-spacing: 6px; color: var(--rose); font-size: 0.7rem; margin-bottom: 20px;">Est. 2024 — Boutique Cakery</p>
+        <h2>The Art of the Crust</h2>
+        <p style="max-width: 600px; margin: 20px auto; line-height: 1.8; color: #777;">Handcrafted luxury cakes designed for life's most velvet moments. From architectural wedding tiers to intimate morning tarts.</p>
+    </section>
+
+    <div class="main-container">
+        <div class="masonry-grid">
+<!-- Card 1 -->
+          		   <div class="cake-card" onclick="location.href='design.html'">
+        <img src="images/chocodream.jpeg" alt="Midnight Ganache"> 
+<div class="cake-details">
+    <h3>The Midnight Ganache</h3>
+    <p>Espresso-soaked sponge with 70% Belgian chocolate.</p>
+    <span class="price-tag">From $85</span>
+</div>
+</div>
+
+
+            <!-- Card 2 -->
+            <div class="cake-card" onclick="location.href='design.html'">
+            <img src="images/pearl_wild.jpeg" alt="Midnight Ganache"> 
+<div class="cake-details">
+    <h3>Pearl Wildflower</h3>
+    <p>Espresso-soaked sponge with 70% Belgian chocolate.</p>
+    <span class="price-tag">From $85</span>
+</div>
+</div>
+
+
+            <!-- Card 3 -->
+			 <div class="cake-card" onclick="location.href='design.html'">
+            <img src="images/cloudfun.jpeg" alt="Cloud Funfetti"> 
+<div class="cake-details">
+    <h3>Cloud Funfetti</h3>
+    <p>Light-as-air whipped frosting with vintage sprinkles.</p>
+    <span class="price-tag">From $85</span>
+</div>
+</div>	
+	
+	
+	
+	
+
+</body>
+</html>
+
+   

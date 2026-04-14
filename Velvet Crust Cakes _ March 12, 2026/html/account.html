@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Velvet Crust | Your Vault</title>
+    <style>
+        @import url('https://googleapis.com');
+
+        :root {
+            --cocoa: #3d2b1f;
+            --cream: #fdf5e6;
+            --rose: #d4a373;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.85);
+            --gold-gradient: linear-gradient(135deg, #d4a373 0%, #b38b5d 100%);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--cream);
+            color: var(--cocoa);
+        }
+
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 1rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(61, 43, 31, 0.1);
+        }
+
+        header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-style: italic; margin: 0; }
+        nav a { color: var(--cocoa); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-left: 2rem; font-weight: 600; }
+
+        .vault-container {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 40px;
+        }
+
+        /* --- Sidebar: Profile Summary --- */
+        .vault-sidebar {
+            background: var(--white);
+            padding: 40px;
+            border: 1px solid rgba(61, 43, 31, 0.05);
+            height: fit-content;
+        }
+
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            background: var(--cocoa);
+            color: var(--cream);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-family: 'Cormorant Garamond';
+            margin-bottom: 20px;
+        }
+
+        .tier-badge {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        .vault-nav { list-style: none; padding: 0; margin-top: 40px; }
+        .vault-nav li { margin-bottom: 20px; }
+        .vault-nav a { text-decoration: none; color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .vault-nav a.active { color: var(--cocoa); font-weight: 600; }
+
+        /* --- Middle: Order History & Activity --- */
+        .vault-content h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; margin-bottom: 40px; }
+
+        .order-card {
+            background: var(--white);
+            padding: 30px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--rose);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-meta span { display: block; font-size: 0.7rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+        .order-meta strong { font-size: 1.1rem; font-family: 'Cormorant Garamond'; }
+
+        .status-pill {
+            font-size: 0.7rem;
+            padding: 6px 15px;
+            border: 1px solid #eee;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Right: Preferences & Rewards --- */
+        .vault-perks {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .perk-box {
+            background: var(--cocoa);
+            color: var(--cream);
+            padding: 30px;
+        }
+
+        .perk-box h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin: 0 0 15px 0; color: var(--rose); }
+        .perk-box p { font-size: 0.8rem; opacity: 0.8; margin-bottom: 20px; }
+
+        .flavor-tag {
+            display: inline-block;
+            border: 1px solid var(--rose);
+            color: var(--rose);
+            padding: 5px 10px;
+            font-size: 0.65rem;
+            margin: 0 5px 5px 0;
+            text-transform: uppercase;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            margin-top: 10px;
+        }
+        .progress-fill { width: 65%; height: 100%; background: var(--rose); }
+
+        @media (max-width: 1100px) {
+            .vault-container { grid-template-columns: 1fr; }
+            .vault-sidebar { order: -1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Velvet Crust</h1>
+        <nav>
+            <a href="index.html">Gallery</a>
+            <a href="design.html">Design</a>
+            <a href="orders.html">Orders</a>
+            <a href="pickup.html">Pickup</a>
+            <a href="#" class="schedule-btn">Schedule Session</a>
+ 
+            <a href="about.html" style="color: var(--rose);">Our Story</a>
+            <a href="contact.html" style="color: var(--rose);">Contact</a>
+			<a href="account.html" style="color: var(--rose);">Vault</a>
+        </nav>
+    </header>
+
+    <div class="vault-container">
+        <!-- Sidebar -->
+        <aside class="vault-sidebar">
+            <div class="avatar-circle">JV</div>
+            <span class="tier-badge">Gold Tier Member</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond';">Julianne Vane</h3>
+            <p style="font-size: 0.8rem; color: #888;">Member since Oct 2023</p>
+            
+            <ul class="vault-nav">
+                <li><a href="#" class="active">Curations</a></li>
+                <li><a href="#">Payment Methods</a></li>
+                <li><a href="#">Address Book</a></li>
+                <li><a href="#">Security</a></li>
+                <li><a href="#" style="color: #e74c3c;">Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="vault-content">
+            <h2>Recent Curations</h2>
+            
+            <div class="order-card">
+                <div class="order-meta">
+                    <span>Oct 12, 2024 • #VC-8829</span>
+                    <strong>Double Tier Cocoa & Salted Caramel</strong>
+                </div>
+                <div class="status-pill">In the Oven</div>
+            </div>
+
+            <div class="order-card">
+                <div class="order-meta">
+                    <span>Aug 05, 2024 • #VC-7210</span>
+                    <strong>Madagascar Vanilla Bean Special</strong>
+                </div>
+                <div class="status-pill" style="background: #fdfdfd;">Delivered</div>
+            </div>
+
+            <h2 style="margin-top: 60px;">Saved Designs</h2>
+            <p style="font-size: 0.9rem; color: #666;">Designs you've started but haven't finalized for the oven yet.</p>
+            <div class="order-card" style="border-left-color: #eee; opacity: 0.7;">
+                <div class="order-meta">
+                    <span>Drafted Sept 20</span>
+                    <strong>Midnight Espresso Concept</strong>
+                </div>
+                <a href="design.html" style="color: var(--cocoa); font-size: 0.7rem; text-transform: uppercase; font-weight: 600;">Resume</a>
+            </div>
+        </main>
+
+        <!-- Right Perks Section -->
+        <section class="vault-perks">
+            <div class="perk-box">
+                <h4>Velvet Rewards</h4>
+                <p>You are <strong>$35.00</strong> away from a complimentary tasting flight.</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <p style="font-size: 0.6rem; margin-top: 10px;">65% to Emerald Status</p>
+            </div>
+
+            <div class="perk-box" style="background: var(--white); color: var(--cocoa); border: 1px solid rgba(61,43,31,0.1);">
+                <h4 style="color: var(--cocoa);">Flavor Palette</h4>
+                <p>Your most used ingredients:</p>
+                <div class="flavor-tag">Dark Cocoa</div>
+                <div class="flavor-tag">Sea Salt</div>
+                <div class="flavor-tag">Gold Leaf</div>
+                <div class="flavor-tag">Espresso</div>
+                <button style="width: 100%; margin-top: 20px; background: none; border: 1px solid var(--cocoa); padding: 10px; font-size: 0.7rem; cursor: pointer; text-transform: uppercase;">Update Preferences</button>
+            </div>
+        </section>
+    </div>
+
+<script>
+        function handleLogin() {
+            const nameInput = document.getElementById('userName').value;
+            
+            if (nameInput.trim() === "") {
+                alert("Please enter your name to create your account.");
+                return;
+            }
+
+            // Create the initials (e.g., "Julianne Vane" -> "JV")
+            const initials = nameInput.split(" ").map(n => n[0]).join("").toUpperCase();
+
+            // Create the user object
+            const newUser = {
+                name: nameInput,
+                initials: initials,
+                tier: "New Member",
+                memberSince: "April 2026",
+                email: "member@velvetcrust.com"
+            };
+
+            // This is the CRITICAL line that connects to your Account Script
+            localStorage.setItem('velvet_active_session', JSON.stringify(newUser));
+
+            // Move to the account page
+            window.location.href = 'account.html';
+        }
+    </script>
+</script>
+</body>
+</html>
