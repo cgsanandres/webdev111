@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account | Paws Haven</title>
+    <!-- Matching Homepage Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #588157;
+            --primary-dark: #3a5a40;
+            --secondary: #a3b18a;
+            --accent: #dad7cd;
+            --light: #f8f9fa;
+            --dark: #344e41;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * {
+            font-family: 'Open Sans', sans-serif;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR - IDENTICAL TO HOMEPAGE */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navlinks {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .navlinks a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .navlinks a:hover { color: var(--primary); }
+
+        .btn-logout {
+            background: #e63946;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* MINI HERO */
+        .hero-mini {
+            height: 30vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), 
+                        url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .container { max-width: 1100px; margin: auto; padding: 40px 20px; }
+
+        /* ACCOUNT LAYOUT */
+        .account-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* PROFILE SIDEBAR */
+        .profile-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--accent);
+            color: var(--primary-dark);
+            font-size: 40px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+        }
+
+        .user-email {
+            font-size: 14px;
+            color: #777;
+            word-break: break-all;
+            margin-bottom: 25px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            background: #f0f7f0;
+            color: #2F6B2F;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        /* DASHBOARD CONTENT */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .dash-box {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary);
+        }
+
+        .dash-box h3 {
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .dash-box p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .empty-state {
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--secondary);
+            font-style: italic;
+        }
+
+        .btn-settings {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-settings:hover { background: var(--primary-dark); }
+
+        @media(max-width: 850px) {
+            .account-grid { grid-template-columns: 1fr; margin-top: 20px; }
+            .hero-mini h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🐾 Paws Haven</div>
+    <div class="navlinks">
+          <a href="index.html">Home</a>
+        <a href="animals.html">Animals</a>
+        <a href="adopt.html">Adopt</a>
+        <a href="donate.html">Donate</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="volunteer.html">Volunteer</a>
+        <a href="contact.html">Contact</a>
+		 <a href="about.html">About</a>
+        <a href="account.html">Account</a>
+        <a onclick="login.html" class="btn-logout">Logout</a>
+    </div>
+</nav>
+
+<header class="hero-mini">
+    <div>
+        <h1>Welcome Back</h1>
+        <p>Manage your applications, favorites, and profile.</p>
+    </div>
+</header>
+
+<main class="container">
+    <div class="account-grid">
+        <!-- Profile Sidebar -->
+        <aside class="profile-card">
+            <div class="avatar" id="avatarInitial">U</div>
+            <h3 id="displayName">My Profile</h3>
+            <p class="user-email" id="userEmail"></p>
+            <div class="status-pill">Active Member</div>
+            
+            <button class="btn-settings" onclick="alert('Profile settings coming soon!')">Edit Profile</button>
+            <button class="btn-settings" style="background: #eee; color: #333;" onclick="logout()">Sign Out</button>
+        </aside>
+
+        <!-- Dashboard Widgets -->
+        <section class="dashboard-content">
+            <div class="dash-box">
+                <h3>Saved Animals</h3>
+                <p>Animals you've marked as favorites will appear here for quick access.</p>
+                <div class="empty-state">No saved pets yet.</div>
+            </div>
+
+            <div class="dash-box">
+                <h3>Adoption History</h3>
+                <p>Track the progress of your active adoption applications.</p>
+                <div class="empty-state">No active applications.</div>
+            </div>
+
+            <div class="dash-box" style="border-top-color: var(--secondary);">
+                <h3>Volunteer Hours</h3>
+                <p>View your scheduled shifts and total contributed hours.</p>
+                <div class="empty-state">0 hours contributed.</div>
+            </div>
+
+            <div class="dash-box" style="border-top-color: var(--secondary);">
+                <h3>Donation History</h3>
+                <p>Access your past receipts and manage recurring donations.</p>
+                <div class="empty-state">No recent donations.</div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    /* SESSION CHECK - Use consistent names from previous login logic */
+    if(localStorage.getItem("pawsLoggedIn") !== "true"){
+        window.location.href = "login.html";
+    }
+
+    /* DATA BINDING */
+    const email = localStorage.getItem("pawsEmail") || "user@example.com";
+    document.getElementById("userEmail").innerText = email;
+    document.getElementById("avatarInitial").innerText = email.charAt(0).toUpperCase();
+
+    function logout(){
+        localStorage.removeItem("pawsLoggedIn");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>
