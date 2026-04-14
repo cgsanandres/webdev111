@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | LibryConnect</title>
+    <!-- Vintage-Modern Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --ink-blue: #1b263b;
+            --parchment: #fdfaf0;
+            --card-stock: #f4ebd0;
+            --overdue-red: #9e2a2b;
+            --modern-sans: 'Montserrat', sans-serif;
+            --vintage-serif: 'Libre Baskerville', serif;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--parchment); /* Vintage paper texture background */
+            color: var(--ink-blue);
+            font-family: var(--modern-sans);
+        }
+
+        /* LOGIN CONTAINER */
+        .login-card {
+            background: var(--white);
+            padding: 50px;
+            border-radius: 4px; /* Sharper corners for a card look */
+            box-shadow: 10px 10px 0px rgba(27, 38, 59, 0.1);
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-family: var(--vintage-serif);
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--ink-blue);
+        }
+
+        /* INPUT STYLES (Sign-out Sheet Style) */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-family: var(--vintage-serif);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--ink-blue); /* Underline only for sign-out sheet look */
+            font-size: 16px;
+            color: var(--ink-blue);
+            outline: none;
+        }
+
+        /* VINTAGE LIBRARY CARD BUTTON */
+        .lib-card-btn {
+            width: 100%;
+            background: var(--card-stock); /* Muted card-stock yellow */
+            border: 1px solid #d4c7a1;
+            padding: 18px;
+            font-family: var(--modern-sans);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--ink-blue);
+            cursor: pointer;
+            box-shadow: 5px 5px 0px var(--ink-blue); /* Sharp offset shadow */
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ruled lines pattern on button to look like a library card */
+        .lib-card-btn::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 20px;
+            height: 100%; width: 1px;
+            background: rgba(158, 42, 43, 0.3); /* Red vertical margin line */
+        }
+
+        .lib-card-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0px var(--ink-blue);
+        }
+
+        .footer-links {
+            margin-top: 30px;
+            font-size: 13px;
+        }
+
+        .footer-links a {
+            color: var(--ink-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="logo">✒️ LibryConnect</div>
+    
+    <form action="home.html">
+        <div class="input-group">
+            <label>Member ID / Email</label>
+            <input type="email" required>
+        </div>
+
+        <div class="input-group">
+            <label>Security Key</label>
+            <input type="password" required>
+        </div>
+
+        <button type="submit" class="lib-card-btn">Sign Out Book</button>
+    </form>
+
+    <div class="footer-links">
+        New Member? <a href="register.html">Register Here</a>
+    </div>
+</div>
+
+<script>
+    /* Add logic for future session handling here */
+</script>
+
+</body>
+</html>
