@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Registration</title>
+<style>
+*{box-sizing:border-box; font-family:'Segoe UI',sans-serif;}
+body{margin:0; display:flex; background:#0f172a; color:#fff;}
+
+.sidebar{
+width:250px;
+background:#020617;
+height:100vh;
+padding:20px;
+position:fixed;
+}
+
+.sidebar h2{color:#38bdf8; text-align:center;}
+.sidebar a{
+display:block;
+color:#cbd5f5;
+text-decoration:none;
+margin:12px 0;
+padding:10px;
+border-radius:8px;
+}
+.sidebar a:hover{background:#1e293b;}
+
+.main{
+margin-left:250px;
+padding:25px;
+width:100%;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+margin-bottom:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+th,td{
+padding:12px;
+border-bottom:1px solid #334155;
+}
+th{color:#38bdf8;}
+select,input{width:100%; padding:10px; margin:10px 0;}
+button{padding:10px; background:#38bdf8; border:none;}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>ScholarPortal</h2>
+<a href="scholardashboard.html">Dashboard</a>
+<a href="scholarregistration.html">Registration</a>
+<a href="scholargrades.html">Grades</a>
+<a href="scholarprofile.html">Profile</a>
+<a href="scholaraccount.html">Account</a>
+<a href="scholarsection.html">Section Offering</a>
+<a href="scholarcalendar.html">Academic Calendar</a>
+<a href="scholarpassword.html">Password</a>
+<a href="scholarlibrary.html">Library</a>
+<a href="scholarmessaging.html">Messaging</a>
+</div>
+
+<div class="main">
+
+<div class="card">
+<h2>📝 Enrollment</h2>
+
+<form onsubmit="return enroll()">
+<select id="sy">
+<option>2026-2027</option>
+<option>2027-2028</option>
+</select>
+
+<select id="sem">
+<option>1st Semester</option>
+<option>2nd Semester</option>
+</select>
+
+<select id="course">
+<option>BSIT</option>
+<option>BSCS</option>
+<option>BSEMC</option>
+</select>
+
+<button>Enroll Now</button>
+</form>
+</div>
+
+<div class="card">
+<h2>📋 Current Enrollment</h2>
+<p>School Year: <span id="syOut"></span></p>
+<p>Semester: <span id="semOut"></span></p>
+<p>Program: <span id="courseOut"></span></p>
+</div>
+
+</div>
+
+<script>
+function enroll(){
+localStorage.setItem("sy",sy.value);
+localStorage.setItem("sem",sem.value);
+localStorage.setItem("course",course.value);
+
+syOut.innerText=sy.value;
+semOut.innerText=sem.value;
+courseOut.innerText=course.value;
+
+return false;
+}
+</script>
+
+</body>
+</html>
