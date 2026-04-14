@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respawn Gaming Hub - Shop</title>
+    <style>
+/* Base Styles - Cyberpunk/Terminal Aesthetic */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    /* Monospace font for terminal feel */
+    font-family: 'Consolas', 'Monaco', 'monospace'; 
+}
+
+body { 
+    background: #0a0e17; /* Dark background */
+    color: #00f0ff; /* Bright cyan text */
+    overflow-y: auto; /* Allow scrolling */
+}
+
+/* CSS Variables for consistent styling */
+:root { 
+    --accent: #00f0ff; /* Main cyan glow */
+    --accent-dark: #008899; /* Darker cyan for borders/accents */
+    --bg-dark: #0a0e17; /* Main dark background */
+    --panel-dark: #101828; /* Darker panel/card background */
+    --text-light: #ccc; /* Lighter text for secondary info */
+}
+
+/* Navigation Bar - Cyberpunk Style */
+nav { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 15px 20px; 
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); /* Soft glow */
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    border-bottom: 1px solid var(--accent-dark); /* Subtle dark cyan border */
+}
+.nav-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: var(--accent); /* Logo in accent color */
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); /* Glow effect */
+}
+.logo span { 
+    color: #fff; /* Hub text in white */
+    opacity: 0.7;
+    font-size: 0.8rem; /* Smaller size for 'HUB' */
+    margin-left: 5px;
+}
+        
+.nav-links { 
+    display: flex; 
+    gap: 15px; /* Slightly reduced gap */
+    list-style: none; 
+    flex-wrap: wrap; /* Allow links to wrap */
+    justify-content: center; /* Center links when wrapped */
+}
+.nav-links a { 
+    color: var(--text-light); /* Lighter text color */
+    text-decoration: none; 
+    font-weight: 500; 
+    transition: 0.3s; 
+    padding: 5px 0; 
+    border-bottom: 1px solid transparent; /* Placeholder for hover effect */
+}
+.nav-links a:hover, .nav-links a.active { 
+    color: var(--accent); 
+    border-bottom: 1px solid var(--accent); /* Subtle underline */
+    text-shadow: 0 0 5px var(--accent); /* Glow on hover/active */
+}
+.mobile-menu { 
+    display: none; 
+    font-size: 1.8rem; 
+    cursor: pointer; 
+    color: var(--accent); /* Hamburger icon in accent color */
+}
+
+/* Page Header - Cyberpunk Style */
+.page-header { 
+    max-width: 1200px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+    text-align: center; 
+    border: 1px solid var(--accent-dark); /* Border */
+    padding: 20px 30px;
+    background: var(--panel-dark); /* Panel background */
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1); /* Inner glow */
+}
+.page-header h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    border-bottom: 2px solid var(--accent); /* Accent underline */
+    display: inline-block; 
+    padding-bottom: 10px; 
+    text-shadow: 0 0 8px var(--accent); /* Glow on heading */
+}
+.page-header p { 
+    color: var(--text-light); /* Lighter text */
+    max-width: 800px; 
+    margin: 0 auto; 
+    line-height: 1.6;
+}
+
+/* Shop Categories - Minimalist Cyberpunk */
+.shop-tabs { 
+    max-width: 1200px; 
+    margin: 0 auto 30px; 
+    padding: 0 20px; 
+    display: flex; 
+    justify-content: center; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+}
+.shop-tab { 
+    background: var(--panel-dark); /* Dark panel background */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    color: var(--text-light); /* Lighter text */
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-weight: 500;
+    box-shadow: 0 0 5px rgba(0, 229, 255, 0.1); /* Subtle glow */
+}
+.shop-tab.active { 
+    background: var(--accent); /* Solid accent background */
+    color: #121212; /* Dark text */
+    border-color: var(--accent); /* Accent border */
+    box-shadow: 0 0 10px var(--accent); /* Stronger glow */
+}
+.shop-tab:hover { 
+    color: var(--accent); /* Accent text on hover */
+    border-color: var(--accent); /* Accent border on hover */
+}
+
+/* Shop Content Grid - Cyberpunk Style */
+.shop-content { 
+    max-width: 1200px; 
+    margin: 0 auto 60px; 
+    padding: 0 20px; 
+    display: none; /* Hidden by default */
+}
+.shop-content.active { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); /* Four columns */
+    gap: 20px; 
+}
+
+/* Product Cards - Cyberpunk Style */
+.product-card { 
+    background: var(--panel-dark); /* Dark panel background */
+    border-radius: 8px; 
+    padding: 20px; 
+    text-align: center; 
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.product-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); /* Stronger glow */
+}
+.product-img { 
+    width: 100%; 
+    height: 180px; 
+    background: #2d2d2d; /* Dark placeholder background */
+    border-radius: 4px; 
+    margin-bottom: 15px; 
+    overflow: hidden; 
+    border: 1px solid var(--accent-dark); /* Border */
+    box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.1); /* Inner glow */
+}
+.product-img img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block;
+}
+.product-name { 
+    margin-bottom: 10px; 
+    font-size: 1.1rem; 
+    color: #fff; /* White text */
+}
+.product-price { 
+    color: var(--accent); /* Accent color */
+    font-size: 1.2rem; 
+    font-weight: 700; 
+    margin-bottom: 15px; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on price */
+}
+.add-cart-btn { 
+    background: transparent; /* Transparent background */
+    color: #fff; /* White text */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    padding: 8px 15px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-weight: 500;
+}
+.add-cart-btn:hover { 
+    background: var(--accent); /* Accent background on hover */
+    color: #121212; /* Dark text on hover */
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent); /* Glow on hover */
+}
+
+/* Cart & Checkout Section - Cyberpunk Style */
+#cart-section { 
+    max-width: 1200px; 
+    margin: 0 auto 60px; 
+    padding: 0 20px; 
+    display: none; /* Hidden by default */
+    /* Added to ensure it appears above other content when shown */
+    position: relative; 
+    z-index: 50; 
+}
+#cart-section h3 { 
+    color: var(--accent); 
+    text-align: center; 
+    margin-bottom: 20px; 
+    font-size: 1.5rem; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on heading */
+}
+.cart-container {
+    background: var(--panel-dark); /* Dark panel background */
+    border-radius: 8px; 
+    padding: 20px; 
+    border: 1px solid var(--accent-dark); /* Border */
+}
+.cart-items { 
+    margin-bottom: 20px; 
+}
+.cart-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 0; 
+    border-bottom: 1px solid var(--accent-dark); /* Dark cyan separator */
+}
+.cart-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+.cart-item img { 
+    width: 50px; 
+    height: 50px; 
+    background: #2d2d2d; /* Dark placeholder background */
+    border-radius: 4px; 
+    object-fit: cover;
+}
+.cart-item .item-details {
+    flex-grow: 1;
+    margin: 0 15px;
+    text-align: left;
+}
+.cart-item h4 {
+    color: #fff;
+    margin-bottom: 5px;
+}
+.cart-item p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+.cart-item .remove-btn {
+    background: #ff4444; /* Red for remove */
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+.cart-item .remove-btn:hover {
+    background: #cc0000; /* Darker red */
+}
+.cart-summary {
+    text-align: right; 
+    margin-top: 15px; /* Space above summary */
+}
+.cart-total p {
+    margin-bottom: 15px;
+}
+.cart-total span { 
+    color: var(--accent); /* Accent color */
+    font-size: 1.2rem; 
+    font-weight: 700; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on total */
+}
+.cart-summary .checkout-btn {
+    background: var(--accent); /* Solid accent background */
+    color: #121212; /* Dark text */
+    border: none; 
+    padding: 12px 25px; 
+    border-radius: 4px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-size: 1rem;
+    width: auto; /* Adjust width */
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+.cart-summary .checkout-btn:hover { 
+    background: #00b8cc; /* Darker accent on hover */
+    box-shadow: 0 0 15px var(--accent); /* Glow on hover */
+}
+.empty-cart {
+    color: var(--text-light);
+    text-align: center;
+    padding: 20px 0;
+}
+
+
+/* Checkout Modal - Cyberpunk Style */
+.checkout-modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.8); /* Semi-transparent dark overlay */
+    z-index: 200; 
+    justify-content: center; 
+    align-items: center; 
+}
+.modal-content { 
+    background: var(--panel-dark); /* Dark panel background */
+    border-radius: 8px; 
+    padding: 30px; 
+    width: 100%; 
+    max-width: 500px; 
+    border: 1px solid var(--accent-dark); /* Border */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); /* Stronger glow */
+}
+.modal-content h3 { 
+    color: var(--accent); 
+    text-align: center; 
+    margin-bottom: 20px; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on heading */
+}
+.form-group { 
+    margin-bottom: 15px; 
+}
+.form-group label { 
+    display: block; 
+    color: var(--text-light); /* Lighter text */
+    margin-bottom: 5px; 
+}
+.form-group input, .form-group select { 
+    width: 100%; 
+    padding: 10px; 
+    background: #2d2d2d; /* Dark input background */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    border-radius: 4px; 
+    color: #fff; /* White text */
+    transition: border-color 0.3s;
+}
+.form-group input:focus, .form-group select:focus { 
+    outline: none; 
+    border-color: var(--accent); /* Accent border on focus */
+    box-shadow: 0 0 8px
+}
+.close-modal:hover {
+    background: #cc0000; /* Darker red on hover */
+}
+
+footer { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 20px; 
+    text-align: center; 
+    color: var(--text-light); /* Lighter text */
+    margin-top: 40px; 
+    border-top: 1px solid var(--accent-dark); /* Subtle border */
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+}
+footer a {
+    color: var(--accent); /* Accent color for links */
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--accent); /* Glow on link */
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsiveness - Adjusted for Cyberpunk */
+@media (max-width: 900px) {
+    .nav-links { 
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        text-align: center;
+        padding-top: 15px;
+        background: var(--panel-dark); /* Dark background for dropdown */
+        position: absolute; 
+        top: 60px; /* Below the nav bar */
+        left: 0;
+        border-bottom: 1px solid var(--accent-dark);
+    }
+    .nav-links.active {
+        display: flex; /* Show when active */
+    }
+    .nav-links li {
+        margin: 10px 0;
+    }
+    .mobile-menu { 
+        display: block; /* Show hamburger icon */
+    }
+    .shop-content.active { 
+        grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+    }
+}
+
+@media (max-width: 500px) {
+    .shop-content.active { 
+        grid-template-columns: 1fr; /* Single column on small screens */
+    }
+    .shop-tabs {
+        flex-direction: column; /* Stack tabs vertically */
+        align-items: center;
+        gap: 10px;
+    }
+    .shop-tab {
+        width: 80%; /* Make tabs wider */
+        text-align: center;
+    }
+    .logo {
+        font-size: 1.3rem;
+    }
+    .logo span {
+        font-size: 0.7rem;
+    }
+    .mobile-menu {
+        font-size: 1.6rem;
+    }
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+    .product-card {
+        padding: 15px;
+    }
+    .product-img {
+        height: 150px;
+    }
+    .product-price {
+        font-size: 1.1rem;
+    }
+    .add-cart-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    .cart-items, .cart-total {
+        padding: 15px;
+    }
+    .modal-content {
+        padding: 20px;
+    }
+}
+
+/* Added for mobile menu toggle */
+.nav-links.active {
+    display: flex;
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">RESPAWN <span>GAMING HUB</span></div>
+            
+            <ul class="nav-links">
+                 <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="games.html">Games/Services</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="community.html">Community</a></li>
+               
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="admin.html">Admin</a></li
+            </ul>
+            
+            <div class="mobile-menu">&#9776;</div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>RESPAWN SHOP</h1>
+        <p>Official merch, gaming gear, and snacks – order online or pick up in-store!</p>
+    </section>
+
+    <!-- Shop Categories -->
+    <div class="shop-tabs">
+        <button class="shop-tab active" onclick="showShopTab('merch')">CAFÉ MERCH</button>
+        <button class="shop-tab" onclick="showShopTab('gear')">GAMING GEAR</button>
+        <button class="shop-tab" onclick="showShopTab('snacks')">SNACKS & DRINKS</button>
+       
+ </div>
+
+    <!-- Café Merch Content -->
+    <div class="shop-content active" id="merch">
+        <div class="product-card">
+            <div class="product-img"><img src="images/resp-t-shirt.jpeg" alt="Respawn T-Shirt"></div>
+            <div class="product-name">Respawn Logo T-Shirt</div>
+            <div class="product-price">₱799</div>
+            <button class="add-cart-btn" onclick="addToCart('Respawn Logo T-Shirt', 799, 'https://via.placeholder.com/300x200.png?text=RESPAWN+T-SHIRT')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/heatmug.jpeg" alt="Gaming Mug"></div>
+            <div class="product-name">Respawn Heat-Changing Mug</div>
+            <div class="product-price">₱349</div>
+            <button class="add-cart-btn" onclick="addToCart('Respawn Heat-Changing Mug', 349, 'https://via.placeholder.com/300x200.png?text=GAMING+MUG')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/mouse-pad.jpeg" alt="Gaming Mousepad"></div>
+            <div class="product-name">Extended Gaming Mousepad</div>
+            <div class="product-price">₱499</div>
+            <button class="add-cart-btn" onclick="addToCart('Extended Gaming Mousepad', 499, 'https://via.placeholder.com/300x200.png?text=MOUSEPAD')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/keychain.jpeg" alt="Respawn Keychain"></div>
+            <div class="product-name">Respawn Logo Keychain</div>
+            <div class="product-price">₱149</div>
+            <button class="add-cart-btn" onclick="addToCart('Respawn Logo Keychain', 149, 'https://via.placeholder.com/300x200.png?text=KEYCHAIN')">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Gaming Gear Content -->
+    <div class="shop-content" id="gear">
+        <div class="product-card">
+            <div class="product-img"><img src="images/mechkeyboard.jpeg"" alt="Mechanical Keyboard"></div>
+            <div class="product-name">Mechanical Keyboard</div>
+            <div class="product-price">₱2,499</div>
+            <button class="add-cart-btn" onclick="addToCart('RGB Mechanical Keyboard', 2499, 'https://via.placeholder.com/300x200.png?text=MECH+KEYBOARD')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/wirelessmouse.jpeg" alt="Gaming Mouse"></div>
+            <div class="product-name">Wireless Gaming Mouse</div>
+            <div class="product-price">₱1,299</div>
+            <button class="add-cart-btn" onclick="addToCart('Wireless Gaming Mouse', 1299, 'https://via.placeholder.com/300x200.png?text=GAMING+MOUSE')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/71surround.jpeg" alt="Gaming Headset"></div>
+            <div class="product-name">7.1 Surround Headset</div>
+            <div class="product-price">₱1,899</div>
+            <button class="add-cart-btn" onclick="addToCart('7.1 Surround Headset', 1899, 'https://via.placeholder.com/300x200.png?text=HEADSET')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/customrgcont.jpeg" alt="Controller"></div>
+            <div class="product-name">Custom RGB Controller</div>
+            <div class="product-price">₱2,199</div>
+            <button class="add-cart-btn" onclick="addToCart('Custom RGB Controller', 2199, 'https://via.placeholder.com/300x200.png?text=CONTROLLER')">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Snacks & Drinks Content -->
+    <div class="shop-content" id="snacks">
+        <div class="product-card">
+            <div class="product-img"><img src="images/energydrink6pack.jpeg" alt="Energy Drink"></div>
+            <div class="product-name">Respawn Energy Drink (Pack of 6)</div>
+            <div class="product-price">₱499</div>
+            <button class="add-cart-btn" onclick="addToCart('Respawn Energy Drink (6pk)', 499, 'https://via.placeholder.com/300x200.png?text=ENERGY+DRINK')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/gourpop.jpeg" alt="Gourmet Popcorn"></div>
+            <div class="product-name">Gourmet Gaming Popcorn</div>
+            <div class="product-price">₱99</div>
+            <button class="add-cart-btn" onclick="addToCart('Gourmet Gaming Popcorn', 99, 'https://via.placeholder.com/300x200.png?text=POPCORN')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-img"><img src="images/chocbar.jpeg" alt="Gaming Chocolate"></div>
+            <div class="product-name">Respawn Gaming Chocolate Bar</div>
+            <div class="product-price">₱129</div>
+            <button class="add-cart-btn" onclick="addToCart('Respawn Gaming Chocolate', 129, 'https://via.placeholder.com/300x200.png?text=CHOCOLATE')">Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+                    <div class="product-card">
+            <div class="product-img"><img src="images/potchip.jpeg" alt="Gaming Chips"></div>
+            <div class="product-name">Spicy Gaming Potato Chips</div>
+            <div class="product-price">₱89</div>
+            <button class="add-cart-btn" onclick="addToCart('Spicy Gaming Potato Chips', 89, 'https://via.placeholder.com/300x200.png?text=CHIPS')">Add to Cart</button>
+        </div>
+    </div>
+
+  
+   
+	
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkout-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCheckoutModal()">&times;</span>
+            <h3>Complete Your Order</h3>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="tel" required placeholder="09XX XXX XXXX">
+                </div>
+                <div class="form-group">
+                    <label>Delivery Option</label>
+                    <select required>
+                        <option value="">Select Option</option>
+                        <option value="pickup">In-Store Pickup (Free)</option>
+                        <option value="delivery">Delivery (₱150 Fee)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select required>
+                        <option value="">Select Method</option>
+                        <option value="gcash">GCash</option>
+                        <option value="paymaya">PayMaya</option>
+                        <option value="card">Credit/Debit Card</option>
+                    </select>
+                </div>
+                <button type="submit" class="checkout-btn">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Respawn Gaming Hub | Quezon City, Philippines | <a href="contact.html">Contact Us</a></p>
+    </footer>
+
+    <script>
+        // Shop Tab Switching
+       // Shop Tab Switching
+function showShopTab(tabId) {
+    const contents = document.querySelectorAll('.shop-content');
+    contents.forEach(content => content.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    
+    const tabs = document.querySelectorAll('.shop-tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// Cart Functionality
+let cart = [];
+updateCartDisplay(); // Initialize cart display
+
+function addToCart(name, price, image) {
+    const existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ name, price, image, quantity: 1 });
+    }
+    updateCartDisplay();
+    alert(`${name} added to cart!`);
+}
+
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const cartTotal = document.getElementById('cart-total');
+    const cartSummary = document.getElementById('cart-summary');
+    const emptyCart = document.querySelector('.empty-cart');
+
+    // Clear existing items
+    cartItems.innerHTML = '';
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
+        cartCount.textContent = '(0 items)';
+        cartTotal.textContent = '₱0';
+        cartSummary.style.display = 'none';
+        return;
+    }
+
+    // Calculate total and display items
+    let total = 0;
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-details">
+                <h4>${item.name}</h4>
+                <p>₱${item.price} x ${item.quantity} = ₱${itemTotal.toFixed(2)}</p>
+            </div>
+            <button class="remove-btn" onclick="removeFromCart('${item.name}')">Remove</button>
+        `;
+        cartItems.appendChild(cartItem);
+    });
+
+    cartCount.textContent = `(${cart.length} item${cart.length !== 1 ? 's' : ''})`;
+    cartTotal.textContent = `₱${total.toFixed(2)}`;
+    cartSummary.style.display = 'block';
+    // Ensure the empty cart message is hidden when items are present
+    if (emptyCart) emptyCart.style.display = 'none'; 
+}
+
+function removeFromCart(name) {
+    cart = cart.filter(item => item.name !== name);
+    updateCartDisplay();
+}
+
+// Checkout Modal Functions
+function openCheckoutModal() {
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+    document.getElementById('checkout-modal').style.display = 'flex';
+}
+
+function closeCheckoutModal() {
+    document.getElementById('checkout-modal').style.display = 'none';
+}
+
+// Handle form submission
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Order placed successfully! We will contact you shortly.');
+    closeCheckoutModal();
+    cart = []; // Clear cart after successful order
+    updateCartDisplay();
+});
+
+// Function to show the cart section when "VIEW CART" is clicked
+function showCartSection() {
+    document.getElementById('cart-section').style.display = 'block';
+    // Optionally, hide other content sections if needed, or let them scroll
+    // For now, we'll just make sure the cart is visible.
+}
+
+// Ensure the "VIEW CART" button calls showCartSection()
+// In your HTML, the button should look like this:
+// <button class="shop-tab" onclick="showCartSection()">VIEW CART</button>
+    </script>
+</body>
+</html>

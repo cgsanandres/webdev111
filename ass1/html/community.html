@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respawn Gaming Hub - Community</title>
+    <style>
+       /* Base Styles - Similar to LAZPO23 TERMINAL */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Consolas', 'Monaco', 'monospace'; 
+}
+
+body { 
+    background: #0a0e17; 
+    color: #00f0ff; 
+    overflow-y: auto; 
+}
+
+/* Accent Color - Keep the cyan glow */
+:root { 
+    --accent: #00f0ff; 
+    --accent-dark: #008899; 
+    --bg-dark: #0a0e17;
+    --panel-dark: #101828; 
+}
+
+/* Navigation Bar */
+nav { 
+    background: var(--panel-dark); 
+    padding: 15px 20px; 
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    border-bottom: 1px solid var(--accent-dark); 
+}
+.nav-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; 
+}
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: var(--accent); 
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); 
+}
+.logo span { 
+    color: #fff; 
+    opacity: 0.7;
+    font-size: 0.8rem; 
+    margin-left: 5px;
+}
+        
+.nav-links { 
+    display: flex; 
+    gap: 20px; 
+    list-style: none; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+}
+.nav-links a { 
+    color: #ccc; 
+    text-decoration: none; 
+    font-weight: 500; 
+    transition: 0.3s; 
+    padding: 5px 0; 
+    border-bottom: 1px solid transparent; 
+}
+.nav-links a:hover, .nav-links a.active { 
+    color: var(--accent); 
+    border-bottom: 1px solid var(--accent); 
+    text-shadow: 0 0 5px var(--accent); 
+}
+.mobile-menu { 
+    display: none; 
+    font-size: 1.8rem; 
+    cursor: pointer; 
+    color: var(--accent);
+}
+
+/* Page Header */
+.page-header { 
+    max-width: 1200px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+    text-align: center; 
+}
+.page-header h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    border-bottom: 2px solid var(--accent); 
+    display: inline-block; 
+    padding-bottom: 10px; 
+    text-shadow: 0 0 8px var(--accent); 
+}
+.page-header p { 
+    color: #ccc; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+
+/* Community Tabs */
+.community-tabs { 
+    max-width: 1200px; 
+    margin: 0 auto 30px; 
+    padding: 0 20px; 
+    display: flex; 
+    justify-content: center; 
+    gap: 25px; 
+    flex-wrap: wrap; 
+}
+.tab-btn { 
+    background: var(--panel-dark); 
+    border: 1px solid transparent; 
+    color: #ccc; 
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: 0.3s; 
+}
+.tab-btn.active { 
+    background: transparent; 
+    border: 1px solid var(--accent); 
+    color: var(--accent); 
+    box-shadow: 0 0 10px var(--accent); 
+}
+.tab-btn:hover { 
+    color: var(--accent); 
+    border-color: var(--accent); 
+}
+
+/* Community Content */
+.community-content { 
+    max-width: 1200px; 
+    margin: 0 auto 60px; 
+    padding: 0 20px; 
+    display: none; 
+}
+.community-content.active { 
+    display: block; 
+}
+
+/* Blog Section */
+.blog-grid { 
+    display: grid; 
+    grid-template-columns: 3fr 1fr; 
+    gap: 30px; 
+    margin-bottom: 40px; 
+}
+.blog-post { 
+    background: var(--panel-dark); 
+    border-radius: 8px; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    border: 1px solid var(--accent-dark); 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); 
+}
+.blog-post h3 { 
+    color: var(--accent); 
+    margin-bottom: 10px; 
+    font-size: 1.3rem; 
+    text-shadow: 0 0 5px var(--accent); 
+}
+.post-meta { 
+    color: #ccc; 
+    font-size: 0.9rem; 
+    margin-bottom: 15px; 
+}
+.post-content { 
+    color: #ddd; 
+    line-height: 1.6; 
+    margin-bottom: 15px; 
+}
+.read-more { 
+    color: var(--accent); 
+    text-decoration: none; 
+}
+.read-more:hover { 
+    text-decoration: underline; 
+    text-shadow: 0 0 5px var(--accent); 
+}
+
+/* Sidebar */
+.sidebar { 
+    background: var(--panel-dark); 
+    border-radius: 8px; 
+    padding: 20px; 
+    border: 1px solid var(--accent-dark); 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); 
+}
+.sidebar h4 { 
+    color: var(--accent); 
+    margin-bottom: 15px; 
+    font-size: 1.2rem; 
+    text-shadow: 0 0 5px var(--accent); 
+}
+.sidebar-links { 
+    list-style: none; 
+}
+.sidebar-links li { 
+    padding: 8px 0; 
+    border-bottom: 1px solid var(--accent-dark); 
+}
+.sidebar-links a { 
+    color: #ccc; 
+    text-decoration: none; 
+}
+.sidebar-links a:hover { 
+    color: var(--accent); 
+}
+
+/* Forum Section */
+.forum-section { 
+    background: var(--panel-dark); 
+    border-radius: 8px; 
+    padding: 20px; 
+    margin-bottom: 30px; 
+    border: 1px solid var(--accent-dark); 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); 
+}
+.forum-section h3 { 
+    color: var(--accent); 
+    margin-bottom: 15px; 
+    text-shadow: 0 0 5px var(--accent); 
+}
+.forum-thread { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 0; 
+    border-bottom: 1px solid var(--accent-dark); 
+}
+.thread-title { 
+    color: #fff; 
+    text-decoration: none; 
+}
+.thread-title:hover { 
+    color: var(--accent); 
+    text-shadow: 0 0 5px var(--accent); 
+}
+.thread-meta { 
+    color: #ccc; 
+    font-size: 0.9rem; 
+}
+.create-thread-btn { 
+    background: transparent; 
+    color: var(--accent); 
+    border: 1px solid var(--accent); 
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-weight: 600; 
+    transition: 0.3s; 
+}
+.create-thread-btn:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+/* User Content Section */
+.user-content { 
+    background: var(--panel-dark); 
+    border-radius: 8px; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    border: 1px solid var(--accent-dark); 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); 
+}
+.user-header { 
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 15px; 
+}
+.user-avatar { 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    background: #2d2d2d; 
+    margin-right: 15px; 
+    border: 1px solid var(--accent-dark);
+}
+.user-name { 
+    font-weight: 700; 
+    color: var(--accent);
+}
+.user-post { 
+    color: #ddd; 
+    line-height: 1.6; 
+    margin-bottom: 10px; 
+}
+.post-actions { 
+    display: flex; 
+    gap: 15px; 
+}
+.action-btn { 
+    background: #2d2d2d; 
+    color: #ccc; 
+    border: 1px solid var(--accent-dark); 
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+.action-btn:hover { 
+    color: var(--accent); 
+    border-color: var(--accent);
+}
+
+/* Post Modal */
+.post-modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.8); 
+    z-index: 200; 
+    justify-content: center; 
+    align-items: center; 
+}
+.modal-box { 
+    background: var(--panel-dark); 
+    padding: 30px; 
+    border-radius: 8px; 
+    width: 100%; 
+    max-width: 500px; 
+    border: 1px solid var(--accent-dark);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+}
+.modal-box h3 { 
+    color: var(--accent); 
+    text-align: center; 
+    margin-bottom: 20px; 
+    text-shadow: 0 0 5px var(--accent);
+}
+.form-group { 
+    margin-bottom: 15px; 
+}
+.form-group label { 
+    display: block; 
+    color: #ccc; 
+    margin-bottom: 5px; 
+}
+.form-group input, .form-group textarea, .form-group select { 
+    width: 100%; 
+    padding: 10px; 
+    background: #2d2d2d; 
+    border: 1px solid var(--accent-dark); 
+    border-radius: 4px; 
+    color: #fff; 
+    font-family: inherit;
+}
+.form-group textarea { 
+    height: 150px; 
+    resize: none; 
+}
+.submit-post, .submit-btn { 
+    background: transparent; 
+    color: var(--accent); 
+    border: 1px solid var(--accent); 
+    padding: 10px; 
+    border-radius: 4px; 
+    font-weight: 600; 
+    width: 100%; 
+    cursor: pointer;
+    transition: 0.3s;
+}
+.submit-post:hover, .submit-btn:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+    box-shadow: 0 0 10px var(--accent);
+}
+.close-btn, .close-modal { 
+    background: transparent; 
+    color: #ff4444; 
+    border: 1px solid #ff4444; 
+    padding: 8px 15px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    margin-top: 10px; 
+    transition: 0.3s;
+}
+.close-btn:hover, .close-modal:hover {
+    background: #ff4444;
+    color: #000;
+}
+
+/* Footer */
+footer { 
+    background: var(--panel-dark); 
+    padding: 20px; 
+    text-align: center; 
+    color: #ccc; 
+    margin-top: 60px; 
+    border-top: 1px solid var(--accent-dark); 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); 
+}
+footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--accent);
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+    .nav-links { 
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        text-align: center;
+        padding-top: 15px;
+        background: var(--panel-dark); 
+        position: absolute; 
+        top: 60px; 
+        left: 0;
+        border: 1px solid var(--accent-dark);
+        border-top: none;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .nav-links li {
+        margin: 10px 0;
+    }
+    .mobile-menu { 
+        display: block; 
+    }
+    .blog-grid { 
+        grid-template-columns: 1fr; 
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">RESPAWN <span>GAMING HUB</span></div>
+            
+            <ul class="nav-links">
+                   <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="games.html">Games/Services</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="community.html"class="active">Community</a></li>
+                
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="admin.html">Admin</a></li
+            </ul>
+            
+            <div class="mobile-menu">&#9776;</div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>RESPAWN COMMUNITY</h1>
+        <p>Connect with fellow gamers, share tips, post content, and stay updated on hub news!</p>
+    </section>
+
+    <!-- Community Tabs -->
+    <div class="community-tabs">
+        <button class="tab-btn active" onclick="showTab('blog')">BLOG</button>
+        <button class="tab-btn" onclick="showTab('forum')">FORUM</button>
+        <button class="tab-btn" onclick="showTab('user-content')">USER CONTENT</button>
+        <button class="tab-btn" onclick="openPostModal()">CREATE POST</button>
+    </div>
+
+    <!-- Blog Content -->
+    <div class="community-content active" id="blog">
+        <div class="blog-grid">
+            <div class="main-content">
+                <div class="blog-post">
+                    <h3>5 Pro Tips to Dominate Valorant Ranked</h3>
+                    <div class="post-meta">By Admin • March 29, 2026 • 5 min read</div>
+                    <div class="post-content">
+                        <p>Valorant’s ranked ladder can be tough – but these positioning and ability usage tips will help you climb faster...</p>
+                        <a href="#" class="read-more" onclick="showPostDetails('Valorant Tips')">Read Full Post</a>
+                    </div>
+                </div>
+
+                <div class="blog-post">
+                    <h3>Our New VR Booth is Now Open!</h3>
+                    <div class="post-meta">By Admin • March 25, 2026 • 3 min read</div>
+                    <div class="post-content">
+                        <p>We’ve added 4 new Valve Index VR booths with room-scale tracking – here’s what you can expect when you visit...</p>
+                        <a href="#" class="read-more" onclick="showPostDetails('VR Booth')">Read Full Post</a>
+                    </div>
+                </div>
+
+                <div class="blog-post">
+                    <h3>Tournament Recap: Respawn Open 2026</h3>
+                    <div class="post-meta">By Esports Team • March 20, 2026 • 8 min read</div>
+                    <div class="post-content">
+                        <p>Team "Philippine Knights" took home the grand prize – relive the final match highlights and see their winning strategy...</p>
+                        <a href="#" class="read-more" onclick="showPostDetails('Tournament Recap')">Read Full Post</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h4>RECENT POSTS</h4>
+                <ul class="sidebar-links">
+                    <li><a href="#">Best PC Builds for 2026</a></li>
+                    <li><a href="#">How to Stream on Twitch</a></li>
+                    <li><a href="#">Community Game Night Schedule</a></li>
+                    <li><a href="#">New Snack Menu Items</a></li>
+                </ul>
+
+                <h4>TOP CONTRIBUTORS</h4>
+                <ul class="sidebar-links">
+                    <li>• PlayerOne_23 (12 Posts)</li>
+                    <li>• RespawnAdmin (9 Posts)</li>
+                    <li>• PinoyGamer88 (7 Posts)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forum Content -->
+    <div class="community-content" id="forum">
+        <div class="forum-section">
+            <h3>GENERAL DISCUSSION</h3>
+            <div class="forum-thread">
+                <a href="#" class="thread-title" onclick="showThreadDetails('Best Gaming Mouse?')">What’s the best gaming mouse under ₱2k?</a>
+                <div class="thread-meta">By PlayerOne_23 • 15 Replies • 120 Views</div>
+            </div>
+            <div class="forum-thread">
+                <a href="#" class="thread-title" onclick="showThreadDetails('LAN Party')">Who’s joining the April LAN party?</a>
+                <div class="thread-meta">By PinoyGamer88 • 8 Replies • 75 Views</div>
+            </div>
+            <div class="forum-thread">
+                <a href="#" class="thread-title" onclick="showThreadDetails('Game Suggestions')">Suggest new games for the hub!</a>
+                <div class="thread-meta">By NewGamer_01 • 22 Replies • 180 Views</div>
+            </div>
+            <button class="create-thread-btn" onclick="openPostModal()">CREATE NEW THREAD</button>
+        </div>
+
+        <div class="forum-section">
+            <h3>ESPORTS TALK</h3>
+            <div class="forum-thread">
+                <a href="#" class="thread-title" onclick="showThreadDetails('Tournament Prep')">How to prepare for Respawn Open 2026?</a>
+                <div class="thread-meta">By TeamCaptainPH • 19 Replies • 250 Views</div>
+            </div>
+            <div class="forum-thread">
+                <a href="#" class="thread-title" onclick="showThreadDetails('Pro Teams')">Which local pro team is your favorite?</a>
+                <div class="thread-meta">By EsportsFan • 31 Replies • 320 Views</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Content Section -->
+    <div class="community-content" id="user-content">
+        <h3 style="color:var(--accent); margin-bottom:20px; text-align:center;">USER SUBMITTED CONTENT</h3>
+        
+        <div class="user-content">
+            <div class="user-header">
+                <div class="user-avatar"></div>
+                <div>
+                    <div class="user-name">PlayerOne_23</div>
+                    <div class="post-meta">Posted March 28, 2026 • Gaming Clip</div>
+                </div>
+            </div>
+            <div class="user-post">
+                <p>Check out this clutch 1v5 I pulled off in Valorant last night!</p>
+                <div style="width:100%; height:250px; background:#2d2d2d; border-radius:4px; display:flex; justify-content:center; align-items:center; color:#ccc; margin:10px 0;">
+				<img src="images/clutch.jpeg" alt="Custom Setup"  style="width:100%; height:100%; object-fit:cover; border-radius:4px;">
+				</div>
+                <div class="post-actions">
+                    <button class="action-btn">Like (24)</button>
+                    <button class="action-btn">Comment (6)</button>
+                    <button class="action-btn">Share</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-content">
+            <div class="user-header">
+                <div class="user-avatar"></div>
+                <div>
+                                        <div class="user-name">PinoyGamer88</div>
+                    <div class="post-meta">Posted March 26, 2026 • Screenshot</div>
+                </div>
+            </div>
+            <div class="user-post">
+                <p>My custom gaming setup at home – inspired by Respawn Hub’s stations!</p>
+                <div style="width:100%; height:250px; background:#2d2d2d; border-radius:4px; display:flex; justify-content:center; align-items:center; color:#ccc; margin:10px 0;">
+                    <img src="images/setup.jpeg" alt="Custom Setup" style="width:100%; height:100%; object-fit:cover; border-radius:4px;">
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn">Like (18)</button>
+                    <button class="action-btn">Comment (4)</button>
+                    <button class="action-btn">Share</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-content">
+            <div class="user-content">
+                <div class="user-content">
+                    <div class="user-header">
+                        <div class="user-avatar"></div>
+                        <div>
+                            <div class="user-name">StreamerGirl_PH</div>
+                            <div class="post-meta">Posted March 24, 2026 • Blog Post</div>
+                        </div>
+                    </div>
+                    <div class="user-post">
+                        <p>Here’s my guide to setting up a budget-friendly streaming station – perfect for beginners!</p>
+                        <a href="#" class="read-more" onclick="showPostDetails('Streaming Guide')">Read Full Guide</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post/Thread Modal -->
+    <div class="post-modal" id="post-modal" style="display:none;">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <h3 id="modal-title"></h3>
+            <div id="modal-content"></div>
+            <div class="modal-actions">
+                <button class="close-btn" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div class="post-modal" id="create-post-modal" style="display:none;">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeCreateModal()">×</span>
+            <h3>Create New Post/Thread</h3>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="post-title" placeholder="Enter post title">
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="post-category">
+                    <option value="blog">Blog</option>
+                    <option value="forum">Forum Thread</option>
+                    <option value="user-content">User Content</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Content</label>
+                <textarea id="post-content" rows="8" placeholder="Write your post here..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Upload Media (Optional)</label>
+                <input type="file" accept="image/*,video/*">
+            </div>
+            <button class="submit-btn" onclick="submitPost()">Publish Post</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Respawn Gaming Hub | <a href="#">Terms of Service</a> | <a href="contact.html">Contact Us</a></p>
+    </footer>
+
+    <script>
+        // Tab Switching
+        function showTab(tabId) {
+            const contents = document.querySelectorAll('.community-content');
+            contents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Modal Functions
+        function showPostDetails(title) {
+            const modal = document.getElementById('post-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            
+            modalTitle.textContent = title;
+            if(title === 'Valorant Tips') {
+                modalContent.innerHTML = `
+                    <p>Here are our top 5 Valorant tips for climbing ranked:</p>
+                    <ol>
+                        <li>Master one agent before trying others</li>
+                        <li>Communicate enemy positions clearly</li>
+                        <li>Stick to your team – avoid solo pushes</li>
+                        <li>Learn map callouts</li>
+                        <li>Practice aim daily for 15 minutes</li>
+                    </ol>
+                `;
+            } else if(title === 'VR Booth') {
+                modalContent.innerHTML = `
+                    <p>Our new VR booths feature:</p>
+                    <ul>
+                        <li>Valve Index headsets with full room tracking</li>
+                        <li>Custom VR game library</li>
+                        <li>Private booths available for booking</li>
+                        <li>Free orientation for first-time users</li>
+                    </ul>
+                `;
+            } else if(title === 'Tournament Recap') {
+                modalContent.innerHTML = `
+                    <p>Team Philippine Knights took home the ₱25,000 grand prize at Respawn Open 2026!</p>
+                    <div style="width:100%; height:200px; background:#2d2d2d; border-radius:4px; margin:10px 0; display:flex; justify-content:center; align-items:center; color:#ccc;">[TOURNAMENT HIGHLIGHTS VIDEO]</div>
+                    <p>They defeated Team NexGen in a thrilling 3-map final – watch the replay at our hub or on our YouTube channel!</p>
+                `;
+            }
+            modal.style.display = 'flex';
+        }
+
+        function openPostModal() {
+            document.getElementById('create-post-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('post-modal').style.display = 'none';
+        }
+
+        function closeCreateModal() {
+            document.getElementById('create-post-modal').style.display = 'none';
+        }
+
+        function submitPost() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            if(!title || !content) {
+                alert('Please fill in all fields!');
+                return;
+            }
+            alert('Post published successfully!');
+            closeCreateModal();
+            // Reset form
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+        }
+
+        // Initialize first tab
+        document.getElementById('blog').classList.add('active');
+    </script>
+</body>
+</html>

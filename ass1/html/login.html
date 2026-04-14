@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respawn Gaming Hub - Login</title>
+    <style>
+/* Base Styles - Cyberpunk/Terminal */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Consolas', 'Monaco', 'monospace'; /* Monospace font for terminal feel */
+}
+
+body { 
+    background: #0a0e17; /* Dark background */
+    color: #00f0ff; /* Cyan glow text color */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 100vh; 
+    padding: 20px; 
+}
+
+/* Brand Accent (Neon Cyan) */
+:root { 
+    --accent: #00f0ff; 
+    --bg-dark: #0a0e17;
+    --panel-dark: #101828; /* Dark panel background */
+    --accent-dark: #008899; /* Darker cyan for borders/accents */
+}
+
+.logo { 
+    font-size: 2rem; 
+    font-weight: 700; 
+    margin-bottom: 30px; 
+    color: #fff;
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); /* Glow effect */
+}
+.logo span { 
+    color: var(--accent); 
+}
+
+.login-card { 
+    background: var(--panel-dark); 
+    padding: 40px; 
+    border-radius: 8px; 
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); /* Stronger glow */
+    width: 100%; 
+    max-width: 400px; 
+    border: 1px solid var(--accent-dark); /* Subtle border */
+}
+h2 { 
+    margin-bottom: 25px; 
+    text-align: center; 
+    border-bottom: 2px solid var(--accent); 
+    padding-bottom: 10px; 
+    text-shadow: 0 0 5px var(--accent); /* Glow */
+}
+
+.form-group { 
+    margin-bottom: 20px; 
+}
+label { 
+    display: block; 
+    margin-bottom: 5px; 
+    color: #ccc; 
+}
+input { 
+    width: 100%; 
+    padding: 12px; 
+    background: #2d2d2d; /* Dark input background */
+    border: 1px solid var(--accent-dark); /* Border */
+    border-radius: 4px; 
+    color: #fff; 
+    font-size: 1rem; 
+    font-family: inherit; /* Use monospace font */
+}
+input:focus { 
+    outline: none; 
+    border-color: var(--accent); 
+    box-shadow: 0 0 8px var(--accent); /* Glow on focus */
+}
+
+.btn { 
+    width: 100%; 
+    padding: 12px; 
+    background: transparent; /* Transparent background */
+    color: var(--accent); /* Accent color text */
+    border: 1px solid var(--accent); /* Accent border */
+    border-radius: 4px; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-family: inherit; /* Monospace font */
+}
+.btn:hover { 
+    background: var(--accent); 
+    color: var(--bg-dark); /* Dark text on hover */
+    box-shadow: 0 0 10px var(--accent); /* Glow on hover */
+}
+.btn.loading { 
+    background: var(--accent-dark); /* Darker accent when loading */
+    border-color: var(--accent-dark);
+    cursor: not-allowed; 
+}
+.btn.loading::after { 
+    content: ''; 
+    display: inline-block; 
+    width: 16px; 
+    height: 16px; 
+    margin-left: 8px; 
+    border: 2px solid var(--bg-dark); /* Dark border for spinner */
+    border-top: 2px solid transparent; 
+    border-radius: 50%; 
+    animation: spin 1s linear infinite; 
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.links { 
+    margin-top: 20px; 
+    text-align: center; 
+}
+a { 
+    color: var(--accent); 
+    text-decoration: none; 
+    margin: 0 8px; 
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--accent); /* Glow */
+}
+a:hover { 
+    text-decoration: underline; 
+}
+
+.divider { 
+    margin: 20px 0; 
+    text-align: center; 
+    color: #666; 
+    position: relative; 
+}
+.divider::before, .divider::after { 
+    content: ''; 
+    width: 40%; 
+    height: 1px; 
+    background: var(--accent-dark); /* Darker accent for dividers */
+    position: absolute; 
+    top: 50%; 
+}
+.divider::before { 
+    left: 0; 
+}
+.divider::after { 
+    right: 0; 
+}
+    </style>
+</head>
+<body>
+    <div class="logo">RESPAWN <span>GAMING HUB</span></div>
+    
+    <div class="login-card">
+        <h2>LOGIN TO YOUR ACCOUNT</h2>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Gamer Tag / Email</label>
+                <input type="text" id="username" required placeholder="Enter your gamer tag or email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="btn" id="login-btn">LOGIN</button>
+        </form>
+        
+        <div class="divider">OR</div>
+        
+        <div class="links">
+            <a href="register.html">Create New Account</a>
+            <a href="#">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script>
+        // Get form and button elements
+        const loginForm = document.getElementById('login-form');
+        const loginBtn = document.getElementById('login-btn');
+
+        // Handle form submission
+        loginForm.addEventListener('submit', function(e) {
+            // Prevent default form reload behavior
+            e.preventDefault();
+
+            // Get input values (you can add validation here if needed)
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Only proceed if fields are not empty
+            if (username && password) {
+                // Show loading state
+                loginBtn.textContent = 'LOGGING IN';
+                loginBtn.classList.add('loading');
+
+                // Simulate a short loading delay (for realism)
+                setTimeout(function() {
+                    // Redirect to home page - adjust the URL if your home page has a different filename
+                    window.location.href = 'index.html';
+                }, 1200);
+            } else {
+                // Optional: Show error if fields are empty
+                alert('Please enter both your gamer tag/email and password!');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respawn Gaming Hub - Pricing & Membership</title>
+    <style>
+     /* Base Styles - Cyberpunk/Terminal Aesthetic */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    /* Monospace font for terminal feel */
+    font-family: 'Consolas', 'Monaco', 'monospace'; 
+}
+
+body { 
+    background: #0a0e17; /* Dark background */
+    color: #00f0ff; /* Bright cyan text */
+    overflow-y: auto; /* Allow scrolling */
+}
+
+/* CSS Variables for consistent styling */
+:root { 
+    --accent: #00f0ff; /* Main cyan glow */
+    --accent-dark: #008899; /* Darker cyan for borders/accents */
+    --bg-dark: #0a0e17; /* Main dark background */
+    --panel-dark: #101828; /* Darker panel/card background */
+    --text-light: #ccc; /* Lighter text for secondary info */
+}
+
+/* Navigation Bar - Cyberpunk Style */
+nav { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 15px 20px; 
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); /* Soft glow */
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    border-bottom: 1px solid var(--accent-dark); /* Subtle dark cyan border */
+}
+.nav-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: var(--accent); /* Logo in accent color */
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); /* Glow effect */
+}
+.logo span { 
+    color: #fff; /* Hub text in white */
+    opacity: 0.7;
+    font-size: 0.8rem; /* Smaller size for 'HUB' */
+    margin-left: 5px;
+}
+        
+.nav-links { 
+    display: flex; 
+    gap: 15px; /* Slightly reduced gap */
+    list-style: none; 
+    flex-wrap: wrap; /* Allow links to wrap */
+    justify-content: center; /* Center links when wrapped */
+}
+.nav-links a { 
+    color: var(--text-light); /* Lighter text color */
+    text-decoration: none; 
+    font-weight: 500; 
+    transition: 0.3s; 
+    padding: 5px 0; 
+    border-bottom: 1px solid transparent; /* Placeholder for hover effect */
+}
+.nav-links a:hover, .nav-links a.active { 
+    color: var(--accent); 
+    border-bottom: 1px solid var(--accent); /* Subtle underline */
+    text-shadow: 0 0 5px var(--accent); /* Glow on hover/active */
+}
+.mobile-menu { 
+    display: none; 
+    font-size: 1.8rem; 
+    cursor: pointer; 
+    color: var(--accent); /* Hamburger icon in accent color */
+}
+
+footer { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 20px; 
+    text-align: center; 
+    color: var(--text-light); /* Lighter text */
+    margin-top: 40px; 
+    border-top: 1px solid var(--accent-dark); /* Subtle border */
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+}
+footer a {
+    color: var(--accent); /* Accent color for links */
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--accent); /* Glow on link */
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* Page Header - Cyberpunk Style */
+.page-header { 
+    max-width: 1200px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+    text-align: center; 
+    border: 1px solid var(--accent-dark); /* Border */
+    padding: 20px 30px;
+    background: var(--panel-dark); /* Panel background */
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1); /* Inner glow */
+}
+.page-header h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    border-bottom: 2px solid var(--accent); /* Accent underline */
+    display: inline-block; 
+    padding-bottom: 10px; 
+    text-shadow: 0 0 8px var(--accent); /* Glow on heading */
+}
+.page-header p { 
+    color: var(--text-light); /* Lighter text */
+    max-width: 800px; 
+    margin: 0 auto; 
+    line-height: 1.6;
+}
+
+/* Pricing Tabs - Minimalist Cyberpunk */
+.pricing-tabs { 
+    max-width: 1200px; 
+    margin: 0 auto 30px; 
+    padding: 0 20px; 
+    display: flex; 
+    justify-content: center; 
+    gap: 25px; 
+    flex-wrap: wrap; 
+}
+.pricing-tab { 
+    background: var(--panel-dark); /* Dark panel background */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    color: var(--text-light); /* Lighter text */
+    padding: 12px 25px; 
+    border-radius: 4px; 
+    font-size: 1rem; 
+    font-weight: 500; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    box-shadow: 0 0 5px rgba(0, 229, 255, 0.1); /* Subtle glow */
+}
+.pricing-tab.active { 
+    background: var(--accent); /* Solid accent background */
+    color: #121212; /* Dark text */
+    border-color: var(--accent); /* Accent border */
+    box-shadow: 0 0 10px var(--accent); /* Stronger glow */
+}
+.pricing-tab:hover { 
+    color: var(--accent); /* Accent text on hover */
+    border-color: var(--accent); /* Accent border on hover */
+}
+
+/* Pricing Cards - Cyberpunk Style */
+.pricing-content { 
+    max-width: 1200px; 
+    margin: 0 auto 60px; 
+    padding: 0 20px; 
+    display: none; /* Hidden by default */
+}
+.pricing-content.active { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    gap: 30px; 
+}
+.price-card { 
+    background: var(--panel-dark); /* Dark panel background */
+    border-radius: 8px; 
+    padding: 30px; 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+    text-align: center; 
+    position: relative; 
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.price-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); /* Stronger glow */
+}
+.popular-badge { 
+    background: var(--accent); /* Accent color */
+    color: #121212; /* Dark text */
+    padding: 5px 15px; 
+    border-radius: 20px; 
+    font-size: 0.9rem; 
+    position: absolute; 
+    top: -10px; 
+    right: 20px; 
+    font-weight: 600;
+}
+.price-card h2 { 
+    color: var(--accent); 
+    margin-bottom: 15px; 
+    font-size: 1.8rem; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on heading */
+}
+.price-tag { 
+    font-size: 2.5rem; 
+    font-weight: 700; 
+    margin-bottom: 20px; 
+    color: #fff; /* White price */
+}
+.price-tag span { 
+    font-size: 1rem; 
+    font-weight: 400; 
+    color: var(--text-light); /* Lighter text for currency/period */
+}
+.benefits-list { 
+    list-style: none; 
+    margin-bottom: 25px; 
+}
+.benefits-list li { 
+    padding: 10px 0; 
+    border-bottom: 1px solid var(--accent-dark); /* Dark cyan separator */
+    color: var(--text-light); /* Lighter text */
+    display: flex; 
+    align-items: center; 
+}
+.benefits-list li::before { 
+    content: "✓"; /* Checkmark icon */
+    color: var(--accent); /* Accent color */
+    margin-right: 10px; 
+    font-weight: bold; /* Make checkmark bold */
+}
+.subscribe-btn { 
+    background: transparent; /* Transparent background */
+    color: var(--accent); /* Accent text */
+    border: 1px solid var(--accent); /* Accent border */
+    padding: 12px 25px; 
+    border-radius: 4px; 
+    font-weight: 600; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    width: 100%; 
+    display: inline-block;
+    box-shadow: 0 0 5px rgba(0, 229, 255, 0.1);
+}
+.subscribe-btn:hover { 
+    background: var(--accent); /* Solid accent background on hover */
+    color: #121212; /* Dark text on hover */
+    box-shadow: 0 0 15px var(--accent); /* Stronger glow */
+}
+
+/* Add-Ons Section - Cyberpunk Grid */
+#addOns { 
+    max-width: 1200px; 
+    margin: 0 auto 60px; 
+    padding: 0 20px; 
+    display: none; /* Hidden by default */
+}
+#addOns.active { 
+    display: block; 
+}
+#addOns h3 { 
+    color: var(--accent); 
+    margin-bottom: 20px; 
+    text-align: center; 
+    font-size: 1.5rem; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on heading */
+}
+.addons-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+}
+.addon-card { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 20px; 
+    border-radius: 8px; 
+    text-align: center; 
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.addon-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); /* Stronger glow */
+}
+.addon-card h4 { 
+    margin-bottom: 10px; 
+    color: var(--accent); /* Accent color */
+    text-shadow: 0 0 3px var(--accent); /* Subtle glow */
+}
+.addon-card p { 
+    color: var(--text-light); /* Lighter text */
+    margin-bottom: 15px; 
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+.addon-btn { 
+    background: transparent; /* Transparent background */
+    color: #fff; /* White text */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    padding: 8px 15px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-weight: 500;
+}
+.addon-btn:hover { 
+    background: var(--accent); /* Accent background on hover */
+    color: #121212; /* Dark text on hover */
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent); /* Glow on hover */
+}
+
+/* Payment Modal - Cyberpunk Style */
+.payment-modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.8); /* Semi-transparent dark overlay */
+    z-index: 300; 
+    justify-content: center; 
+    align-items: center; 
+}
+.modal-box { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 30px; 
+    border-radius: 8px; 
+    width: 100%; 
+    max-width: 450px; 
+    border: 1px solid var(--accent-dark); /* Border */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); /* Stronger glow */
+}
+.modal-box h3 { 
+    color: var(--accent); 
+    margin-bottom: 20px; 
+    text-align: center; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on heading */
+}
+.form-group { 
+    margin-bottom: 15px; 
+}
+.form-group label { 
+    display: block; 
+    color: var(--text-light); /* Lighter text */
+    margin-bottom: 5px; 
+}
+.form-group input, .form-group select { 
+    width: 100%; 
+    padding: 10px; 
+    background: #2d2d2d; /* Dark input background */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    border-radius: 4px; 
+    color: #fff; /* White text */
+    transition: border-color 0.3s;
+}
+.form-group input:focus, .form-group select:focus { 
+    outline: none; 
+    border-color: var(--accent); /* Accent border on focus */
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.3); /* Glow on focus */
+}
+.submit-payment { 
+    background: var(--accent); /* Solid accent background */
+    color: #121212; /* Dark text */
+    border: none; 
+    padding: 12px; 
+    border-radius: 4px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    width: 100%; 
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+.submit-payment:hover {
+    background: #00b8cc; /* Darker accent on hover */
+}
+.close-modal { 
+    background: #ff4444; /* Red for cancel */
+    color: #fff; 
+    border: none; 
+    padding: 8px 15px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    margin-top: 10px; 
+    transition: 0.3s;
+    width: 100%;
+    display: block; /* Ensure it takes full width */
+}
+.close-modal:hover {
+    background: #cc0000; /* Darker red on hover */
+}
+
+/* Footer - Cyberpunk Style */
+footer { 
+    background
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">RESPAWN <span>GAMING HUB</span></div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="games.html">Games/Services</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="pricing.html"class="active">Pricing</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="community.html">Community</a></li>
+          
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="admin.html">Admin</a></li
+            </ul>
+            
+            <div class="mobile-menu">&#9776;</div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>PRICING & MEMBERSHIP</h1>
+        <p>Choose from flexible hourly rates or exclusive membership plans packed with perks – all designed to fit your gaming style and budget.</p>
+    </section>
+
+    <!-- Pricing Tabs -->
+    <div class="pricing-tabs">
+        <button class="pricing-tab active" onclick="showPricing('hourly')">HOURLY RATES</button>
+        <button class="pricing-tab" onclick="showPricing('membership')">MEMBERSHIP PLANS</button>
+        <button class="pricing-tab" onclick="showPricing('addons')">ADD-ONS & EXTRAS</button>
+    </div>
+
+    <!-- Hourly Rates Content -->
+    <div class="pricing-content active" id="hourly">
+        <div class="price-card">
+            <h2>PC STATIONS</h2>
+            <div class="price-tag">₱150 <span>/ hour</span></div>
+            <ul class="benefits-list">
+                <li>Access to all pro PC rigs</li>
+                <li>1Gbps fiber internet</li>
+                <li>Free bottled water</li>
+                <li>Use of gaming peripherals</li>
+            </ul>
+            <button class="subscribe-btn" onclick="openPaymentModal('Hourly PC Station')">BOOK NOW</button>
+        </div>
+
+        <div class="price-card">
+            <h2>CONSOLE STATIONS</h2>
+            <div class="price-tag">₱120 <span>/ hour</span></div>
+            <ul class="benefits-list">
+                <li>PS5 / Xbox Series X / Switch</li>
+                <li>4K TV display</li>
+                <li>Up to 4 players per station</li>
+                <li>Free snacks (popcorn/chips)</li>
+            </ul>
+            <button class="subscribe-btn" onclick="openPaymentModal('Hourly Console Station')">BOOK NOW</button>
+        </div>
+
+        <div class="price-card">
+            <div class="popular-badge">MOST POPULAR</div>
+            <h2>VR BOOTHS</h2>
+            <div class="price-tag">₱250 <span>/ hour</span></div>
+            <ul class="benefits-list">
+                <li>Meta Quest Pro / Valve Index</li>
+                <li>Room-scale tracking</li>
+                <li>Guided setup support</li>
+                <li>Exclusive VR game library</li>
+            </ul>
+            <button class="subscribe-btn" onclick="openPaymentModal('Hourly VR Booth')">BOOK NOW</button>
+        </div>
+    </div>
+
+    <!-- Membership Plans Content -->
+    <div class="pricing-content" id="membership">
+        <div class="price-card">
+            <h2>BASIC MEMBER</h2>
+            <div class="price-tag">₱999 <span>/ month</span></div>
+            <ul class="benefits-list">
+                <li>10% off all hourly rates</li>
+                <li>Priority booking for stations</li>
+                <li>Access to community forums</li>
+                <li>1 free hour per week</li>
+            </ul>
+            <button class="subscribe-btn" onclick="openPaymentModal('Basic Membership')">SUBSCRIBE</button>
+        </div>
+
+        <div class="price-card">
+            <div class="popular-badge">BEST VALUE</div>
+            <h2>PREMIUM MEMBER</h2>
+            <div class="price-tag">₱1,999 <span>/ month</span></div>
+            <ul class="benefits-list">
+                <li>20% off all hourly rates</li>
+                <li>Free 5 hours per month</li>
+                <li>Early access to events</li>
+                <li>15% off merchandise</li>
+                <li>Free drink per visit</li>
+            </ul>
+            <button class="subscribe-btn" onclick="openPaymentModal('Premium Membership')">SUBSCRIBE</button>
+        </div>
+
+        <div class="price-card">
+            <h2>ELITE MEMBER</h2>
+            <div class="price-tag">₱3,999 <span>/ month</span></div>
+            <ul class="benefits-list">
+                <li>30% off all hourly rates</li>
+                <li>Free 15 hours per month</li>
+                <li>Private training booth access</li>
+                <li>Free entry to all tournaments</li>
+                <li>25% off merchandise</li>
+                <li>Personalized gear setup</li>
+            </ul>
+            <button class="subscribe-btn" onclick="openPaymentModal('Elite Membership')">SUBSCRIBE</button>
+        </div>
+    </div>
+
+    <!-- Add-Ons Content -->
+    <div class="pricing-content" id="addons">
+        <h3 style="color:var(--accent); margin-bottom:20px; text-align:center;">EXTRA SERVICES & UPGRADES</h3>
+        <div class="addons-grid">
+            <div class="addon-card">
+                <h4>Gear Rental</h4>
+                <p>High-end peripherals for home use</p>
+                <p>₱500 / day</p>
+                <button class="addon-btn" onclick="openPaymentModal('Gear Rental')">RENT NOW</button>
+            </div>
+            <div class="addon-card">
+                <h4>Game Installation</h4>
+                <p>Custom game setup on your station</p>
+                <p>₱200 per game</p>
+                <button class="addon-btn" onclick="openPaymentModal('Game Installation')">REQUEST</button>
+            </div>
+            <div class="addon-card">
+                <h4>Private LAN Party</h4>
+                <p>Exclusive use of hub for 10+ players</p>
+                <p>₱5,000 / 4 hours</p>
+                <button class="addon-btn" onclick="openPaymentModal('Private LAN Party')">BOOK</button>
+            </div>
+            <div class="addon-card">
+                <h4>Pro Coaching Session</h4>
+                <p>1-on-1 training with pro gamers</p>
+                <p>₱1,200 / hour</p>
+                <button class="addon-btn" onclick="openPaymentModal('Pro Coaching')">BOOK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="modal-box">
+            <h3 id="modalTitle"></h3>
+            <div class="form-group">
+                <label>Gamer Tag</label>
+                <input type="text" placeholder="Enter your profile tag">
+            </div>
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="tel" placeholder="09XX XXX XXXX">
+            </div>
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select>
+                                        <option>PayMaya</option>
+                    <option>Credit/Debit Card</option>
+                    <option>Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Duration / Quantity</label>
+                <input type="number" min="1" placeholder="Enter hours, months, or quantity">
+            </div>
+            <button type="button" class="submit-payment">PROCESS PAYMENT</button>
+            <button type="button" class="close-modal" onclick="document.getElementById('paymentModal').style.display='none';">CANCEL</button>
+        </div>
+    </div>
+
+     <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Respawn Gaming Hub | Quezon City, Metro Manila | <a href="#" style="color: var(--accent); text-decoration: none;">Follow Us</a></p>
+    </footer>
+	
+    <script>
+        // Switch between pricing tabs
+        function showPricing(tabId) {
+            const contents = document.querySelectorAll('.pricing-content');
+            contents.forEach(cont => cont.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.pricing-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Open payment modal
+        function openPaymentModal(packageName) {
+            const modal = document.getElementById('paymentModal');
+            document.getElementById('modalTitle').textContent = packageName;
+            modal.style.display = 'flex';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
+
+

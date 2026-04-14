@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respawn Gaming Hub - Events & Tournaments</title>
+    <style>
+       /* Base Styles - Cyberpunk/Terminal Aesthetic */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    /* Monospace font for terminal feel */
+    font-family: 'Consolas', 'Monaco', 'monospace'; 
+}
+
+body { 
+    background: #0a0e17; /* Dark background */
+    color: #00f0ff; /* Bright cyan text */
+    overflow-y: auto; /* Allow scrolling */
+}
+
+/* CSS Variables for consistent styling */
+:root { 
+    --accent: #00f0ff; /* Main cyan glow */
+    --accent-dark: #008899; /* Darker cyan for borders/accents */
+    --bg-dark: #0a0e17; /* Main dark background */
+    --panel-dark: #101828; /* Darker panel/card background */
+    --text-light: #ccc; /* Lighter text for secondary info */
+}
+
+/* Navigation Bar - Cyberpunk Style */
+nav { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 15px 20px; 
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); /* Soft glow */
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    border-bottom: 1px solid var(--accent-dark); /* Subtle dark cyan border */
+}
+.nav-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: var(--accent); /* Logo in accent color */
+    text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); /* Glow effect */
+}
+.logo span { 
+    color: #fff; /* Hub text in white */
+    opacity: 0.7;
+    font-size: 0.8rem; /* Smaller size for 'HUB' */
+    margin-left: 5px;
+}
+        
+.nav-links { 
+    display: flex; 
+    gap: 15px; /* Slightly reduced gap */
+    list-style: none; 
+    flex-wrap: wrap; /* Allow links to wrap */
+    justify-content: center; /* Center links when wrapped */
+}
+.nav-links a { 
+    color: var(--text-light); /* Lighter text color */
+    text-decoration: none; 
+    font-weight: 500; 
+    transition: 0.3s; 
+    padding: 5px 0; 
+    border-bottom: 1px solid transparent; /* Placeholder for hover effect */
+}
+.nav-links a:hover, .nav-links a.active { 
+    color: var(--accent); 
+    border-bottom: 1px solid var(--accent); /* Subtle underline */
+    text-shadow: 0 0 5px var(--accent); /* Glow on hover/active */
+}
+.mobile-menu { 
+    display: none; 
+    font-size: 1.8rem; 
+    cursor: pointer; 
+    color: var(--accent); /* Hamburger icon in accent color */
+}
+
+/* Page Header - Cyberpunk Style */
+.page-header { 
+    max-width: 1200px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+    text-align: center; 
+    border: 1px solid var(--accent-dark); /* Border */
+    padding: 20px 30px;
+    background: var(--panel-dark); /* Panel background */
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.1); /* Inner glow */
+}
+.page-header h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    border-bottom: 2px solid var(--accent); /* Accent underline */
+    display: inline-block; 
+    padding-bottom: 10px; 
+    text-shadow: 0 0 8px var(--accent); /* Glow on heading */
+}
+.page-header p { 
+    color: var(--text-light); /* Lighter text */
+    max-width: 800px; 
+    margin: 0 auto; 
+    line-height: 1.6;
+}
+
+/* Event Tabs - Minimalist Cyberpunk */
+.event-tabs { 
+    max-width: 1200px; 
+    margin: 0 auto 30px; 
+    padding: 0 20px; 
+    display: flex; 
+    justify-content: center; 
+    gap: 25px; 
+    flex-wrap: wrap; 
+}
+.event-tab { 
+    background: var(--panel-dark); /* Dark panel background */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    color: var(--text-light); /* Lighter text */
+    padding: 12px 25px; 
+    border-radius: 4px; 
+    font-size: 1rem; 
+    font-weight: 500; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    box-shadow: 0 0 5px rgba(0, 229, 255, 0.1); /* Subtle glow */
+}
+.event-tab.active { 
+    background: var(--accent); /* Solid accent background */
+    color: #121212; /* Dark text */
+    border-color: var(--accent); /* Accent border */
+    box-shadow: 0 0 10px var(--accent); /* Stronger glow */
+}
+.event-tab:hover { 
+    color: var(--accent); /* Accent text on hover */
+    border-color: var(--accent); /* Accent border on hover */
+}
+
+/* Event Content Area */
+.event-content { 
+    max-width: 1200px; 
+    margin: 0 auto 60px; 
+    padding: 0 20px; 
+    display: none; /* Hidden by default */
+}
+.event-content.active { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 30px; 
+}
+
+/* Event Cards - Cyberpunk Style */
+.event-card { 
+    background: var(--panel-dark); /* Dark panel background */
+    border-radius: 8px; 
+    padding: 25px; 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.event-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); /* Stronger glow */
+}
+.event-card img { 
+    width: 100%; 
+    height: 200px; 
+    background: #2d2d2d; /* Placeholder background */
+    border-radius: 4px; 
+    margin-bottom: 20px; 
+    object-fit: cover; 
+    border: 1px solid var(--accent-dark); /* Border on image */
+}
+.event-title { 
+    color: var(--accent); 
+    font-size: 1.4rem; 
+    margin-bottom: 10px; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on title */
+}
+.event-details { 
+    color: var(--text-light); /* Lighter text */
+    margin-bottom: 15px; 
+    line-height: 1.5; 
+}
+.event-details span { 
+    color: #fff; /* White for labels */
+    font-weight: 500; 
+}
+.register-btn { 
+    background: transparent; /* Transparent background */
+    color: var(--accent); /* Accent text */
+    padding: 10px 20px; 
+    border: 1px solid var(--accent); /* Accent border */
+    border-radius: 4px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    width: 100%; 
+    display: inline-block; /* Ensure padding works */
+    box-shadow: 0 0 5px rgba(0, 229, 255, 0.1);
+}
+.register-btn:hover { 
+    background: var(--accent); /* Solid accent background on hover */
+    color: #121212; /* Dark text on hover */
+    box-shadow: 0 0 15px var(--accent); /* Stronger glow */
+}
+
+/* Registration Form - Cyberpunk Style */
+.reg-form { 
+    background: var(--panel-dark); /* Dark panel background */
+    border-radius: 8px; 
+    padding: 25px; 
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+}
+.reg-form h2 { 
+    color: var(--accent); 
+    margin-bottom: 20px; 
+    font-size: 1.4rem; 
+    text-align: center; 
+    text-shadow: 0 0 5px var(--accent); /* Glow on heading */
+}
+.form-group { 
+    margin-bottom: 15px; 
+}
+.form-group label { 
+    display: block; 
+    color: var(--text-light); /* Lighter text */
+    margin-bottom: 5px; 
+}
+.form-group input, .form-group select { 
+    width: 100%; 
+    padding: 10px; 
+    background: #2d2d2d; /* Dark input background */
+    border: 1px solid var(--accent-dark); /* Dark cyan border */
+    border-radius: 4px; 
+    color: #fff; /* White text */
+    transition: border-color 0.3s;
+}
+.form-group input:focus, .form-group select:focus { 
+    outline: none; 
+    border-color: var(--accent); /* Accent border on focus */
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.3); /* Glow on focus */
+}
+
+/* Past Events Gallery - Cyberpunk Grid */
+.past-gallery { 
+    grid-column: 1 / 3; /* Span across both columns */
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 15px; 
+}
+.gallery-item { 
+    height: 150px; 
+    background: #2d2d2d; /* Dark background */
+    border-radius: 4px; 
+    overflow: hidden; 
+    border: 1px solid var(--accent-dark); /* Border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.gallery-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+}
+.gallery-item img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; /* Remove extra space */
+}
+
+/* Footer - Cyberpunk Style */
+footer { 
+    background: var(--panel-dark); /* Dark panel background */
+    padding: 20px; 
+    text-align: center; 
+    color: var(--text-light); /* Lighter text */
+    margin-top: 40px; 
+    border-top: 1px solid var(--accent-dark); /* Subtle border */
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1); /* Subtle glow */
+}
+footer a {
+    color: var(--accent); /* Accent color for links */
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--accent); /* Glow on link */
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile Responsiveness - Adjusted for Cyberpunk */
+@media (max-width: 900px) {
+    .nav-links { 
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        text-align: center;
+        padding-top: 15px;
+        background: var(--panel-dark); /* Dark background for dropdown */
+        position: absolute; 
+        top: 60px; /* Below the nav bar */
+        left: 0;
+        border-bottom: 1px solid var(--accent-dark);
+    }
+    .nav-links.active {
+        display: flex; /* Show when active */
+    }
+    .nav-links li {
+        margin: 10px 0;
+    }
+    .mobile-menu { 
+        display: block; /* Show hamburger icon */
+    }
+    .page-header {
+        padding: 15px 20px;
+    }
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    .event-content.active { 
+        grid-template-columns: 1fr; /* Single column on medium screens */
+    }
+    .past-gallery { 
+        grid-template-columns: repeat(2, 1fr); /* Two columns for gallery */
+    }
+    .event-tabs {
+        gap: 15px;
+    }
+    .event-tab {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .past-gallery { 
+        grid-template-columns: 1fr; /* Single column for gallery on small screens */
+    }
+    .event-tabs {
+        flex-direction: column; /* Stack tabs vertically */
+        align-items: center;
+        gap: 10px;
+    }
+    .event-tab {
+        width: 80%; /* Make tabs wider */
+        text-align: center;
+    }
+    .logo {
+        font-size: 1.3rem;
+    }
+    .logo span {
+        font-size: 0.7rem;
+    }
+    .mobile-menu {
+        font-size: 1.6rem;
+    }
+}
+
+/* Added for mobile menu toggle */
+.nav-links.active {
+    display: flex;
+}
+        
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">RESPAWN <span>GAMING HUB</span></div>
+            
+            <ul class="nav-links">
+                  <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="games.html">Games/Services</a></li>
+                <li><a href="events.html"class="active">Events</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="community.html">Community</a></li>
+                
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="respawnadmin.html">Admin</a></li>
+            </ul>
+            
+            <div class="mobile-menu">&#9776;</div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>EVENTS & TOURNAMENTS</h1>
+        <p>Join our action-packed lineup of competitions, LAN parties, and gaming nights – where champions are made.</p>
+    </section>
+
+    <!-- Event Tabs -->
+    <div class="event-tabs">
+        <button class="event-tab active" onclick="showEventTab('upcoming')">UPCOMING EVENTS</button>
+        <button class="event-tab" onclick="showEventTab('past')">PAST EVENTS</button>
+    </div>
+
+    <!-- Upcoming Events Content -->
+    <div class="event-content active" id="upcoming">
+        <div class="event-card">
+            <img src="images/showdown.jpeg" alt="Valorant Tournament">
+            <div class="event-title">RESPAWN VALORANT SHOWDOWN</div>
+            <div class="event-details">
+                <p><span>Date:</span> April 20-21, 2026</p>
+                <p><span>Format:</span> 5v5 Single Elimination</p>
+                <p><span>Prize Pool:</span> PHP 50,000 + Merchandise</p>
+                <p><span>Entry Fee:</span> PHP 1,500 per Team</p>
+            </div>
+            <button class="register-btn">REGISTER TEAM NOW</button>
+        </div>
+
+        <div class="event-card">
+            <img src="images/lan-party.jpeg" alt="LAN Party">
+            <div class="event-title">WEEKEND LAN PARTY</div>
+            <div class="event-details">
+                <p><span>Date:</span> April 13-14, 2026</p>
+                <p><span>Activities:</span> Free Play, Mini-Games, Cosplay Contest</p>
+                <p><span>Entry:</span> PHP 500 (24hr Access)</p>
+                <p><span>Perks:</span> Free Drinks + 10% Off Merch</p>
+            </div>
+            <button class="register-btn">BOOK YOUR SPOT</button>
+        </div>
+
+        <div class="event-card">
+            <img src="images/cs2ch.jpeg" alt="CS2 Championship">
+            <div class="event-title">PH CS2 CHAMPIONSHIP QUALIFIERS</div>
+            <div class="event-details">
+                <p><span>Date:</span> May 4-5, 2026</p>
+                <p><span>Format:</span> 5v5 Double Elimination</p>
+                <p><span>Prize Pool:</span> PHP 75,000 + Regional Slot</p>
+                <p><span>Entry Fee:</span> PHP 2,000 per Team</p>
+            </div>
+            <button class="register-btn">SIGN UP FOR QUALIFIERS</button>
+        </div>
+
+        <div class="reg-form">
+            <h2>EVENT REGISTRATION FORM</h2>
+            <form>
+                <div class="form-group">
+                    <label>Gamer Tag / Team Name</label>
+                    <input type="text" required placeholder="Enter your tag or team name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Select Event</label>
+                    <select required>
+                        <option value="">-- Choose Event --</option>
+                        <option value="valorant">Respawn Valorant Showdown</option>
+                        <option value="lan">Weekend LAN Party</option>
+                        <option value="cs2">PH CS2 Championship Qualifiers</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Number of Participants</label>
+                    <input type="number" min="1" max="5" required placeholder="1-5">
+                </div>
+                <button type="submit" class="register-btn">SUBMIT REGISTRATION</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Past Events Content -->
+    <div class="event-content" id="past">
+        <div class="event-card">
+            <img src="images/dott.jpeg" alt="DOTA 2 Tournament">
+            <div class="event-title">RESPAWN DOTA 2 INVITATIONAL</div>
+            <div class="event-details">
+                <p><span>Date:</span> March 16-17, 2026</p>
+                <p><span>Winner:</span> @PhEsportsKing Team</p>
+                <p><span>Prize Awarded:</span> PHP 40,000</p>
+                <p><span>Participants:</span> 32 Teams</p>
+            </div>
+            <button class="register-btn" style="background:#2d2d2d; color:#ccc; cursor:default;">VIEW HIGHLIGHTS</button>
+        </div>
+
+        <div class="event-card">
+            <img src="images/cosnight.jpeg" alt="Cosplay Night">
+            <div class="event-title">ANIME & GAMING COSPLAY NIGHT</div>
+            <div class="event-details">
+                <p><span>Date:</span> March 30, 2026</p>
+                <p><span>Best Cosplay:</span> @AuraGamer (Jinx - Arcane)</p>
+                <p><span>Attendance:</span> 180 Gamers</p>
+                <p><span>Highlights:</span> Photo Booth + Costume Parade</p>
+            </div>
+            <button class="register-btn" style="background:#2d2d2d; color:#ccc; cursor:default;">SEE GALLERY</button>
+        </div>
+
+        <div class="events">
+            
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Respawn Gaming Hub | Quezon City, Metro Manila | <a href="#" style="color: var(--accent); text-decoration: none;">Follow Us</a></p>
+    </footer>
+
+    <script>
+        // Switch between event tabs
+        function showEventTab(tabId) {
+            const contents = document.querySelectorAll('.event-content');
+            contents.forEach(cont => cont.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.event-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+
