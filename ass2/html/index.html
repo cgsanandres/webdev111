@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+
+*{box-sizing:border-box; font-family:'Segoe UI',sans-serif;}
+body{margin:0; display:flex; background:#0f172a; color:#fff;}
+
+.sidebar{
+width:250px;
+background:#020617;
+height:100vh;
+padding:20px;
+position:fixed;
+}
+
+.sidebar h2{color:#38bdf8; text-align:center;}
+.sidebar a{
+display:block;
+color:#cbd5f5;
+text-decoration:none;
+margin:12px 0;
+padding:10px;
+border-radius:8px;
+}
+.sidebar a:hover{background:#1e293b;}
+
+.main{
+margin-left:250px;
+padding:25px;
+width:100%;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+margin-bottom:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+th,td{
+padding:12px;
+border-bottom:1px solid #334155;
+}
+th{color:#38bdf8;}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>ScholarPortal</h2>
+<a href="index.html">Dashboard</a>
+<a href="registration.html">Registration</a>
+<a href="grades.html">Grades</a>
+<a href="profile.html">Profile</a>
+<a href="account.html">Account</a>
+<a href="section.html">Section Offering</a>
+<a href="calendar.html">Academic Calendar</a>
+<a href="password.html">Password</a>
+<a href="library.html">Library</a>
+<a href="messaging.html">Messaging</a>
+</div>
+
+<div class="main">
+
+<div class="card">
+<h1>👋 Welcome back, <span id="name"></span></h1>
+<p>Stay on top of your academics, payments, and schedules.</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>📢 Announcements</h3>
+<ul>
+<li>Midterm exams start next week</li>
+<li>Registration deadline extended</li>
+<li>Library open until 9PM</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>💸 Payment Reminder</h3>
+<p><b>Status:</b> Unpaid</p>
+<p>Tuition balance: ₱25,000</p>
+<button onclick="alert('Redirecting to payment...')">Pay Now</button>
+</div>
+
+<div class="card">
+<h3>📚 Quick Access</h3>
+<p>• View Grades</p>
+<p>• Register Courses</p>
+<p>• Check Schedule</p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+document.getElementById("name").innerText = localStorage.getItem("studentName") || "Student";
+</script>
+
+</body>
+</html>
